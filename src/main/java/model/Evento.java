@@ -13,12 +13,13 @@ public abstract class Evento {
     protected String descripcion;
     protected String politicas;
     protected EstadoEvento estado;
+    protected Recinto recinto;
 
     protected Notificacion notificaciones;
 
     public Evento(String nombre, String categoria,
                   LocalDate fecha, String ciudad,
-                  String descripcion, String politicas) {
+                  String descripcion, String politicas,Recinto recinto) {
         this.nombre = nombre;
         this.categoria = categoria;
         this.fecha = fecha;
@@ -105,6 +106,51 @@ public abstract class Evento {
         );
     }
 
+    // RF-004: obtener recinto asociado al evento
+    public Recinto getRecinto() {
+        return recinto;
+    }
+
+    public void setRecinto(Recinto recinto) {
+        this.recinto = recinto;
+    }
+
+    // RF-025: consultar disponibilidad del evento por zonas
+    public boolean consultarDisponibilidad() {
+        if (recinto == null) return false;
+        for (Zona zona : recinto.getZonas()) {
+            if (zona.hayDisponibilidad()) {
+                return true; // hay al menos una zona con asientos disponibles
+            }
+        }
+        return false;
+    }
+
+    // RF-024: publicar, pausar y cancelar evento
+    public void activar() {
+        if (estado == EstadoEvento.EN_ESPERA || estado == EstadoEvento.PAUSADO) {
+            cambiarEstado(EstadoEvento.ACTIVO);
+        }
+    }
+
+    public void pausar() {
+        if (estado == EstadoEvento.ACTIVO) {
+            cambiarEstado(EstadoEvento.PAUSADO);
+        }
+    }
+
+    public void cancelar() {
+        if (estado != EstadoEvento.CANCELADO) {
+            cambiarEstado(EstadoEvento.CANCELADO);
+        }
+    }
+
+    public void finalizar() {
+        if (estado == EstadoEvento.ACTIVO) {
+            cambiarEstado(EstadoEvento.FINALIZADO);
+        }
+
+    }
     @Override
     public String toString() {
         return nombre + " - " + ciudad +
