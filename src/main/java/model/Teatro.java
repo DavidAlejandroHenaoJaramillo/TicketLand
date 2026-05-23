@@ -7,9 +7,9 @@ public class Teatro extends Evento {
     private String obra;
     private String director;
 
-    public Teatro(String nombre, String categoria, LocalDate fecha, String ciudad, String descripcion, String politicas, String obra, String director) {
+    public Teatro(String nombre, String categoria, LocalDate fecha, String ciudad, String descripcion, String politicas, String obra, String director, Recinto recinto) {
 
-        super(nombre, categoria, fecha, ciudad, descripcion, politicas);
+        super(nombre, categoria, fecha, ciudad, descripcion, politicas, recinto);
         this.obra = obra;
         this.director = director;
     }

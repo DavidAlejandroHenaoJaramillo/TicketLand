@@ -26,6 +26,7 @@ public abstract class Evento {
         this.ciudad = ciudad;
         this.descripcion = descripcion;
         this.politicas = politicas;
+        this.recinto = recinto;
         estado = EstadoEvento.EN_ESPERA;
         notificaciones = new Notificacion();
     }
