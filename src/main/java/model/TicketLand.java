@@ -2,6 +2,9 @@ package model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.time.LocalDate;
+import state.CompraCreada;
+import strategy.PagoStrategy;
 
 public class TicketLand {
 
@@ -119,6 +122,83 @@ public class TicketLand {
 
     public List<Usuario> getUsuarios() {
         return usuarios;
+    }
+
+    // RF-003: buscar eventos con filtros opcionales
+    public List<Evento> buscarEventos(String ciudad, String categoria, LocalDate fecha) {
+        List<Evento> resultado = new ArrayList<>();
+        for (Evento e : eventos) {
+            boolean coincide = true;
+            if (ciudad != null && !e.getCiudad().equalsIgnoreCase(ciudad)) {
+                coincide = false;
+            }
+            if (categoria != null && !e.getCategoria().equalsIgnoreCase(categoria)) {
+                coincide = false;
+            }
+            if (fecha != null && !e.getFecha().equals(fecha)) {
+                coincide = false;
+            }
+            if (coincide) {
+                resultado.add(e);
+            }
+        }
+        return resultado;
+    }
+
+    // RF-003: buscar eventos solo activos
+    public List<Evento> getEventosActivos() {
+        List<Evento> activos = new ArrayList<>();
+        for (Evento e : eventos) {
+            if (e.getEstado() == EstadoEvento.ACTIVO) {
+                activos.add(e);
+            }
+        }
+        return activos;
+    }
+
+    // RF-022: buscar usuario por id
+    public Usuario buscarUsuarioPorId(int id) {
+        for (Usuario u : usuarios) {
+            if (u.getId() == id) {
+                return u;
+            }
+        }
+        return null;
+    }
+
+    // RF-034: crear una compra nueva para un usuario
+    public Compra crearCompra(Usuario usuario, Evento evento, PagoStrategy metodoPago) {
+        Compra compra = new Compra(
+                0,
+                LocalDate.now(),
+                new CompraCreada(),
+                usuario,
+                evento,
+                metodoPago
+        );
+        compras.add(compra);
+        usuario.realizarCompra(compra);
+        return compra;
+    }
+
+    // RF-012: buscar usuario por correo
+    public Usuario buscarUsuarioPorCorreo(String correo) {
+        for (Usuario u : usuarios) {
+            if (u.getCorreo().equalsIgnoreCase(correo)) {
+                return u;
+            }
+        }
+        return null;
+    }
+
+    // RF-013: eliminar evento
+    public boolean eliminarEvento(Evento evento) {
+        return eventos.remove(evento);
+    }
+
+    // RF-012: eliminar usuario
+    public boolean eliminarUsuario(Usuario usuario) {
+        return usuarios.remove(usuario);
     }
 
     @Override
