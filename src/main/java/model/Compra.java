@@ -1,12 +1,14 @@
 package model;
 
 import decorator.EntradaBase;
-import state.EstadoCompra;
+import state.*;
 import strategy.PagoStrategy;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+
+import model.Entrada;
 
 public class Compra {
 
@@ -93,11 +95,68 @@ public class Compra {
         return total;
     }
 
+    // RF-035: modificar compra antes de pagar — elimina una entrada y libera su asiento
+    public boolean eliminarEntrada(EntradaBase entradaAEliminar) {
+        if (!(estadoCompra instanceof CompraCreada)) {
+            return false; // solo se puede modificar si la compra aún no fue pagada
+        }
+        // si la entrada tiene asiento, lo liberamos antes de eliminar
+        if (entradaAEliminar instanceof Entrada e && e.getAsiento() != null) {
+            e.getAsiento().setEstado(new Disponible());
+        }
+        return entradas.remove(entradaAEliminar);
+    }
+
+    // RF-007: pagar la compra usando la estrategia de pago configurada
+    public boolean pagar() {
+        if (!(estadoCompra instanceof CompraCreada)) {
+            return false; // solo se puede pagar una compra recién creada
+        }
+        if (entradas.isEmpty()) {
+            return false; // no tiene sentido pagar una compra sin entradas
+        }
+        boolean exitoso = metodoPago.procesarPago(calcularTotal());
+        if (exitoso) {
+            estadoCompra = new CompraPagada();
+            // marcar cada asiento como vendido
+            for (EntradaBase eb : entradas) {
+                if (eb instanceof Entrada e && e.getAsiento() != null) {
+                    e.getAsiento().setEstado(new Vendido());
+                }
+            }
+        }
+        return exitoso;
+    }
+
+    // RF-008: confirmar una compra que ya fue pagada
+    public boolean confirmar() {
+        if (!(estadoCompra instanceof CompraPagada)) {
+            return false; // solo se puede confirmar si ya fue pagada
+        }
+        estadoCompra = new CompraConfirmada();
+        return true;
+    }
+
+    // RF-036: cancelar la compra y liberar los asientos reservados
+    public boolean cancelar() {
+        if (estadoCompra instanceof CompraCancelada
+                || estadoCompra instanceof CompraReembolsada) {
+            return false; // ya está en un estado final, no se puede cancelar de nuevo
+        }
+        for (EntradaBase eb : entradas) {
+            if (eb instanceof Entrada e && e.getAsiento() != null) {
+                e.getAsiento().setEstado(new Disponible());
+            }
+        }
+        estadoCompra = new CompraCancelada();
+        return true;
+    }
+
     @Override
     public String toString() {
         return "Compra | Fecha: " +
                 fechaCompra +
                 " | Total: $" +
-                totalPagado;
+                calcularTotal();
     }
 }
