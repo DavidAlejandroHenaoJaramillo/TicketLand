@@ -1,6 +1,10 @@
 package model;
 
 import state.EstadoAsiento;
+import state.Bloqueado;
+import state.Disponible;
+import state.Reservado;
+import state.Vendido;
 
 public class Asiento {
 
@@ -40,6 +44,33 @@ public class Asiento {
 
     public String mostrarEstadoAsiento() {
         return estado.manejarEstado();
+    }
+
+    // RF-032: reservar asiento (al seleccionarlo antes de pagar)
+    public boolean reservar() {
+        if (estado instanceof Disponible) {
+            estado = new Reservado();
+            return true;
+        }
+        return false; // no se puede reservar si ya está ocupado o bloqueado
+    }
+
+    // RF-032: liberar asiento (al cancelar compra o eliminar entrada)
+    public boolean liberar() {
+        if (estado instanceof Reservado || estado instanceof Vendido) {
+            estado = new Disponible();
+            return true;
+        }
+        return false; // solo se liberan asientos que estaban ocupados
+    }
+
+    // RF-015: bloquear asiento (acción del administrador)
+    public boolean bloquear() {
+        if (estado instanceof Disponible) {
+            estado = new Bloqueado();
+            return true;
+        }
+        return false; // no se puede bloquear si ya está reservado o vendido
     }
 
     @Override
