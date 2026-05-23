@@ -2,6 +2,7 @@ package model;
 
 import java.util.ArrayList;
 import java.util.List;
+import state.Disponible;
 
 public class Zona {
 
@@ -51,6 +52,33 @@ public class Zona {
 
     public void agregarAsiento(Asiento asiento) {
         asientos.add(asiento);
+    }
+
+    // RF-030: consultar ocupación por zona
+    public int calcularOcupacion() {
+        int ocupados = 0;
+        for (Asiento a : asientos) {
+            if (!(a.getEstado() instanceof Disponible)) {
+                ocupados++;
+            }
+        }
+        return ocupados;
+    }
+
+    // RF-025: consultar asientos disponibles para selección de entradas
+    public List<Asiento> getAsientosDisponibles() {
+        List<Asiento> disponibles = new ArrayList<>();
+        for (Asiento a : asientos) {
+            if (a.getEstado() instanceof Disponible) {
+                disponibles.add(a);
+            }
+        }
+        return disponibles;
+    }
+
+    // RF-029: verificar si la zona tiene capacidad para más entradas
+    public boolean hayDisponibilidad() {
+        return !getAsientosDisponibles().isEmpty();
     }
 
     @Override
