@@ -1,5 +1,6 @@
 package model;
 
+import decorator.EntradaBase;
 import state.EstadoCompra;
 import strategy.PagoStrategy;
 
@@ -15,7 +16,7 @@ public class Compra {
     private Usuario usuario;
     private Evento evento;
     private PagoStrategy metodoPago;
-    private List<Entrada> entradas;
+    private List<EntradaBase> entradas;
 
     public Compra(double totalPagado, LocalDate fechaCompra, EstadoCompra estadoCompra, Usuario usuario, Evento evento, PagoStrategy metodoPago) {
 
@@ -29,11 +30,7 @@ public class Compra {
     }
 
     public double getTotalPagado() {
-        return totalPagado;
-    }
-
-    public void setTotalPagado(double totalPagado) {
-        this.totalPagado = totalPagado;
+        return calcularTotal();
     }
 
     public LocalDate getFechaCompra() {
@@ -76,16 +73,24 @@ public class Compra {
         this.metodoPago = metodoPago;
     }
 
-    public List<Entrada> getEntradas() {
+    public List<EntradaBase> getEntradas() {
         return entradas;
     }
 
-    public void setEntradas(List<Entrada> entradas) {
-        this.entradas = entradas;
+    public void agregarEntrada(EntradaBase entrada){
+        entradas.add(entrada);
     }
 
-    public void agregarEntrada(Entrada entrada) {
-        entradas.add(entrada);
+    public String mostrarEstadoCompra() {
+        return estadoCompra.manejarEstado();
+    }
+
+    public double calcularTotal() {
+        double total = 0;
+        for (EntradaBase entrada : entradas) {
+            total += entrada.getCosto();
+        }
+        return total;
     }
 
     @Override

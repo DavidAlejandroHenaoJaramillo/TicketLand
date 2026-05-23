@@ -8,12 +8,13 @@ import java.util.List;
 public class Usuario extends Persona implements Observador {
 
     private List<Compra> historialCompras;
+    private List<String> notificaciones;
 
-    public Usuario(int id, String nombre,
-                   String correo, String telefono) {
+    public Usuario(int id, String nombre, String correo, String telefono) {
 
         super(id, nombre, correo, telefono);
         historialCompras = new ArrayList<>();
+        notificaciones = new ArrayList<>();
     }
 
     public List<Compra> getHistorialCompras() {
@@ -22,6 +23,14 @@ public class Usuario extends Persona implements Observador {
 
     public void setHistorialCompras(List<Compra> historialCompras) {
         this.historialCompras = historialCompras;
+    }
+
+    public List<String> getNotificaciones() {
+        return notificaciones;
+    }
+
+    public void setNotificaciones(List<String> notificaciones) {
+        this.notificaciones = notificaciones;
     }
 
     public String registrarse() {
@@ -42,6 +51,7 @@ public class Usuario extends Persona implements Observador {
 
     @Override
     public void actualizar(String mensaje) {
+        notificaciones.add(mensaje);
     }
 
     @Override
