@@ -38,6 +38,10 @@ public class Asiento {
         this.estado = estado;
     }
 
+    public String mostrarEstadoAsiento() {
+        return estado.manejarEstado();
+    }
+
     @Override
     public String toString() {
 
