@@ -4,21 +4,31 @@ import java.time.LocalDate;
 
 public class Incidencia {
 
-    private String tipo;
+    public enum Tipo {
+        ERROR_PAGO,
+        DOBLE_COMPRA,
+        CANCELACION_MASIVA,
+        ASIENTO_NO_DISPONIBLE,
+        OTRO
+    }
+
+    private Tipo tipo;
     private String descripcion;
     private LocalDate fecha;
+    private String entidadAfectada; // RF-041: evento, compra o usuario afectado
 
-    public Incidencia(String tipo, String descripcion, LocalDate fecha) {
+    public Incidencia(Tipo tipo, String descripcion, LocalDate fecha, String entidadAfectada) {
         this.tipo = tipo;
         this.descripcion = descripcion;
         this.fecha = fecha;
+        this.entidadAfectada = entidadAfectada;
     }
 
-    public String getTipo() {
+    public Tipo getTipo() {
         return tipo;
     }
 
-    public void setTipo(String tipo) {
+    public void setTipo(Tipo tipo) {
         this.tipo = tipo;
     }
 
@@ -38,13 +48,21 @@ public class Incidencia {
         this.fecha = fecha;
     }
 
+    public String getEntidadAfectada() {
+        return entidadAfectada;
+    }
+
+    public void setEntidadAfectada(String entidadAfectada) {
+        this.entidadAfectada = entidadAfectada;
+    }
+
     @Override
     public String toString() {
         return tipo +
                 " - " +
                 descripcion +
-                " (" +
-                fecha +
-                ")";
+                " | Afectado: " +
+                entidadAfectada +
+                " (" + fecha + ")";
     }
 }

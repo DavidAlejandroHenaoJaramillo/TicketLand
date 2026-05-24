@@ -200,6 +200,18 @@ public class TicketLand {
     public boolean eliminarUsuario(Usuario usuario) {
         return usuarios.remove(usuario);
     }
+    // RF-042: consultar incidencias por rango de fechas y tipo
+    public List<Incidencia> buscarIncidencias(Incidencia.Tipo tipo, LocalDate desde, LocalDate hasta) {
+        List<Incidencia> resultado = new ArrayList<>();
+        for (Incidencia i : incidencias) {
+            boolean coincide = true;
+            if (tipo != null && i.getTipo() != tipo) coincide = false;
+            if (desde != null && i.getFecha().isBefore(desde)) coincide = false;
+            if (hasta != null && i.getFecha().isAfter(hasta)) coincide = false;
+            if (coincide) resultado.add(i);
+        }
+        return resultado;
+    }
 
     @Override
     public String toString() {
