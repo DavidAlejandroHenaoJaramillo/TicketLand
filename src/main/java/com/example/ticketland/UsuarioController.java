@@ -9,6 +9,11 @@ import javafx.scene.control.*;
 import javafx.stage.Stage;
 import model.*;
 import strategy.PagoTarjeta;
+import decorator.EntradaVIP;
+import decorator.SeguroDecorator;
+import decorator.MerchandisingDecorator;
+import decorator.ParqueaderoDecorator;
+import decorator.EntradaBase;
 
 import java.io.IOException;
 import java.util.List;
@@ -30,6 +35,10 @@ public class UsuarioController {
     @FXML private TableColumn<Compra, String> colCompraTotal;
     @FXML private TableColumn<Compra, String> colCompraEstado;
     @FXML private Label lblMensajeCompra;
+    @FXML private CheckBox chkVIP;
+    @FXML private CheckBox chkSeguro;
+    @FXML private CheckBox chkMerchandising;
+    @FXML private CheckBox chkParqueadero;
 
     private Usuario usuario;
     private TicketLand sistema = TicketLand.getInstance();
@@ -94,9 +103,17 @@ public class UsuarioController {
         Zona zona = eventoSeleccionado.getRecinto().getZonas().get(0);
         Asiento asiento = zona.getAsientosDisponibles().get(0);
         asiento.reservar();
-        Entrada entrada = new Entrada(zona.getPrecioBase(), EstadoEntrada.ACTIVA, zona, asiento);
+        // RF-005: crear entrada base
+        EntradaBase entradaFinal = new Entrada(zona.getPrecioBase(), EstadoEntrada.ACTIVA, zona, asiento);
+
+// RF-009: agregar servicios adicionales con decorators
+        if (chkVIP.isSelected()) entradaFinal = new EntradaVIP(entradaFinal);
+        if (chkSeguro.isSelected()) entradaFinal = new SeguroDecorator(entradaFinal);
+        if (chkMerchandising.isSelected()) entradaFinal = new MerchandisingDecorator(entradaFinal);
+        if (chkParqueadero.isSelected()) entradaFinal = new ParqueaderoDecorator(entradaFinal);
+
         Compra compra = sistema.crearCompra(usuario, eventoSeleccionado, new PagoTarjeta("0000-0000-0000-0000", usuario.getNombre()));
-        compra.agregarEntrada(entrada);
+        compra.agregarEntrada(entradaFinal);
         compra.pagar();
         cargarHistorial();
         lblMensajeCompra.setText("¡Compra realizada exitosamente!");
