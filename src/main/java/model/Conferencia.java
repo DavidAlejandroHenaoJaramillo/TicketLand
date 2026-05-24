@@ -7,9 +7,9 @@ public class Conferencia extends Evento {
     private String ponente;
     private String tema;
 
-    public Conferencia(String nombre, String categoria, LocalDate fecha, String ciudad, String descripcion, String politicas, String ponente, String tema) {
+    public Conferencia(String nombre, String categoria, LocalDate fecha, String ciudad, String descripcion, String politicas, String ponente, String tema, Recinto recinto) {
 
-        super(nombre, categoria, fecha, ciudad, descripcion, politicas);
+        super(nombre, categoria, fecha, ciudad, descripcion, politicas, recinto);
         this.ponente = ponente;
         this.tema = tema;
     }
