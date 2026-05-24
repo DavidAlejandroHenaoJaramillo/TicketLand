@@ -8,6 +8,15 @@ import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
+import javafx.scene.chart.BarChart;
+import javafx.scene.chart.PieChart;
+import javafx.scene.chart.XYChart;
+import javafx.collections.FXCollections;
+import state.CompraCancelada;
+import state.CompraPagada;
+import state.CompraConfirmada;
+import java.util.HashMap;
+import java.util.Map;
 import model.*;
 
 import java.io.IOException;
@@ -35,6 +44,8 @@ public class AdminController implements Initializable {
     @FXML private TableColumn<Compra, String> colCompraTotal;
     @FXML private TableColumn<Compra, String> colCompraEstado;
     @FXML private Label lblMensajeCompra;
+    @FXML private BarChart<String, Number> chartVentas;
+    @FXML private PieChart chartEstados;
 
     private TicketLand sistema = TicketLand.getInstance();
 
@@ -43,6 +54,7 @@ public class AdminController implements Initializable {
         cargarEventos();
         cargarUsuarios();
         cargarCompras();
+        actualizarMetricas();
     }
 
     // RF-013: cargar eventos
@@ -145,6 +157,43 @@ public class AdminController implements Initializable {
         GeneradorReporte reporte = new GeneradorReporte(sistema);
         reporte.exportarVentasPDF("reporte_ventas.pdf", null, null);
         lblMensajeCompra.setText("PDF exportado como reporte_ventas.pdf");
+    }
+
+    // RF-018/019: actualizar métricas con JavaFX Charts
+    @FXML
+    private void actualizarMetricas() {
+        // --- BAR CHART: ventas por evento ---
+        XYChart.Series<String, Number> serie = new XYChart.Series<>();
+        serie.setName("Entradas vendidas");
+
+        Map<String, Integer> ventasPorEvento = new HashMap<>();
+        for (Compra c : sistema.getCompras()) {
+            String nombreEvento = c.getEvento().getNombre();
+            ventasPorEvento.put(nombreEvento,
+                    ventasPorEvento.getOrDefault(nombreEvento, 0) + c.getEntradas().size());
+        }
+        for (Map.Entry<String, Integer> entry : ventasPorEvento.entrySet()) {
+            serie.getData().add(new XYChart.Data<>(entry.getKey(), entry.getValue()));
+        }
+        chartVentas.getData().clear();
+        chartVentas.getData().add(serie);
+
+        // --- PIE CHART: estados de compras ---
+        long pagadas = sistema.getCompras().stream()
+                .filter(c -> c.getEstadoCompra() instanceof CompraPagada).count();
+        long confirmadas = sistema.getCompras().stream()
+                .filter(c -> c.getEstadoCompra() instanceof CompraConfirmada).count();
+        long canceladas = sistema.getCompras().stream()
+                .filter(c -> c.getEstadoCompra() instanceof CompraCancelada).count();
+        long otras = sistema.getCompras().size() - pagadas - confirmadas - canceladas;
+
+        chartEstados.getData().clear();
+        chartEstados.getData().addAll(
+                new PieChart.Data("Pagadas", pagadas),
+                new PieChart.Data("Confirmadas", confirmadas),
+                new PieChart.Data("Canceladas", canceladas),
+                new PieChart.Data("Otras", otras)
+        );
     }
 
     // RF-001: cerrar sesión

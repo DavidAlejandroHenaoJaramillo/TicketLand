@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.chart.*?>
 
 <VBox spacing="10" xmlns="http://javafx.gluonhq.com/javafx/21"
       xmlns:fx="http://javafx.com/fxml"
@@ -14,7 +15,6 @@
     </HBox>
 
     <TabPane>
-        <!-- TAB EVENTOS -->
         <Tab text="Eventos" closable="false">
             <VBox spacing="10" style="-fx-padding: 10;">
                 <TableView fx:id="tablaEventos" prefHeight="200">
@@ -37,7 +37,6 @@
             </VBox>
         </Tab>
 
-        <!-- TAB USUARIOS -->
         <Tab text="Usuarios" closable="false">
             <VBox spacing="10" style="-fx-padding: 10;">
                 <TableView fx:id="tablaUsuarios" prefHeight="200">
@@ -47,15 +46,12 @@
                         <TableColumn fx:id="colUsuarioTelefono" text="Teléfono" prefWidth="120"/>
                     </columns>
                 </TableView>
-                <HBox spacing="10">
-                    <Button text="Eliminar usuario" onAction="#eliminarUsuario"
-                            style="-fx-background-color: #e74c3c; -fx-text-fill: white;"/>
-                </HBox>
+                <Button text="Eliminar usuario" onAction="#eliminarUsuario"
+                        style="-fx-background-color: #e74c3c; -fx-text-fill: white;"/>
                 <Label fx:id="lblMensajeUsuario" style="-fx-text-fill: green;"/>
             </VBox>
         </Tab>
 
-        <!-- TAB COMPRAS -->
         <Tab text="Compras" closable="false">
             <VBox spacing="10" style="-fx-padding: 10;">
                 <TableView fx:id="tablaCompras" prefHeight="200">
@@ -71,12 +67,32 @@
                             style="-fx-background-color: #e74c3c; -fx-text-fill: white;"/>
                     <Button text="Confirmar compra" onAction="#confirmarCompra"
                             style="-fx-background-color: #2ecc71; -fx-text-fill: white;"/>
-                    <Button text="Exportar reporte CSV" onAction="#exportarCSV"
+                    <Button text="Exportar CSV" onAction="#exportarCSV"
                             style="-fx-background-color: #95a5a6; -fx-text-fill: white;"/>
-                    <Button text="Exportar reporte PDF" onAction="#exportarPDF"
+                    <Button text="Exportar PDF" onAction="#exportarPDF"
                             style="-fx-background-color: #8e44ad; -fx-text-fill: white;"/>
                 </HBox>
                 <Label fx:id="lblMensajeCompra" style="-fx-text-fill: green;"/>
+            </VBox>
+        </Tab>
+
+        <Tab text="Métricas" closable="false">
+            <VBox spacing="15" style="-fx-padding: 10;">
+                <Button text="Actualizar métricas" onAction="#actualizarMetricas"
+                        style="-fx-background-color: #3498db; -fx-text-fill: white;"/>
+                <HBox spacing="20">
+                    <VBox>
+                        <Label text="Ventas por evento" style="-fx-font-weight: bold;"/>
+                        <BarChart fx:id="chartVentas" prefWidth="350" prefHeight="250">
+                            <xAxis><CategoryAxis/></xAxis>
+                            <yAxis><NumberAxis/></yAxis>
+                        </BarChart>
+                    </VBox>
+                    <VBox>
+                        <Label text="Estado de compras" style="-fx-font-weight: bold;"/>
+                        <PieChart fx:id="chartEstados" prefWidth="300" prefHeight="250"/>
+                    </VBox>
+                </HBox>
             </VBox>
         </Tab>
     </TabPane>
