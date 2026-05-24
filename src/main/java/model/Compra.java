@@ -12,7 +12,6 @@ import model.Entrada;
 
 public class Compra {
 
-    private double totalPagado;
     private LocalDate fechaCompra;
     private EstadoCompra estadoCompra;
     private Usuario usuario;
@@ -20,9 +19,7 @@ public class Compra {
     private PagoStrategy metodoPago;
     private List<EntradaBase> entradas;
 
-    public Compra(double totalPagado, LocalDate fechaCompra, EstadoCompra estadoCompra, Usuario usuario, Evento evento, PagoStrategy metodoPago) {
-
-        this.totalPagado = totalPagado;
+    public Compra(LocalDate fechaCompra, EstadoCompra estadoCompra, Usuario usuario, Evento evento, PagoStrategy metodoPago) {
         this.fechaCompra = fechaCompra;
         this.estadoCompra = estadoCompra;
         this.usuario = usuario;
