@@ -19,6 +19,7 @@ public class ConferenciaFactory extends EventoFactory {
                 null,
                 null,
                 null,
+                null,
                 null
         );
     }
