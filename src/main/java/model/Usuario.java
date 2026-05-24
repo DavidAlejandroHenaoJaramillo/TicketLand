@@ -4,6 +4,8 @@ import observer.Observador;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.time.LocalDate;
+import state.EstadoCompra;
 
 public class Usuario extends Persona implements Observador {
 
@@ -47,6 +49,35 @@ public class Usuario extends Persona implements Observador {
 
     public void realizarCompra(Compra compra) {
         historialCompras.add(compra);
+    }
+
+    // RF-010: consultar historial con filtros por fecha, evento y estado
+    public List<Compra> consultarHistorial(LocalDate desde, LocalDate hasta, Evento evento, EstadoCompra estado) {
+        List<Compra> resultado = new ArrayList<>();
+        for (Compra c : historialCompras) {
+            boolean coincide = true;
+            if (desde != null && c.getFechaCompra().isBefore(desde)) coincide = false;
+            if (hasta != null && c.getFechaCompra().isAfter(hasta)) coincide = false;
+            if (evento != null && !c.getEvento().equals(evento)) coincide = false;
+            if (estado != null && !c.getEstadoCompra().getClass().equals(estado.getClass())) coincide = false;
+            if (coincide) resultado.add(c);
+        }
+        return resultado;
+    }
+
+    // RF-002: actualizar datos del perfil
+    public void actualizarPerfil(String nombre, String correo, String telefono) {
+        if (nombre != null) this.nombre = nombre;
+        if (correo != null) this.correo = correo;
+        if (telefono != null) this.telefono = telefono;
+    }
+
+    // RF-022: consultar detalle de una compra específica
+    public Compra buscarCompra(int indice) {
+        if (indice >= 0 && indice < historialCompras.size()) {
+            return historialCompras.get(indice);
+        }
+        return null;
     }
 
     @Override
