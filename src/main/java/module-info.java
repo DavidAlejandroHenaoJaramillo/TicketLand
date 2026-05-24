@@ -7,4 +7,10 @@ module com.example.ticketland {
     exports com.example.ticketland;
     opens facade;
     opens adapter;
+    opens model;
+    opens factory;
+    opens observer;
+    opens state;
+    opens strategy;
+    opens decorator;
 }

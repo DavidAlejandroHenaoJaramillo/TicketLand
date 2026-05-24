@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox spacing="10" xmlns="http://javafx.gluonhq.com/javafx/21"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.example.ticketland.AdminController"
+      style="-fx-padding: 20; -fx-background-color: #f9f9f9;">
+
+    <HBox spacing="10" alignment="CENTER_LEFT">
+        <Label text="Panel Administrador" style="-fx-font-size: 18; -fx-font-weight: bold;"/>
+        <Button text="Cerrar sesión" onAction="#cerrarSesion"
+                style="-fx-background-color: #e74c3c; -fx-text-fill: white;"/>
+    </HBox>
+
+    <TabPane>
+        <!-- TAB EVENTOS -->
+        <Tab text="Eventos" closable="false">
+            <VBox spacing="10" style="-fx-padding: 10;">
+                <TableView fx:id="tablaEventos" prefHeight="200">
+                    <columns>
+                        <TableColumn fx:id="colNombre" text="Nombre" prefWidth="150"/>
+                        <TableColumn fx:id="colCiudad" text="Ciudad" prefWidth="100"/>
+                        <TableColumn fx:id="colFecha" text="Fecha" prefWidth="100"/>
+                        <TableColumn fx:id="colEstado" text="Estado" prefWidth="100"/>
+                    </columns>
+                </TableView>
+                <HBox spacing="10">
+                    <Button text="Activar" onAction="#activarEvento"
+                            style="-fx-background-color: #2ecc71; -fx-text-fill: white;"/>
+                    <Button text="Pausar" onAction="#pausarEvento"
+                            style="-fx-background-color: #f39c12; -fx-text-fill: white;"/>
+                    <Button text="Cancelar" onAction="#cancelarEvento"
+                            style="-fx-background-color: #e74c3c; -fx-text-fill: white;"/>
+                </HBox>
+                <Label fx:id="lblMensajeEvento" style="-fx-text-fill: green;"/>
+            </VBox>
+        </Tab>
+
+        <!-- TAB USUARIOS -->
+        <Tab text="Usuarios" closable="false">
+            <VBox spacing="10" style="-fx-padding: 10;">
+                <TableView fx:id="tablaUsuarios" prefHeight="200">
+                    <columns>
+                        <TableColumn fx:id="colUsuarioNombre" text="Nombre" prefWidth="150"/>
+                        <TableColumn fx:id="colUsuarioCorreo" text="Correo" prefWidth="200"/>
+                        <TableColumn fx:id="colUsuarioTelefono" text="Teléfono" prefWidth="120"/>
+                    </columns>
+                </TableView>
+                <HBox spacing="10">
+                    <Button text="Eliminar usuario" onAction="#eliminarUsuario"
+                            style="-fx-background-color: #e74c3c; -fx-text-fill: white;"/>
+                </HBox>
+                <Label fx:id="lblMensajeUsuario" style="-fx-text-fill: green;"/>
+            </VBox>
+        </Tab>
+
+        <!-- TAB COMPRAS -->
+        <Tab text="Compras" closable="false">
+            <VBox spacing="10" style="-fx-padding: 10;">
+                <TableView fx:id="tablaCompras" prefHeight="200">
+                    <columns>
+                        <TableColumn fx:id="colCompraUsuario" text="Usuario" prefWidth="150"/>
+                        <TableColumn fx:id="colCompraEvento" text="Evento" prefWidth="150"/>
+                        <TableColumn fx:id="colCompraTotal" text="Total" prefWidth="100"/>
+                        <TableColumn fx:id="colCompraEstado" text="Estado" prefWidth="100"/>
+                    </columns>
+                </TableView>
+                <HBox spacing="10">
+                    <Button text="Cancelar compra" onAction="#cancelarCompra"
+                            style="-fx-background-color: #e74c3c; -fx-text-fill: white;"/>
+                    <Button text="Confirmar compra" onAction="#confirmarCompra"
+                            style="-fx-background-color: #2ecc71; -fx-text-fill: white;"/>
+                    <Button text="Exportar reporte CSV" onAction="#exportarCSV"
+                            style="-fx-background-color: #95a5a6; -fx-text-fill: white;"/>
+                    <Button text="Exportar reporte PDF" onAction="#exportarPDF"
+                            style="-fx-background-color: #8e44ad; -fx-text-fill: white;"/>
+                </HBox>
+                <Label fx:id="lblMensajeCompra" style="-fx-text-fill: green;"/>
+            </VBox>
+        </Tab>
+    </TabPane>
+</VBox>

@@ -12,14 +12,9 @@ public class ConciertoFactory extends EventoFactory {
     @Override
     public Evento crearEvento() {
         return new Concierto(
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null
+                null, null, null, null, null, null,
+                null, null,
+                null  // recinto
         );
     }
 }

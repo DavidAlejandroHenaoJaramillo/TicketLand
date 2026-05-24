@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox alignment="CENTER" spacing="20"
+      xmlns="http://javafx.gluonhq.com/javafx/21"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.example.ticketland.LoginController"
+      style="-fx-padding: 40; -fx-background-color: #f0f0f0;">
+
+    <Label text="TicketLand" style="-fx-font-size: 28; -fx-font-weight: bold; -fx-text-fill: #2c3e50;"/>
+    <Label text="Plataforma de gestión de eventos" style="-fx-font-size: 14; -fx-text-fill: #7f8c8d;"/>
+
+    <VBox spacing="10" style="-fx-padding: 20;">
+        <TextField fx:id="txtCorreo" promptText="Correo electrónico"/>
+        <PasswordField fx:id="txtPassword" promptText="Contraseña"/>
+        <Button text="Ingresar como Usuario" onAction="#loginUsuario"
+                style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-min-width: 200;"/>
+        <Button text="Ingresar como Administrador" onAction="#loginAdmin"
+                style="-fx-background-color: #2ecc71; -fx-text-fill: white; -fx-min-width: 200;"/>
+        <Label fx:id="lblMensaje" style="-fx-text-fill: red;"/>
+    </VBox>
+</VBox>
