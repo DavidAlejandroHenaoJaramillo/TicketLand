@@ -169,7 +169,6 @@ public class TicketLand {
     // RF-034: crear una compra nueva para un usuario
     public Compra crearCompra(Usuario usuario, Evento evento, PagoStrategy metodoPago) {
         Compra compra = new Compra(
-                0,
                 LocalDate.now(),
                 new CompraCreada(),
                 usuario,
@@ -180,6 +179,7 @@ public class TicketLand {
         usuario.realizarCompra(compra);
         return compra;
     }
+
 
     // RF-012: buscar usuario por correo
     public Usuario buscarUsuarioPorCorreo(String correo) {

@@ -5,4 +5,6 @@ module com.example.ticketland {
 
     opens com.example.ticketland to javafx.fxml;
     exports com.example.ticketland;
+    opens facade;
+    opens adapter;
 }
