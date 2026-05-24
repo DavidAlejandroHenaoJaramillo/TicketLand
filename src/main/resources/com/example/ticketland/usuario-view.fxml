@@ -35,6 +35,13 @@
                 </TableView>
                 <Button text="Comprar entrada" onAction="#comprarEntrada"
                         style="-fx-background-color: #2ecc71; -fx-text-fill: white;"/>
+                <HBox spacing="10" alignment="CENTER_LEFT">
+                    <Label text="Servicios adicionales:"/>
+                    <CheckBox fx:id="chkVIP" text="Acceso VIP (+$100.000)"/>
+                    <CheckBox fx:id="chkSeguro" text="Seguro (+$20.000)"/>
+                    <CheckBox fx:id="chkMerchandising" text="Merchandising (+$50.000)"/>
+                    <CheckBox fx:id="chkParqueadero" text="Parqueadero (+$30.000)"/>
+                </HBox>
             </VBox>
         </Tab>
 
