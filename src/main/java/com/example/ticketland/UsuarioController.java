@@ -10,6 +10,9 @@ import javafx.stage.Stage;
 import model.*;
 import strategy.PagoTarjeta;
 import decorator.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+import java.util.Optional;
 
 import java.io.IOException;
 import java.util.List;
@@ -244,17 +247,41 @@ public class UsuarioController {
         cargarHistorial();
         actualizarAsientosDeZona();
         mostrarMapaAsientos(eventoSeleccionado);
-        setMsg("¡Compra realizada! Total: $" + (int) compra.calcularTotal()
-                + " | Zona: " + zona.getNombre()
-                + " | Asiento: " + asiento.getFila() + asiento.getNumero(), false);
+        Alert exito = new Alert(Alert.AlertType.INFORMATION);
+        exito.setTitle("¡Compra exitosa!");
+        exito.setHeaderText("Tu entrada ha sido comprada");
+        exito.setContentText("Evento: " + eventoSeleccionado.getNombre()
+                + "\nZona: " + zona.getNombre()
+                + "\nAsiento: " + asiento.getFila() + asiento.getNumero()
+                + "\nTotal: $" + (int) compra.calcularTotal());
+        exito.showAndWait();
+        setMsg("¡Compra realizada! Total: $" + (int) compra.calcularTotal(), false);
     }
 
     // RF-036: cancelar compra
     @FXML private void cancelarCompra() {
         Compra c = tablaCompras.getSelectionModel().getSelectedItem();
         if (c == null) { setMsg("Selecciona una compra primero.", true); return; }
+
+        // Alert de confirmación
+        Alert confirmacion = new Alert(Alert.AlertType.CONFIRMATION);
+        confirmacion.setTitle("Cancelar compra");
+        confirmacion.setHeaderText("¿Estás seguro de cancelar esta compra?");
+        confirmacion.setContentText("Evento: " + c.getEvento().getNombre()
+                + "\nTotal: $" + (int) c.calcularTotal()
+                + "\nEsta acción no se puede deshacer.");
+        Optional<ButtonType> resultado = confirmacion.showAndWait();
+        if (resultado.isEmpty() || resultado.get() != ButtonType.OK) return;
+
         boolean ok = c.cancelar();
         cargarHistorial();
+        if (ok) {
+            Alert exito = new Alert(Alert.AlertType.INFORMATION);
+            exito.setTitle("Compra cancelada");
+            exito.setHeaderText(null);
+            exito.setContentText("Tu compra fue cancelada exitosamente.");
+            exito.showAndWait();
+        }
         setMsg(ok ? "Compra cancelada." : "No se puede cancelar esta compra.", !ok);
     }
 
