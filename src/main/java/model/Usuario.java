@@ -1,6 +1,7 @@
 package model;
 
 import observer.Observador;
+import strategy.PagoStrategy;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,12 +12,14 @@ public class Usuario extends Persona implements Observador {
 
     private List<Compra> historialCompras;
     private List<String> notificaciones;
+    // RF-021: métodos de pago simulados asociados al usuario
+    private List<PagoStrategy> metodosDepago;
 
     public Usuario(int id, String nombre, String correo, String telefono) {
-
         super(id, nombre, correo, telefono);
         historialCompras = new ArrayList<>();
         notificaciones = new ArrayList<>();
+        metodosDepago = new ArrayList<>();
     }
 
     public List<Compra> getHistorialCompras() {
@@ -33,6 +36,19 @@ public class Usuario extends Persona implements Observador {
 
     public void setNotificaciones(List<String> notificaciones) {
         this.notificaciones = notificaciones;
+    }
+
+    // RF-021: gestionar métodos de pago del usuario
+    public List<PagoStrategy> getMetodosDepago() {
+        return metodosDepago;
+    }
+
+    public void agregarMetodoPago(PagoStrategy metodoPago) {
+        metodosDepago.add(metodoPago);
+    }
+
+    public boolean eliminarMetodoPago(PagoStrategy metodoPago) {
+        return metodosDepago.remove(metodoPago);
     }
 
     public String registrarse() {
@@ -52,7 +68,8 @@ public class Usuario extends Persona implements Observador {
     }
 
     // RF-010: consultar historial con filtros por fecha, evento y estado
-    public List<Compra> consultarHistorial(LocalDate desde, LocalDate hasta, Evento evento, EstadoCompra estado) {
+    public List<Compra> consultarHistorial(LocalDate desde, LocalDate hasta,
+                                           Evento evento, EstadoCompra estado) {
         List<Compra> resultado = new ArrayList<>();
         for (Compra c : historialCompras) {
             boolean coincide = true;
