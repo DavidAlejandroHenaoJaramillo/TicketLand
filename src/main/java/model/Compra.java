@@ -30,61 +30,27 @@ public class Compra {
         entradas = new ArrayList<>();
     }
 
-    public int getIdCompra() {
-        return idCompra;
-    }
+    public int getIdCompra() { return idCompra; }
+    public void setIdCompra(int idCompra) { this.idCompra = idCompra; }
 
-    public void setIdCompra(int idCompra) {
-        this.idCompra = idCompra;
-    }
+    public double getTotalPagado() { return calcularTotal(); }
 
-    public double getTotalPagado() {
-        return calcularTotal();
-    }
+    public LocalDate getFechaCompra() { return fechaCompra; }
+    public void setFechaCompra(LocalDate fechaCompra) { this.fechaCompra = fechaCompra; }
 
-    public LocalDate getFechaCompra() {
-        return fechaCompra;
-    }
+    public EstadoCompra getEstadoCompra() { return estadoCompra; }
+    public void setEstadoCompra(EstadoCompra estadoCompra) { this.estadoCompra = estadoCompra; }
 
-    public void setFechaCompra(LocalDate fechaCompra) {
-        this.fechaCompra = fechaCompra;
-    }
+    public Usuario getUsuario() { return usuario; }
+    public void setUsuario(Usuario usuario) { this.usuario = usuario; }
 
-    public EstadoCompra getEstadoCompra() {
-        return estadoCompra;
-    }
+    public Evento getEvento() { return evento; }
+    public void setEvento(Evento evento) { this.evento = evento; }
 
-    public void setEstadoCompra(EstadoCompra estadoCompra) {
-        this.estadoCompra = estadoCompra;
-    }
+    public PagoStrategy getMetodoPago() { return metodoPago; }
+    public void setMetodoPago(PagoStrategy metodoPago) { this.metodoPago = metodoPago; }
 
-    public Usuario getUsuario() {
-        return usuario;
-    }
-
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
-    }
-
-    public Evento getEvento() {
-        return evento;
-    }
-
-    public void setEvento(Evento evento) {
-        this.evento = evento;
-    }
-
-    public PagoStrategy getMetodoPago() {
-        return metodoPago;
-    }
-
-    public void setMetodoPago(PagoStrategy metodoPago) {
-        this.metodoPago = metodoPago;
-    }
-
-    public List<EntradaBase> getEntradas() {
-        return entradas;
-    }
+    public List<EntradaBase> getEntradas() { return entradas; }
 
     public void agregarEntrada(EntradaBase entrada) {
         entradas.add(entrada);
@@ -102,11 +68,9 @@ public class Compra {
         return total;
     }
 
-    // RF-035: modificar compra antes de pagar — elimina una entrada y libera su asiento
+    // RF-035: modificar compra antes de pagar — elimina entrada y libera asiento
     public boolean eliminarEntrada(EntradaBase entradaAEliminar) {
-        if (!(estadoCompra instanceof CompraCreada)) {
-            return false;
-        }
+        if (!(estadoCompra instanceof CompraCreada)) return false;
         if (entradaAEliminar instanceof Entrada e && e.getAsiento() != null) {
             e.getAsiento().setEstado(new Disponible());
         }
@@ -115,12 +79,8 @@ public class Compra {
 
     // RF-007: pagar la compra usando la estrategia de pago configurada
     public boolean pagar() {
-        if (!(estadoCompra instanceof CompraCreada)) {
-            return false;
-        }
-        if (entradas.isEmpty()) {
-            return false;
-        }
+        if (!(estadoCompra instanceof CompraCreada)) return false;
+        if (entradas.isEmpty()) return false;
         boolean exitoso = metodoPago.procesarPago(calcularTotal());
         if (exitoso) {
             estadoCompra = new CompraPagada();
@@ -133,11 +93,9 @@ public class Compra {
         return exitoso;
     }
 
-    // RF-008: confirmar una compra que ya fue pagada
+    // RF-008: confirmar una compra ya pagada
     public boolean confirmar() {
-        if (!(estadoCompra instanceof CompraPagada)) {
-            return false;
-        }
+        if (!(estadoCompra instanceof CompraPagada)) return false;
         estadoCompra = new CompraConfirmada();
         return true;
     }
@@ -145,15 +103,41 @@ public class Compra {
     // RF-036, RF-040: cancelar compra y anular todas las entradas asociadas
     public boolean cancelar() {
         if (estadoCompra instanceof CompraCancelada
-                || estadoCompra instanceof CompraReembolsada) {
-            return false;
-        }
+                || estadoCompra instanceof CompraReembolsada) return false;
         for (EntradaBase eb : entradas) {
             if (eb instanceof Entrada e) {
-                e.anular(); // RF-040: anula la entrada y libera el asiento
+                e.anular(); // RF-040: anula entrada y libera asiento
             }
         }
         estadoCompra = new CompraCancelada();
+        return true;
+    }
+
+    // RF-016: reembolsar compra (solo si está pagada o confirmada)
+    // Simula la devolución del dinero al cliente y anula las entradas
+    public boolean reembolsar() {
+        if (!(estadoCompra instanceof CompraPagada)
+                && !(estadoCompra instanceof CompraConfirmada)) {
+            return false; // solo se reembolsa si ya fue pagada o confirmada
+        }
+        for (EntradaBase eb : entradas) {
+            if (eb instanceof Entrada e) {
+                e.anular(); // libera asiento y anula entrada
+            }
+        }
+        estadoCompra = new CompraReembolsada();
+        System.out.println("Reembolso simulado de $" + calcularTotal()
+                + " para compra #" + idCompra);
+        return true;
+    }
+
+    // RF-008: marcar compra con incidencia operativa
+    public boolean marcarComoIncidencia() {
+        if (estadoCompra instanceof CompraCancelada
+                || estadoCompra instanceof CompraReembolsada) {
+            return false;
+        }
+        estadoCompra = new CompraIncidencia();
         return true;
     }
 

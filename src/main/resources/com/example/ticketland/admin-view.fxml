@@ -3,7 +3,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.chart.*?>
 
-<VBox spacing="10" xmlns="http://javafx.gluonhq.com/javafx/21"
+<VBox spacing="10" xmlns="http://javafx.com/javafx/21"
       xmlns:fx="http://javafx.com/fxml"
       fx:controller="com.example.ticketland.AdminController"
       style="-fx-padding: 20; -fx-background-color: #f9f9f9;">
@@ -15,20 +15,22 @@
     </HBox>
 
     <TabPane>
+
+        <!-- ===== TAB EVENTOS RF-013/024 ===== -->
         <Tab text="Eventos" closable="false">
             <VBox spacing="10" style="-fx-padding: 10;">
                 <TableView fx:id="tablaEventos" prefHeight="200">
                     <columns>
-                        <TableColumn fx:id="colNombre" text="Nombre" prefWidth="150"/>
-                        <TableColumn fx:id="colCiudad" text="Ciudad" prefWidth="100"/>
-                        <TableColumn fx:id="colFecha" text="Fecha" prefWidth="100"/>
-                        <TableColumn fx:id="colEstado" text="Estado" prefWidth="100"/>
+                        <TableColumn fx:id="colNombre"  text="Nombre"  prefWidth="180"/>
+                        <TableColumn fx:id="colCiudad"  text="Ciudad"  prefWidth="100"/>
+                        <TableColumn fx:id="colFecha"   text="Fecha"   prefWidth="100"/>
+                        <TableColumn fx:id="colEstado"  text="Estado"  prefWidth="100"/>
                     </columns>
                 </TableView>
                 <HBox spacing="10">
-                    <Button text="Activar" onAction="#activarEvento"
+                    <Button text="Activar"  onAction="#activarEvento"
                             style="-fx-background-color: #2ecc71; -fx-text-fill: white;"/>
-                    <Button text="Pausar" onAction="#pausarEvento"
+                    <Button text="Pausar"   onAction="#pausarEvento"
                             style="-fx-background-color: #f39c12; -fx-text-fill: white;"/>
                     <Button text="Cancelar" onAction="#cancelarEvento"
                             style="-fx-background-color: #e74c3c; -fx-text-fill: white;"/>
@@ -37,13 +39,14 @@
             </VBox>
         </Tab>
 
+        <!-- ===== TAB USUARIOS RF-012 ===== -->
         <Tab text="Usuarios" closable="false">
             <VBox spacing="10" style="-fx-padding: 10;">
                 <TableView fx:id="tablaUsuarios" prefHeight="200">
                     <columns>
-                        <TableColumn fx:id="colUsuarioNombre" text="Nombre" prefWidth="150"/>
-                        <TableColumn fx:id="colUsuarioCorreo" text="Correo" prefWidth="200"/>
-                        <TableColumn fx:id="colUsuarioTelefono" text="Teléfono" prefWidth="120"/>
+                        <TableColumn fx:id="colUsuarioNombre"   text="Nombre"   prefWidth="160"/>
+                        <TableColumn fx:id="colUsuarioCorreo"   text="Correo"   prefWidth="200"/>
+                        <TableColumn fx:id="colUsuarioTelefono" text="Telefono" prefWidth="120"/>
                     </columns>
                 </TableView>
                 <Button text="Eliminar usuario" onAction="#eliminarUsuario"
@@ -52,64 +55,126 @@
             </VBox>
         </Tab>
 
+        <!-- ===== TAB COMPRAS RF-016/008 ===== -->
         <Tab text="Compras" closable="false">
             <VBox spacing="10" style="-fx-padding: 10;">
                 <TableView fx:id="tablaCompras" prefHeight="200">
                     <columns>
-                        <TableColumn fx:id="colCompraUsuario" text="Usuario" prefWidth="150"/>
-                        <TableColumn fx:id="colCompraEvento" text="Evento" prefWidth="150"/>
-                        <TableColumn fx:id="colCompraTotal" text="Total" prefWidth="100"/>
-                        <TableColumn fx:id="colCompraEstado" text="Estado" prefWidth="100"/>
+                        <TableColumn fx:id="colCompraUsuario" text="Usuario" prefWidth="140"/>
+                        <TableColumn fx:id="colCompraEvento"  text="Evento"  prefWidth="160"/>
+                        <TableColumn fx:id="colCompraTotal"   text="Total"   prefWidth="90"/>
+                        <TableColumn fx:id="colCompraEstado"  text="Estado"  prefWidth="110"/>
                     </columns>
                 </TableView>
-                <HBox spacing="10">
-                    <Button text="Cancelar compra" onAction="#cancelarCompra"
+                <HBox spacing="8">
+                    <Button text="Cancelar"    onAction="#cancelarCompra"
                             style="-fx-background-color: #e74c3c; -fx-text-fill: white;"/>
-                    <Button text="Confirmar compra" onAction="#confirmarCompra"
+                    <Button text="Confirmar"   onAction="#confirmarCompra"
                             style="-fx-background-color: #2ecc71; -fx-text-fill: white;"/>
-                    <Button text="Exportar CSV" onAction="#exportarCSV"
+                    <Button text="Reembolsar"  onAction="#reembolsarCompra"
+                            style="-fx-background-color: #3498db; -fx-text-fill: white;"/>
+                    <Button text="Incidencia"  onAction="#marcarIncidenciaCompra"
+                            style="-fx-background-color: #e67e22; -fx-text-fill: white;"/>
+                    <Button text="CSV"         onAction="#exportarCSV"
                             style="-fx-background-color: #95a5a6; -fx-text-fill: white;"/>
-                    <Button text="Exportar PDF" onAction="#exportarPDF"
+                    <Button text="PDF"         onAction="#exportarPDF"
                             style="-fx-background-color: #8e44ad; -fx-text-fill: white;"/>
                 </HBox>
                 <Label fx:id="lblMensajeCompra" style="-fx-text-fill: green;"/>
             </VBox>
         </Tab>
 
-        <Tab text="Métricas" closable="false">
-            <VBox spacing="15" style="-fx-padding: 10;">
-                <Button text="Actualizar métricas" onAction="#actualizarMetricas"
+        <!-- ===== TAB METRICAS RF-018/019 ===== -->
+        <Tab text="Metricas" closable="false">
+            <VBox spacing="10" style="-fx-padding: 10;">
+                <Button text="Actualizar metricas" onAction="#actualizarMetricas"
                         style="-fx-background-color: #3498db; -fx-text-fill: white;"/>
-                <HBox spacing="20">
+                <HBox spacing="15">
                     <VBox>
                         <Label text="Ventas por evento" style="-fx-font-weight: bold;"/>
-                        <BarChart fx:id="chartVentas" prefWidth="350" prefHeight="250">
+                        <BarChart fx:id="chartVentas" prefWidth="320" prefHeight="220">
                             <xAxis><CategoryAxis/></xAxis>
                             <yAxis><NumberAxis/></yAxis>
                         </BarChart>
                     </VBox>
                     <VBox>
                         <Label text="Estado de compras" style="-fx-font-weight: bold;"/>
-                        <PieChart fx:id="chartEstados" prefWidth="300" prefHeight="250"/>
+                        <PieChart fx:id="chartEstados" prefWidth="280" prefHeight="220"/>
                     </VBox>
                 </HBox>
+                <Label text="Ingresos por fecha" style="-fx-font-weight: bold;"/>
+                <LineChart fx:id="chartLineas" prefHeight="200">
+                    <xAxis><CategoryAxis label="Fecha"/></xAxis>
+                    <yAxis><NumberAxis label="Ingresos ($)"/></yAxis>
+                </LineChart>
             </VBox>
         </Tab>
-        <!-- TAB INCIDENCIAS RF-017 -->
+
+        <!-- ===== TAB RECINTOS RF-014 ===== -->
+        <Tab text="Recintos" closable="false">
+            <VBox spacing="10" style="-fx-padding: 10;">
+                <Label text="Recintos registrados" style="-fx-font-weight: bold;"/>
+                <TableView fx:id="tablaRecintos" prefHeight="160">
+                    <columns>
+                        <TableColumn fx:id="colRecintoNombre"    text="Nombre"    prefWidth="160"/>
+                        <TableColumn fx:id="colRecintoCiudad"    text="Ciudad"    prefWidth="120"/>
+                        <TableColumn fx:id="colRecintoDireccion" text="Direccion" prefWidth="200"/>
+                    </columns>
+                </TableView>
+                <Label text="Crear nuevo recinto:" style="-fx-font-weight: bold;"/>
+                <HBox spacing="10">
+                    <TextField fx:id="txtRecintoNombre"    promptText="Nombre del recinto" prefWidth="180"/>
+                    <TextField fx:id="txtRecintoCiudad"    promptText="Ciudad"             prefWidth="120"/>
+                    <TextField fx:id="txtRecintoDireccion" promptText="Direccion"          prefWidth="200"/>
+                    <Button text="Crear" onAction="#crearRecinto"
+                            style="-fx-background-color: #27ae60; -fx-text-fill: white;"/>
+                </HBox>
+                <Label fx:id="lblMensajeRecinto" style="-fx-text-fill: green;"/>
+            </VBox>
+        </Tab>
+
+        <!-- ===== TAB ASIENTOS RF-015 ===== -->
+        <Tab text="Asientos" closable="false">
+            <VBox spacing="10" style="-fx-padding: 10;">
+                <HBox spacing="10">
+                    <Label text="Evento:"/>
+                    <ComboBox fx:id="cmbEventoAsientos" prefWidth="200"/>
+                    <Label text="Zona:"/>
+                    <ComboBox fx:id="cmbZonaAsientos" prefWidth="160"/>
+                </HBox>
+                <TableView fx:id="tablaAsientos" prefHeight="200">
+                    <columns>
+                        <TableColumn fx:id="colAsientoId"     text="#"      prefWidth="50"/>
+                        <TableColumn fx:id="colAsientoFila"   text="Fila"   prefWidth="70"/>
+                        <TableColumn fx:id="colAsientoNumero" text="Numero" prefWidth="80"/>
+                        <TableColumn fx:id="colAsientoEstado" text="Estado" prefWidth="110"/>
+                    </columns>
+                </TableView>
+                <HBox spacing="10">
+                    <Button text="Bloquear" onAction="#bloquearAsiento"
+                            style="-fx-background-color: #e67e22; -fx-text-fill: white;"/>
+                    <Button text="Liberar"  onAction="#liberarAsiento"
+                            style="-fx-background-color: #27ae60; -fx-text-fill: white;"/>
+                </HBox>
+                <Label fx:id="lblMensajeAsiento" style="-fx-text-fill: green;"/>
+            </VBox>
+        </Tab>
+
+        <!-- ===== TAB INCIDENCIAS RF-017/042 ===== -->
         <Tab text="Incidencias" closable="false">
-            <VBox spacing="12" style="-fx-padding: 15;">
+            <VBox spacing="10" style="-fx-padding: 12;">
                 <Label text="Registrar incidencia" style="-fx-font-size: 14; -fx-font-weight: bold;"/>
                 <HBox spacing="10" alignment="CENTER_LEFT">
-                    <Label text="Tipo:" minWidth="100"/>
+                    <Label text="Tipo:" minWidth="110"/>
                     <ComboBox fx:id="cmbTipoIncidencia" prefWidth="200"/>
                 </HBox>
                 <HBox spacing="10" alignment="CENTER_LEFT">
-                    <Label text="Descripción:" minWidth="100"/>
+                    <Label text="Descripcion:" minWidth="110"/>
                     <TextField fx:id="txtDescripcionIncidencia" prefWidth="300"
                                promptText="Describe la incidencia..."/>
                 </HBox>
                 <HBox spacing="10" alignment="CENTER_LEFT">
-                    <Label text="Entidad afectada:" minWidth="100"/>
+                    <Label text="Entidad afectada:" minWidth="110"/>
                     <TextField fx:id="txtEntidadAfectada" prefWidth="300"
                                promptText="Ej: Compra-001, Evento-Juanes..."/>
                 </HBox>
@@ -117,17 +182,30 @@
                         style="-fx-background-color: #e67e22; -fx-text-fill: white;"/>
                 <Label fx:id="lblMensajeIncidencia" style="-fx-text-fill: green;"/>
 
-                <Label text="Historial de incidencias" style="-fx-font-size: 14; -fx-font-weight: bold;"/>
-                <TableView fx:id="tablaIncidencias" prefHeight="180">
+                <Label text="Filtrar incidencias" style="-fx-font-size: 13; -fx-font-weight: bold;"/>
+                <HBox spacing="10" alignment="CENTER_LEFT">
+                    <Label text="Tipo filtro:" minWidth="80"/>
+                    <ComboBox fx:id="cmbFiltroTipo" prefWidth="160"/>
+                    <Label text="Desde:"/>
+                    <DatePicker fx:id="dpFiltroDesde" prefWidth="140"/>
+                    <Label text="Hasta:"/>
+                    <DatePicker fx:id="dpFiltroHasta" prefWidth="140"/>
+                    <Button text="Filtrar" onAction="#filtrarIncidencias"
+                            style="-fx-background-color: #2980b9; -fx-text-fill: white;"/>
+                </HBox>
+
+                <Label text="Historial de incidencias" style="-fx-font-size: 13; -fx-font-weight: bold;"/>
+                <TableView fx:id="tablaIncidencias" prefHeight="160">
                     <columns>
-                        <TableColumn fx:id="colIncidenciaId" text="#" prefWidth="40"/>
-                        <TableColumn fx:id="colIncidenciaTipo" text="Tipo" prefWidth="150"/>
-                        <TableColumn fx:id="colIncidenciaDesc" text="Descripción" prefWidth="200"/>
-                        <TableColumn fx:id="colIncidenciaFecha" text="Fecha" prefWidth="100"/>
-                        <TableColumn fx:id="colIncidenciaEntidad" text="Afectado" prefWidth="150"/>
+                        <TableColumn fx:id="colIncidenciaId"      text="#"           prefWidth="40"/>
+                        <TableColumn fx:id="colIncidenciaTipo"    text="Tipo"        prefWidth="160"/>
+                        <TableColumn fx:id="colIncidenciaDesc"    text="Descripcion" prefWidth="200"/>
+                        <TableColumn fx:id="colIncidenciaFecha"   text="Fecha"       prefWidth="100"/>
+                        <TableColumn fx:id="colIncidenciaEntidad" text="Afectado"    prefWidth="150"/>
                     </columns>
                 </TableView>
             </VBox>
         </Tab>
+
     </TabPane>
 </VBox>

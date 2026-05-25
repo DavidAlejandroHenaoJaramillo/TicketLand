@@ -13,4 +13,7 @@ module com.example.ticketland {
     opens state;
     opens strategy;
     opens decorator;
+    opens builder;
+    opens proxy;
+    opens prototype;
 }
