@@ -65,5 +65,26 @@
                 <Label fx:id="lblMensajeCompra" style="-fx-text-fill: green;"/>
             </VBox>
         </Tab>
+        <!-- TAB PERFIL -->
+        <Tab text="Mi perfil" closable="false">
+            <VBox spacing="12" style="-fx-padding: 15;">
+                <Label text="Editar perfil" style="-fx-font-size: 15; -fx-font-weight: bold;"/>
+                <HBox spacing="10" alignment="CENTER_LEFT">
+                    <Label text="Nombre:" minWidth="80"/>
+                    <TextField fx:id="txtNombre" prefWidth="250"/>
+                </HBox>
+                <HBox spacing="10" alignment="CENTER_LEFT">
+                    <Label text="Correo:" minWidth="80"/>
+                    <TextField fx:id="txtCorreo" prefWidth="250"/>
+                </HBox>
+                <HBox spacing="10" alignment="CENTER_LEFT">
+                    <Label text="Teléfono:" minWidth="80"/>
+                    <TextField fx:id="txtTelefono" prefWidth="250"/>
+                </HBox>
+                <Button text="Guardar cambios" onAction="#guardarPerfil"
+                        style="-fx-background-color: #2ecc71; -fx-text-fill: white;"/>
+                <Label fx:id="lblMensajePerfil" style="-fx-text-fill: green;"/>
+            </VBox>
+        </Tab>
     </TabPane>
 </VBox>
