@@ -4,17 +4,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Recinto {
-
+    private static int contadorId = 1;  // generador automático
+    private int idRecinto;              // RF-026
     private String nombre;
     private String direccion;
+    private String ciudad;              // RF-026 — faltaba
     private List<Zona> zonas;
 
-    public Recinto(String nombre, String direccion) {
+    public Recinto(String nombre, String direccion, String ciudad) {
+        this.idRecinto = contadorId++;
         this.nombre = nombre;
         this.direccion = direccion;
+        this.ciudad = ciudad;
         zonas = new ArrayList<>();
     }
 
+    public int getIdRecinto() { return idRecinto; }
+    public String getCiudad() { return ciudad; }
+    public void setCiudad(String ciudad) { this.ciudad = ciudad; }
     public String getNombre() {
         return nombre;
     }
