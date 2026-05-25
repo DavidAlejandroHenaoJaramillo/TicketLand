@@ -50,6 +50,7 @@ public class LoginController {
         }
     }
 
+
     private void abrirVistaAdmin() {
         try {
             FXMLLoader loader = new FXMLLoader(
@@ -60,6 +61,20 @@ public class LoginController {
             stage.setTitle("TicketLand - Administrador");
         } catch (IOException e) {
             lblMensaje.setText("Error al cargar la vista.");
+        }
+    }
+
+    // RF-001: ir a pantalla de registro
+    @FXML
+    private void irARegistro() {
+        try {
+            FXMLLoader loader = new FXMLLoader(
+                    HelloApplication.class.getResource("registro-view.fxml"));
+            Stage stage = (Stage) txtCorreo.getScene().getWindow();
+            stage.setScene(new Scene(loader.load(), 500, 600));
+            stage.setTitle("TicketLand - Registro");
+        } catch (IOException e) {
+            lblMensaje.setText("Error al cargar registro.");
         }
     }
 }

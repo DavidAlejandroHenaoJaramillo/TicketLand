@@ -51,6 +51,11 @@
                        -fx-padding: 10; -fx-cursor: hand;
                        -fx-border-color: #e94560; -fx-border-radius: 6;"/>
 
+        <Button text="¿No tienes cuenta? Regístrate" onAction="#irARegistro"
+                prefWidth="310"
+                style="-fx-background-color: transparent; -fx-text-fill: #a0a0b0;
+               -fx-font-size: 12; -fx-cursor: hand; -fx-underline: true;"/>
+
         <Label fx:id="lblMensaje"
                style="-fx-text-fill: #e94560; -fx-font-size: 12;"/>
 
