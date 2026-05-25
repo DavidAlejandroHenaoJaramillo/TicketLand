@@ -39,6 +39,10 @@ public class UsuarioController {
     @FXML private CheckBox chkSeguro;
     @FXML private CheckBox chkMerchandising;
     @FXML private CheckBox chkParqueadero;
+    @FXML private TextField txtNombre;
+    @FXML private TextField txtCorreo;
+    @FXML private TextField txtTelefono;
+    @FXML private Label lblMensajePerfil;
 
     private Usuario usuario;
     private TicketLand sistema = TicketLand.getInstance();
@@ -46,6 +50,10 @@ public class UsuarioController {
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
         lblBienvenida.setText("Bienvenido, " + usuario.getNombre());
+        // RF-002: precargar datos actuales del perfil
+        txtNombre.setText(usuario.getNombre());
+        txtCorreo.setText(usuario.getCorreo());
+        txtTelefono.setText(usuario.getTelefono());
         cargarEventos();
         cargarHistorial();
     }
@@ -142,6 +150,25 @@ public class UsuarioController {
         reporte.exportarVentasCSV("reporte_usuario.csv", null, null);
         lblMensajeCompra.setText("CSV exportado como reporte_usuario.csv");
         lblMensajeCompra.setStyle("-fx-text-fill: green;");
+    }
+
+    // RF-002: guardar cambios del perfil del usuario
+    @FXML
+    private void guardarPerfil() {
+        String nombre = txtNombre.getText().trim();
+        String correo = txtCorreo.getText().trim();
+        String telefono = txtTelefono.getText().trim();
+
+        if (nombre.isEmpty() || correo.isEmpty() || telefono.isEmpty()) {
+            lblMensajePerfil.setText("Todos los campos son obligatorios.");
+            lblMensajePerfil.setStyle("-fx-text-fill: red;");
+            return;
+        }
+
+        usuario.actualizarPerfil(nombre, correo, telefono);
+        lblBienvenida.setText("Bienvenido, " + usuario.getNombre());
+        lblMensajePerfil.setText("Perfil actualizado correctamente.");
+        lblMensajePerfil.setStyle("-fx-text-fill: green;");
     }
 
     // RF-001: cerrar sesión
