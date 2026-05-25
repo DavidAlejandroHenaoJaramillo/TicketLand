@@ -12,16 +12,28 @@ public class Incidencia {
         OTRO
     }
 
+    // RF-041: identificador único de incidencia
+    private int idIncidencia;
     private Tipo tipo;
     private String descripcion;
     private LocalDate fecha;
-    private String entidadAfectada; // RF-041: evento, compra o usuario afectado
+    private String entidadAfectada;
 
-    public Incidencia(Tipo tipo, String descripcion, LocalDate fecha, String entidadAfectada) {
+    public Incidencia(int idIncidencia, Tipo tipo, String descripcion,
+                      LocalDate fecha, String entidadAfectada) {
+        this.idIncidencia = idIncidencia;
         this.tipo = tipo;
         this.descripcion = descripcion;
         this.fecha = fecha;
         this.entidadAfectada = entidadAfectada;
+    }
+
+    public int getIdIncidencia() {
+        return idIncidencia;
+    }
+
+    public void setIdIncidencia(int idIncidencia) {
+        this.idIncidencia = idIncidencia;
     }
 
     public Tipo getTipo() {
@@ -58,11 +70,10 @@ public class Incidencia {
 
     @Override
     public String toString() {
-        return tipo +
-                " - " +
-                descripcion +
-                " | Afectado: " +
-                entidadAfectada +
+        return "Incidencia #" + idIncidencia +
+                " | " + tipo +
+                " - " + descripcion +
+                " | Afectado: " + entidadAfectada +
                 " (" + fecha + ")";
     }
 }
