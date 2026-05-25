@@ -21,6 +21,7 @@
                 <HBox spacing="10">
                     <TextField fx:id="txtFiltroCiudad" promptText="Filtrar por ciudad"/>
                     <TextField fx:id="txtFiltroCategoria" promptText="Filtrar por categoría"/>
+                    <TextField fx:id="txtFiltroPrecio" promptText="Precio máximo"/>
                     <Button text="Buscar" onAction="#buscarEventos"
                             style="-fx-background-color: #3498db; -fx-text-fill: white;"/>
                 </HBox>
@@ -61,6 +62,8 @@
                             style="-fx-background-color: #e74c3c; -fx-text-fill: white;"/>
                     <Button text="Exportar CSV" onAction="#exportarCSV"
                             style="-fx-background-color: #95a5a6; -fx-text-fill: white;"/>
+                    <Button text="Exportar PDF" onAction="#exportarPDF"
+                            style="-fx-background-color: #8e44ad; -fx-text-fill: white;"/>
                 </HBox>
                 <Label fx:id="lblMensajeCompra" style="-fx-text-fill: green;"/>
             </VBox>
