@@ -1,5 +1,6 @@
 package model;
 
+import adapter.ReporteAdapter;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
@@ -9,6 +10,7 @@ import org.apache.pdfbox.pdmodel.font.Standard14Fonts;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.List;
 
 public class GeneradorReporte {
 
@@ -16,6 +18,11 @@ public class GeneradorReporte {
 
     public GeneradorReporte(TicketLand sistema) {
         this.sistema = sistema;
+    }
+
+    // RF-046, RF-050: genera reporte usando el adapter recibido (patrón Adapter)
+    public String generarConAdapter(ReporteAdapter adapter) {
+        return adapter.generarReporte(sistema.getCompras());
     }
 
     // RF-046: exportar reporte de ventas en CSV
@@ -72,33 +79,29 @@ public class GeneradorReporte {
                 PDType1Font fuente = new PDType1Font(Standard14Fonts.FontName.HELVETICA_BOLD);
                 PDType1Font fuenteNormal = new PDType1Font(Standard14Fonts.FontName.HELVETICA);
 
-                // titulo
                 contenido.beginText();
                 contenido.setFont(fuente, 16);
                 contenido.newLineAtOffset(50, 750);
                 contenido.showText("Reporte de Ventas - TicketLand");
                 contenido.endText();
 
-                // fecha del reporte
                 contenido.beginText();
                 contenido.setFont(fuenteNormal, 10);
                 contenido.newLineAtOffset(50, 730);
                 contenido.showText("Generado: " + LocalDate.now());
                 contenido.endText();
 
-                // encabezados
                 contenido.beginText();
                 contenido.setFont(fuente, 10);
                 contenido.newLineAtOffset(50, 700);
                 contenido.showText("Fecha          Usuario               Evento                Total        Estado");
                 contenido.endText();
 
-                // filas
                 float y = 680;
                 for (Compra c : sistema.getCompras()) {
                     if (desde != null && c.getFechaCompra().isBefore(desde)) continue;
                     if (hasta != null && c.getFechaCompra().isAfter(hasta)) continue;
-                    if (y < 50) break; // evitar salirse de la pagina
+                    if (y < 50) break;
 
                     String linea = String.format("%-15s %-20s %-20s %-12s %s",
                             c.getFechaCompra(),
@@ -124,7 +127,6 @@ public class GeneradorReporte {
         }
     }
 
-    // utilidad para no salirse del ancho de la página
     private String truncar(String texto, int maxLen) {
         if (texto == null) return "";
         return texto.length() > maxLen ? texto.substring(0, maxLen) : texto;

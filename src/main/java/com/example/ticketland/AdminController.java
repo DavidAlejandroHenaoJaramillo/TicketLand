@@ -18,6 +18,8 @@ import state.CompraConfirmada;
 import java.util.HashMap;
 import java.util.Map;
 import model.*;
+import adapter.CSVAdapter;
+import adapter.PDFAdapter;
 
 import java.io.IOException;
 import java.net.URL;
@@ -143,22 +145,6 @@ public class AdminController implements Initializable {
         lblMensajeCompra.setText(ok ? "Compra confirmada." : "No se puede confirmar.");
     }
 
-    // RF-046: exportar CSV
-    @FXML
-    private void exportarCSV() {
-        GeneradorReporte reporte = new GeneradorReporte(sistema);
-        reporte.exportarVentasCSV("reporte_ventas.csv", null, null);
-        lblMensajeCompra.setText("CSV exportado como reporte_ventas.csv");
-    }
-
-    // RF-046: exportar PDF
-    @FXML
-    private void exportarPDF() {
-        GeneradorReporte reporte = new GeneradorReporte(sistema);
-        reporte.exportarVentasPDF("reporte_ventas.pdf", null, null);
-        lblMensajeCompra.setText("PDF exportado como reporte_ventas.pdf");
-    }
-
     // RF-018/019: actualizar métricas con JavaFX Charts
     @FXML
     private void actualizarMetricas() {
@@ -194,6 +180,24 @@ public class AdminController implements Initializable {
                 new PieChart.Data("Canceladas", canceladas),
                 new PieChart.Data("Otras", otras)
         );
+    }
+
+    // RF-046, RF-050: exportar CSV usando CSVAdapter (patrón Adapter)
+    @FXML
+    private void exportarCSV() {
+        GeneradorReporte reporte = new GeneradorReporte(sistema);
+        String contenido = reporte.generarConAdapter(new CSVAdapter());
+        lblMensajeCompra.setText("CSV generado correctamente");
+        System.out.println(contenido);
+    }
+
+    // RF-046, RF-050: exportar PDF usando PDFAdapter (patrón Adapter)
+    @FXML
+    private void exportarPDF() {
+        GeneradorReporte reporte = new GeneradorReporte(sistema);
+        String contenido = reporte.generarConAdapter(new PDFAdapter());
+        lblMensajeCompra.setText("PDF generado correctamente");
+        System.out.println(contenido);
     }
 
     // RF-001: cerrar sesión
