@@ -142,15 +142,15 @@ public class Compra {
         return true;
     }
 
-    // RF-036: cancelar la compra y liberar los asientos reservados
+    // RF-036, RF-040: cancelar compra y anular todas las entradas asociadas
     public boolean cancelar() {
         if (estadoCompra instanceof CompraCancelada
                 || estadoCompra instanceof CompraReembolsada) {
             return false;
         }
         for (EntradaBase eb : entradas) {
-            if (eb instanceof Entrada e && e.getAsiento() != null) {
-                e.getAsiento().setEstado(new Disponible());
+            if (eb instanceof Entrada e) {
+                e.anular(); // RF-040: anula la entrada y libera el asiento
             }
         }
         estadoCompra = new CompraCancelada();

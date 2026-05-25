@@ -70,6 +70,18 @@ public class Entrada implements EntradaBase {
         return precioFinal;
     }
 
+    // RF-040: anular entrada por cancelación o reembolso
+    public boolean anular() {
+        if (estadoEntrada == EstadoEntrada.ACTIVA) {
+            estadoEntrada = EstadoEntrada.ANULADA;
+            // liberar el asiento asociado si existe
+            if (asiento != null) {
+                asiento.liberar();
+            }
+            return true;
+        }
+        return false; // solo se anula si estaba activa
+    }
     @Override
     public String toString() {
         return getDescripcion() + " - $" + precioFinal;
