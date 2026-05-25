@@ -4,16 +4,28 @@ import decorator.EntradaBase;
 
 public class Entrada implements EntradaBase {
 
+    // RF-038: identificador único de entrada
+    private int idEntrada;
     private double precioFinal;
     private EstadoEntrada estadoEntrada;
     private Zona zona;
     private Asiento asiento;
 
-    public Entrada(double precioFinal, EstadoEntrada estadoEntrada, Zona zona, Asiento asiento) {
+    public Entrada(int idEntrada, double precioFinal, EstadoEntrada estadoEntrada,
+                   Zona zona, Asiento asiento) {
+        this.idEntrada = idEntrada;
         this.precioFinal = precioFinal;
         this.estadoEntrada = estadoEntrada;
         this.zona = zona;
         this.asiento = asiento;
+    }
+
+    public int getIdEntrada() {
+        return idEntrada;
+    }
+
+    public void setIdEntrada(int idEntrada) {
+        this.idEntrada = idEntrada;
     }
 
     public double getPrecioFinal() {
@@ -50,8 +62,7 @@ public class Entrada implements EntradaBase {
 
     @Override
     public String getDescripcion() {
-        return "Entrada " +
-                zona.getTipoZona();
+        return "Entrada #" + idEntrada + " | " + zona.getTipoZona();
     }
 
     @Override
@@ -61,9 +72,6 @@ public class Entrada implements EntradaBase {
 
     @Override
     public String toString() {
-
-        return getDescripcion() +
-                " - $" +
-                precioFinal;
+        return getDescripcion() + " - $" + precioFinal;
     }
 }

@@ -94,7 +94,7 @@ public class DatosIniciales {
         // Compra 1: usuario1 compra entrada VIP al concierto y paga
         Asiento asiento1 = zonaVIP1.getAsientos().get(0);
         asiento1.reservar();
-        Entrada entrada1 = new Entrada(zonaVIP1.getPrecioBase(), EstadoEntrada.ACTIVA, zonaVIP1, asiento1);
+        Entrada entrada1 = new Entrada(1,zonaVIP1.getPrecioBase(), EstadoEntrada.ACTIVA, zonaVIP1, asiento1);
         Compra compra1 = sistema.crearCompra(usuario1, concierto, new PagoTarjeta("1234-5678-9012-3456", "Luna Rios"));
         compra1.agregarEntrada(entrada1);
         compra1.pagar();
@@ -102,14 +102,14 @@ public class DatosIniciales {
         // Compra 2: usuario2 compra entrada General al concierto (pendiente de pago)
         Asiento asiento2 = zonaGeneral1.getAsientos().get(0);
         asiento2.reservar();
-        Entrada entrada2 = new Entrada(zonaGeneral1.getPrecioBase(), EstadoEntrada.ACTIVA, zonaGeneral1, asiento2);
+        Entrada entrada2 = new Entrada(2,zonaGeneral1.getPrecioBase(), EstadoEntrada.ACTIVA, zonaGeneral1, asiento2);
         Compra compra2 = sistema.crearCompra(usuario2, concierto, new PagoEfectivo());
         compra2.agregarEntrada(entrada2);
 
         // Compra 3: usuario3 compra entrada al teatro y cancela
         Asiento asiento3 = zonaVIP2.getAsientos().get(0);
         asiento3.reservar();
-        Entrada entrada3 = new Entrada(zonaVIP2.getPrecioBase(), EstadoEntrada.ACTIVA, zonaVIP2, asiento3);
+        Entrada entrada3 = new Entrada(3, zonaVIP2.getPrecioBase(), EstadoEntrada.ACTIVA, zonaVIP2, asiento3);
         Compra compra3 = sistema.crearCompra(usuario3, obraTeatro, new PagoPSE("Bancolombia"));
         compra3.agregarEntrada(entrada3);
         compra3.cancelar();
