@@ -124,23 +124,21 @@ public class TicketLand {
         return usuarios;
     }
 
-    // RF-003: buscar eventos con filtros opcionales
-    public List<Evento> buscarEventos(String ciudad, String categoria, LocalDate fecha) {
+    // RF-003: buscar eventos con filtros de ciudad, categoría, fecha y precio máximo
+    public List<Evento> buscarEventos(String ciudad, String categoria,
+                                      LocalDate fecha, Double precioMax) {
         List<Evento> resultado = new ArrayList<>();
         for (Evento e : eventos) {
             boolean coincide = true;
-            if (ciudad != null && !e.getCiudad().equalsIgnoreCase(ciudad)) {
-                coincide = false;
+            if (ciudad != null && !e.getCiudad().equalsIgnoreCase(ciudad)) coincide = false;
+            if (categoria != null && !e.getCategoria().equalsIgnoreCase(categoria)) coincide = false;
+            if (fecha != null && !e.getFecha().equals(fecha)) coincide = false;
+            if (precioMax != null && e.getRecinto() != null) {
+                boolean tieneZonaEnRango = e.getRecinto().getZonas().stream()
+                        .anyMatch(z -> z.getPrecioBase() <= precioMax);
+                if (!tieneZonaEnRango) coincide = false;
             }
-            if (categoria != null && !e.getCategoria().equalsIgnoreCase(categoria)) {
-                coincide = false;
-            }
-            if (fecha != null && !e.getFecha().equals(fecha)) {
-                coincide = false;
-            }
-            if (coincide) {
-                resultado.add(e);
-            }
+            if (coincide) resultado.add(e);
         }
         return resultado;
     }

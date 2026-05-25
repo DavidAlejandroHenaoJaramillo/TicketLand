@@ -43,6 +43,7 @@ public class UsuarioController {
     @FXML private TextField txtCorreo;
     @FXML private TextField txtTelefono;
     @FXML private Label lblMensajePerfil;
+    @FXML private TextField txtFiltroPrecio;
 
     private Usuario usuario;
     private TicketLand sistema = TicketLand.getInstance();
@@ -63,10 +64,14 @@ public class UsuarioController {
     private void buscarEventos() {
         String ciudad = txtFiltroCiudad.getText().trim();
         String categoria = txtFiltroCategoria.getText().trim();
+        String precioStr = txtFiltroPrecio.getText().trim();
+        Double precioMax = precioStr.isEmpty() ? null : Double.parseDouble(precioStr);
+
         List<Evento> eventos = sistema.buscarEventos(
                 ciudad.isEmpty() ? null : ciudad,
                 categoria.isEmpty() ? null : categoria,
-                null
+                null,
+                precioMax
         );
         cargarTablaEventos(eventos);
     }
@@ -149,6 +154,15 @@ public class UsuarioController {
         GeneradorReporte reporte = new GeneradorReporte(sistema);
         reporte.exportarVentasCSV("reporte_usuario.csv", null, null);
         lblMensajeCompra.setText("CSV exportado como reporte_usuario.csv");
+        lblMensajeCompra.setStyle("-fx-text-fill: green;");
+    }
+
+    // RF-011: exportar historial a PDF
+    @FXML
+    private void exportarPDF() {
+        GeneradorReporte reporte = new GeneradorReporte(sistema);
+        reporte.exportarVentasPDF("reporte_usuario.pdf", null, null);
+        lblMensajeCompra.setText("PDF exportado como reporte_usuario.pdf");
         lblMensajeCompra.setStyle("-fx-text-fill: green;");
     }
 
