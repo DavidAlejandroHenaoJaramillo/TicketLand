@@ -6,16 +6,37 @@ import state.Disponible;
 
 public class Zona {
 
+    // RF-028: identificador único de zona
+    private int idZona;
+    private String nombre;
     private int capacidad;
     private double precioBase;
     private TipoZona tipoZona;
     private List<Asiento> asientos;
 
-    public Zona(int capacidad, double precioBase, TipoZona tipoZona) {
+    public Zona(int idZona, String nombre, int capacidad, double precioBase, TipoZona tipoZona) {
+        this.idZona = idZona;
+        this.nombre = nombre;
         this.capacidad = capacidad;
         this.precioBase = precioBase;
         this.tipoZona = tipoZona;
         asientos = new ArrayList<>();
+    }
+
+    public int getIdZona() {
+        return idZona;
+    }
+
+    public void setIdZona(int idZona) {
+        this.idZona = idZona;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
     public int getCapacidad() {
@@ -83,9 +104,6 @@ public class Zona {
 
     @Override
     public String toString() {
-
-        return tipoZona +
-                " - $" +
-                precioBase;
+        return idZona + " | " + nombre + " (" + tipoZona + ") - $" + precioBase;
     }
 }
