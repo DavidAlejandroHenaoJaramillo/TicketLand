@@ -8,14 +8,25 @@ import state.Vendido;
 
 public class Asiento {
 
+    // RF-031: identificador único de asiento
+    private int idAsiento;
     private String fila;
     private int numero;
     private EstadoAsiento estado;
 
-    public Asiento(String fila, int numero, EstadoAsiento estado) {
+    public Asiento(int idAsiento, String fila, int numero, EstadoAsiento estado) {
+        this.idAsiento = idAsiento;
         this.fila = fila;
         this.numero = numero;
         this.estado = estado;
+    }
+
+    public int getIdAsiento() {
+        return idAsiento;
+    }
+
+    public void setIdAsiento(int idAsiento) {
+        this.idAsiento = idAsiento;
     }
 
     public String getFila() {
@@ -52,7 +63,7 @@ public class Asiento {
             estado = new Reservado();
             return true;
         }
-        return false; // no se puede reservar si ya está ocupado o bloqueado
+        return false;
     }
 
     // RF-032: liberar asiento (al cancelar compra o eliminar entrada)
@@ -61,7 +72,7 @@ public class Asiento {
             estado = new Disponible();
             return true;
         }
-        return false; // solo se liberan asientos que estaban ocupados
+        return false;
     }
 
     // RF-015: bloquear asiento (acción del administrador)
@@ -70,15 +81,11 @@ public class Asiento {
             estado = new Bloqueado();
             return true;
         }
-        return false; // no se puede bloquear si ya está reservado o vendido
+        return false;
     }
 
     @Override
     public String toString() {
-
-        return "Fila " +
-                fila +
-                " - Asiento " +
-                numero;
+        return "Asiento #" + idAsiento + " | Fila " + fila + " - " + numero;
     }
 }
