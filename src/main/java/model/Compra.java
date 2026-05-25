@@ -8,10 +8,10 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import model.Entrada;
-
 public class Compra {
 
+    // RF-034: identificador único de compra
+    private int idCompra;
     private LocalDate fechaCompra;
     private EstadoCompra estadoCompra;
     private Usuario usuario;
@@ -19,13 +19,23 @@ public class Compra {
     private PagoStrategy metodoPago;
     private List<EntradaBase> entradas;
 
-    public Compra(LocalDate fechaCompra, EstadoCompra estadoCompra, Usuario usuario, Evento evento, PagoStrategy metodoPago) {
+    public Compra(int idCompra, LocalDate fechaCompra, EstadoCompra estadoCompra,
+                  Usuario usuario, Evento evento, PagoStrategy metodoPago) {
+        this.idCompra = idCompra;
         this.fechaCompra = fechaCompra;
         this.estadoCompra = estadoCompra;
         this.usuario = usuario;
         this.evento = evento;
         this.metodoPago = metodoPago;
         entradas = new ArrayList<>();
+    }
+
+    public int getIdCompra() {
+        return idCompra;
+    }
+
+    public void setIdCompra(int idCompra) {
+        this.idCompra = idCompra;
     }
 
     public double getTotalPagado() {
@@ -76,7 +86,7 @@ public class Compra {
         return entradas;
     }
 
-    public void agregarEntrada(EntradaBase entrada){
+    public void agregarEntrada(EntradaBase entrada) {
         entradas.add(entrada);
     }
 
@@ -95,9 +105,8 @@ public class Compra {
     // RF-035: modificar compra antes de pagar — elimina una entrada y libera su asiento
     public boolean eliminarEntrada(EntradaBase entradaAEliminar) {
         if (!(estadoCompra instanceof CompraCreada)) {
-            return false; // solo se puede modificar si la compra aún no fue pagada
+            return false;
         }
-        // si la entrada tiene asiento, lo liberamos antes de eliminar
         if (entradaAEliminar instanceof Entrada e && e.getAsiento() != null) {
             e.getAsiento().setEstado(new Disponible());
         }
@@ -107,15 +116,14 @@ public class Compra {
     // RF-007: pagar la compra usando la estrategia de pago configurada
     public boolean pagar() {
         if (!(estadoCompra instanceof CompraCreada)) {
-            return false; // solo se puede pagar una compra recién creada
+            return false;
         }
         if (entradas.isEmpty()) {
-            return false; // no tiene sentido pagar una compra sin entradas
+            return false;
         }
         boolean exitoso = metodoPago.procesarPago(calcularTotal());
         if (exitoso) {
             estadoCompra = new CompraPagada();
-            // marcar cada asiento como vendido
             for (EntradaBase eb : entradas) {
                 if (eb instanceof Entrada e && e.getAsiento() != null) {
                     e.getAsiento().setEstado(new Vendido());
@@ -128,7 +136,7 @@ public class Compra {
     // RF-008: confirmar una compra que ya fue pagada
     public boolean confirmar() {
         if (!(estadoCompra instanceof CompraPagada)) {
-            return false; // solo se puede confirmar si ya fue pagada
+            return false;
         }
         estadoCompra = new CompraConfirmada();
         return true;
@@ -138,7 +146,7 @@ public class Compra {
     public boolean cancelar() {
         if (estadoCompra instanceof CompraCancelada
                 || estadoCompra instanceof CompraReembolsada) {
-            return false; // ya está en un estado final, no se puede cancelar de nuevo
+            return false;
         }
         for (EntradaBase eb : entradas) {
             if (eb instanceof Entrada e && e.getAsiento() != null) {
@@ -151,9 +159,8 @@ public class Compra {
 
     @Override
     public String toString() {
-        return "Compra | Fecha: " +
-                fechaCompra +
-                " | Total: $" +
-                calcularTotal();
+        return "Compra #" + idCompra +
+                " | Fecha: " + fechaCompra +
+                " | Total: $" + calcularTotal();
     }
 }

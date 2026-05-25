@@ -168,7 +168,9 @@ public class TicketLand {
 
     // RF-034: crear una compra nueva para un usuario
     public Compra crearCompra(Usuario usuario, Evento evento, PagoStrategy metodoPago) {
+        int idCompra = compras.size() + 1;
         Compra compra = new Compra(
+                idCompra,
                 LocalDate.now(),
                 new CompraCreada(),
                 usuario,
