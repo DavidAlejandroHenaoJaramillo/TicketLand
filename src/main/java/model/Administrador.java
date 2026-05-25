@@ -86,7 +86,9 @@ public class Administrador extends Persona {
     // RF-017: registrar incidencia
     public void registrarIncidencia(Incidencia.Tipo tipo, String descripcion,
                                     String entidadAfectada, TicketLand sistema) {
-        Incidencia incidencia = new Incidencia(tipo, descripcion, LocalDate.now(), entidadAfectada);
+        int idIncidencia = sistema.getIncidencias().size() + 1;
+        Incidencia incidencia = new Incidencia(idIncidencia, tipo, descripcion,
+                LocalDate.now(), entidadAfectada);
         sistema.agregarIncidencia(incidencia);
     }
 
