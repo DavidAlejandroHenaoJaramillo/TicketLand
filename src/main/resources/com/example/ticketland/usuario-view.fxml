@@ -1,93 +1,126 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
 
-<VBox spacing="10" xmlns="http://javafx.gluonhq.com/javafx/21"
+<VBox spacing="10" xmlns="http://javafx.com/javafx/21"
       xmlns:fx="http://javafx.com/fxml"
       fx:controller="com.example.ticketland.UsuarioController"
       style="-fx-padding: 20; -fx-background-color: #f9f9f9;">
 
     <HBox spacing="10" alignment="CENTER_LEFT">
         <Label fx:id="lblBienvenida" style="-fx-font-size: 18; -fx-font-weight: bold;"/>
-        <Button text="Cerrar sesión" onAction="#cerrarSesion"
+        <Button text="Cerrar sesion" onAction="#cerrarSesion"
                 style="-fx-background-color: #e74c3c; -fx-text-fill: white;"/>
     </HBox>
 
     <TabPane>
-        <!-- TAB EVENTOS -->
+
+        <!-- ===== TAB EVENTOS RF-003/004/005 ===== -->
         <Tab text="Eventos disponibles" closable="false">
             <VBox spacing="10" style="-fx-padding: 10;">
-                <HBox spacing="10">
-                    <TextField fx:id="txtFiltroCiudad" promptText="Filtrar por ciudad"/>
-                    <TextField fx:id="txtFiltroCategoria" promptText="Filtrar por categoría"/>
-                    <TextField fx:id="txtFiltroPrecio" promptText="Precio máximo"/>
+                <HBox spacing="8">
+                    <TextField fx:id="txtFiltroCiudad"    promptText="Ciudad"        prefWidth="130"/>
+                    <TextField fx:id="txtFiltroCategoria" promptText="Categoria"     prefWidth="130"/>
+                    <TextField fx:id="txtFiltroPrecio"    promptText="Precio maximo" prefWidth="120"/>
                     <Button text="Buscar" onAction="#buscarEventos"
                             style="-fx-background-color: #3498db; -fx-text-fill: white;"/>
                 </HBox>
-                <TableView fx:id="tablaEventos" prefHeight="200">
+
+                <TableView fx:id="tablaEventos" prefHeight="170">
                     <columns>
-                        <TableColumn fx:id="colNombre" text="Evento" prefWidth="150"/>
-                        <TableColumn fx:id="colCiudad" text="Ciudad" prefWidth="100"/>
-                        <TableColumn fx:id="colFecha" text="Fecha" prefWidth="100"/>
-                        <TableColumn fx:id="colCategoria" text="Categoría" prefWidth="100"/>
-                        <TableColumn fx:id="colEstado" text="Estado" prefWidth="100"/>
+                        <TableColumn fx:id="colNombre"    text="Evento"    prefWidth="160"/>
+                        <TableColumn fx:id="colCiudad"    text="Ciudad"    prefWidth="100"/>
+                        <TableColumn fx:id="colFecha"     text="Fecha"     prefWidth="100"/>
+                        <TableColumn fx:id="colCategoria" text="Categoria" prefWidth="100"/>
+                        <TableColumn fx:id="colEstado"    text="Estado"    prefWidth="90"/>
                     </columns>
                 </TableView>
-                <Button text="Comprar entrada" onAction="#comprarEntrada"
-                        style="-fx-background-color: #2ecc71; -fx-text-fill: white;"/>
+
+                <!-- RF-005: seleccion de zona y asiento -->
                 <HBox spacing="10" alignment="CENTER_LEFT">
-                    <Label text="Servicios adicionales:"/>
-                    <CheckBox fx:id="chkVIP" text="Acceso VIP (+$100.000)"/>
-                    <CheckBox fx:id="chkSeguro" text="Seguro (+$20.000)"/>
-                    <CheckBox fx:id="chkMerchandising" text="Merchandising (+$50.000)"/>
-                    <CheckBox fx:id="chkParqueadero" text="Parqueadero (+$30.000)"/>
+                    <Label text="Zona:" style="-fx-font-weight: bold;"/>
+                    <ComboBox fx:id="cmbZona" prefWidth="180"/>
+                    <Label text="Asiento:" style="-fx-font-weight: bold;"/>
+                    <ComboBox fx:id="cmbAsiento" prefWidth="160"/>
                 </HBox>
+                <Label fx:id="lblInfoZona" style="-fx-text-fill: #555; -fx-font-style: italic;"/>
+
+                <!-- RF-009: servicios adicionales -->
+                <HBox spacing="10" alignment="CENTER_LEFT">
+                    <Label text="Servicios:" style="-fx-font-weight: bold;"/>
+                    <CheckBox fx:id="chkVIP"           text="VIP (+$100.000)"/>
+                    <CheckBox fx:id="chkSeguro"        text="Seguro (+$20.000)"/>
+                    <CheckBox fx:id="chkMerchandising" text="Merchandising (+$50.000)"/>
+                    <CheckBox fx:id="chkParqueadero"   text="Parqueadero (+$30.000)"/>
+                </HBox>
+
+                <Button text="Comprar entrada" onAction="#comprarEntrada"
+                        style="-fx-background-color: #2ecc71; -fx-text-fill: white; -fx-font-size: 13;"/>
+                <Label fx:id="lblMensajeCompra" style="-fx-text-fill: green;"/>
             </VBox>
         </Tab>
 
-        <!-- TAB HISTORIAL -->
+        <!-- ===== TAB MAPA DE ASIENTOS RF-033 ===== -->
+        <Tab text="Mapa de asientos" closable="false">
+            <VBox spacing="10" style="-fx-padding: 10;">
+                <Label text="Selecciona un evento para ver el mapa de asientos."
+                       style="-fx-font-style: italic; -fx-text-fill: #777;"/>
+                <Label fx:id="lblInfoMapa" style="-fx-text-fill: #444;"/>
+                <TableView fx:id="tablaMapaAsientos" prefHeight="300">
+                    <columns>
+                        <TableColumn fx:id="colMapaAsientoId" text="#"      prefWidth="50"/>
+                        <TableColumn fx:id="colMapaFila"      text="Fila"   prefWidth="70"/>
+                        <TableColumn fx:id="colMapaNumero"    text="Numero" prefWidth="80"/>
+                        <TableColumn fx:id="colMapaZona"      text="Zona"   prefWidth="150"/>
+                        <TableColumn fx:id="colMapaEstado"    text="Estado" prefWidth="120"/>
+                    </columns>
+                </TableView>
+            </VBox>
+        </Tab>
+
+        <!-- ===== TAB MIS COMPRAS RF-010/036/011 ===== -->
         <Tab text="Mis compras" closable="false">
             <VBox spacing="10" style="-fx-padding: 10;">
-                <TableView fx:id="tablaCompras" prefHeight="200">
+                <TableView fx:id="tablaCompras" prefHeight="220">
                     <columns>
-                        <TableColumn fx:id="colCompraFecha" text="Fecha" prefWidth="100"/>
-                        <TableColumn fx:id="colCompraEvento" text="Evento" prefWidth="150"/>
-                        <TableColumn fx:id="colCompraTotal" text="Total" prefWidth="100"/>
-                        <TableColumn fx:id="colCompraEstado" text="Estado" prefWidth="100"/>
+                        <TableColumn fx:id="colCompraFecha"  text="Fecha"  prefWidth="100"/>
+                        <TableColumn fx:id="colCompraEvento" text="Evento" prefWidth="160"/>
+                        <TableColumn fx:id="colCompraTotal"  text="Total"  prefWidth="100"/>
+                        <TableColumn fx:id="colCompraEstado" text="Estado" prefWidth="120"/>
                     </columns>
                 </TableView>
                 <HBox spacing="10">
                     <Button text="Cancelar compra" onAction="#cancelarCompra"
                             style="-fx-background-color: #e74c3c; -fx-text-fill: white;"/>
-                    <Button text="Exportar CSV" onAction="#exportarCSV"
+                    <Button text="Exportar CSV"    onAction="#exportarCSV"
                             style="-fx-background-color: #95a5a6; -fx-text-fill: white;"/>
-                    <Button text="Exportar PDF" onAction="#exportarPDF"
+                    <Button text="Exportar PDF"    onAction="#exportarPDF"
                             style="-fx-background-color: #8e44ad; -fx-text-fill: white;"/>
                 </HBox>
-                <Label fx:id="lblMensajeCompra" style="-fx-text-fill: green;"/>
             </VBox>
         </Tab>
-        <!-- TAB PERFIL -->
+
+        <!-- ===== TAB MI PERFIL RF-002 ===== -->
         <Tab text="Mi perfil" closable="false">
             <VBox spacing="12" style="-fx-padding: 15;">
                 <Label text="Editar perfil" style="-fx-font-size: 15; -fx-font-weight: bold;"/>
                 <HBox spacing="10" alignment="CENTER_LEFT">
-                    <Label text="Nombre:" minWidth="80"/>
-                    <TextField fx:id="txtNombre" prefWidth="250"/>
+                    <Label text="Nombre:"   minWidth="90"/>
+                    <TextField fx:id="txtNombre"   prefWidth="260"/>
                 </HBox>
                 <HBox spacing="10" alignment="CENTER_LEFT">
-                    <Label text="Correo:" minWidth="80"/>
-                    <TextField fx:id="txtCorreo" prefWidth="250"/>
+                    <Label text="Correo:"   minWidth="90"/>
+                    <TextField fx:id="txtCorreo"   prefWidth="260"/>
                 </HBox>
                 <HBox spacing="10" alignment="CENTER_LEFT">
-                    <Label text="Teléfono:" minWidth="80"/>
-                    <TextField fx:id="txtTelefono" prefWidth="250"/>
+                    <Label text="Telefono:" minWidth="90"/>
+                    <TextField fx:id="txtTelefono" prefWidth="260"/>
                 </HBox>
                 <Button text="Guardar cambios" onAction="#guardarPerfil"
                         style="-fx-background-color: #2ecc71; -fx-text-fill: white;"/>
                 <Label fx:id="lblMensajePerfil" style="-fx-text-fill: green;"/>
             </VBox>
         </Tab>
+
     </TabPane>
 </VBox>
