@@ -49,6 +49,17 @@ public class AdminController implements Initializable {
     @FXML private BarChart<String, Number> chartVentas;
     @FXML private PieChart chartEstados;
 
+    @FXML private ComboBox<Incidencia.Tipo> cmbTipoIncidencia;
+    @FXML private TextField txtDescripcionIncidencia;
+    @FXML private TextField txtEntidadAfectada;
+    @FXML private Label lblMensajeIncidencia;
+    @FXML private TableView<Incidencia> tablaIncidencias;
+    @FXML private TableColumn<Incidencia, String> colIncidenciaId;
+    @FXML private TableColumn<Incidencia, String> colIncidenciaTipo;
+    @FXML private TableColumn<Incidencia, String> colIncidenciaDesc;
+    @FXML private TableColumn<Incidencia, String> colIncidenciaFecha;
+    @FXML private TableColumn<Incidencia, String> colIncidenciaEntidad;
+
     private TicketLand sistema = TicketLand.getInstance();
 
     @Override
@@ -57,6 +68,8 @@ public class AdminController implements Initializable {
         cargarUsuarios();
         cargarCompras();
         actualizarMetricas();
+        cargarTiposIncidencia();
+        cargarIncidencias();
     }
 
     // RF-013: cargar eventos
@@ -198,6 +211,50 @@ public class AdminController implements Initializable {
         String contenido = reporte.generarConAdapter(new PDFAdapter());
         lblMensajeCompra.setText("PDF generado correctamente");
         System.out.println(contenido);
+    }
+
+    // RF-017: cargar tipos de incidencia en el ComboBox
+    private void cargarTiposIncidencia() {
+        cmbTipoIncidencia.getItems().addAll(Incidencia.Tipo.values());
+        cmbTipoIncidencia.getSelectionModel().selectFirst();
+    }
+
+    // RF-017: cargar tabla de incidencias registradas
+    private void cargarIncidencias() {
+        colIncidenciaId.setCellValueFactory(d ->
+                new SimpleStringProperty(String.valueOf(d.getValue().getIdIncidencia())));
+        colIncidenciaTipo.setCellValueFactory(d ->
+                new SimpleStringProperty(d.getValue().getTipo().toString()));
+        colIncidenciaDesc.setCellValueFactory(d ->
+                new SimpleStringProperty(d.getValue().getDescripcion()));
+        colIncidenciaFecha.setCellValueFactory(d ->
+                new SimpleStringProperty(d.getValue().getFecha().toString()));
+        colIncidenciaEntidad.setCellValueFactory(d ->
+                new SimpleStringProperty(d.getValue().getEntidadAfectada()));
+        tablaIncidencias.setItems(FXCollections.observableArrayList(sistema.getIncidencias()));
+    }
+
+    // RF-017: registrar nueva incidencia desde la UI
+    @FXML
+    private void registrarIncidencia() {
+        Incidencia.Tipo tipo = cmbTipoIncidencia.getValue();
+        String descripcion = txtDescripcionIncidencia.getText().trim();
+        String entidad = txtEntidadAfectada.getText().trim();
+
+        if (descripcion.isEmpty() || entidad.isEmpty()) {
+            lblMensajeIncidencia.setText("Completa todos los campos.");
+            lblMensajeIncidencia.setStyle("-fx-text-fill: red;");
+            return;
+        }
+
+        Administrador admin = sistema.getAdministradores().get(0);
+        admin.registrarIncidencia(tipo, descripcion, entidad, sistema);
+
+        txtDescripcionIncidencia.clear();
+        txtEntidadAfectada.clear();
+        cargarIncidencias();
+        lblMensajeIncidencia.setText("Incidencia registrada correctamente.");
+        lblMensajeIncidencia.setStyle("-fx-text-fill: green;");
     }
 
     // RF-001: cerrar sesión

@@ -95,5 +95,39 @@
                 </HBox>
             </VBox>
         </Tab>
+        <!-- TAB INCIDENCIAS RF-017 -->
+        <Tab text="Incidencias" closable="false">
+            <VBox spacing="12" style="-fx-padding: 15;">
+                <Label text="Registrar incidencia" style="-fx-font-size: 14; -fx-font-weight: bold;"/>
+                <HBox spacing="10" alignment="CENTER_LEFT">
+                    <Label text="Tipo:" minWidth="100"/>
+                    <ComboBox fx:id="cmbTipoIncidencia" prefWidth="200"/>
+                </HBox>
+                <HBox spacing="10" alignment="CENTER_LEFT">
+                    <Label text="Descripción:" minWidth="100"/>
+                    <TextField fx:id="txtDescripcionIncidencia" prefWidth="300"
+                               promptText="Describe la incidencia..."/>
+                </HBox>
+                <HBox spacing="10" alignment="CENTER_LEFT">
+                    <Label text="Entidad afectada:" minWidth="100"/>
+                    <TextField fx:id="txtEntidadAfectada" prefWidth="300"
+                               promptText="Ej: Compra-001, Evento-Juanes..."/>
+                </HBox>
+                <Button text="Registrar incidencia" onAction="#registrarIncidencia"
+                        style="-fx-background-color: #e67e22; -fx-text-fill: white;"/>
+                <Label fx:id="lblMensajeIncidencia" style="-fx-text-fill: green;"/>
+
+                <Label text="Historial de incidencias" style="-fx-font-size: 14; -fx-font-weight: bold;"/>
+                <TableView fx:id="tablaIncidencias" prefHeight="180">
+                    <columns>
+                        <TableColumn fx:id="colIncidenciaId" text="#" prefWidth="40"/>
+                        <TableColumn fx:id="colIncidenciaTipo" text="Tipo" prefWidth="150"/>
+                        <TableColumn fx:id="colIncidenciaDesc" text="Descripción" prefWidth="200"/>
+                        <TableColumn fx:id="colIncidenciaFecha" text="Fecha" prefWidth="100"/>
+                        <TableColumn fx:id="colIncidenciaEntidad" text="Afectado" prefWidth="150"/>
+                    </columns>
+                </TableView>
+            </VBox>
+        </Tab>
     </TabPane>
 </VBox>
