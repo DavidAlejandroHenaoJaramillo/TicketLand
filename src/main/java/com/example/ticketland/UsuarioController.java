@@ -104,7 +104,7 @@ public class UsuarioController {
         Asiento asiento = zona.getAsientosDisponibles().get(0);
         asiento.reservar();
         // RF-005: crear entrada base
-        EntradaBase entradaFinal = new Entrada(zona.getPrecioBase(), EstadoEntrada.ACTIVA, zona, asiento);
+        EntradaBase entradaFinal = new Entrada(sistema.getCompras().size() + 1, zona.getPrecioBase(), EstadoEntrada.ACTIVA, zona, asiento);
 
 // RF-009: agregar servicios adicionales con decorators
         if (chkVIP.isSelected()) entradaFinal = new EntradaVIP(entradaFinal);
