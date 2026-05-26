@@ -40,9 +40,12 @@ public class DatosIniciales {
 
         // --- RECINTO 1: ESTADIO ---
         Recinto estadio = new Recinto("Estadio El Campin", "Cra 30 #57-60", "Bogotá");
-        Zona zonaVIP1 = new Zona(1, "VIP Estadio", 50, 350000, TipoZona.VIP);
-        Zona zonaGeneral1 = new Zona(2, "General Estadio", 200, 120000, TipoZona.GENERAL);
-        Zona zonaPreferencial1 = new Zona(3, "Preferencial Estadio", 100, 220000, TipoZona.PREFERENCIAL);
+        Tarifa tarifaVIP = new Tarifa(1, "VIP", 3500000.0, "Acceso VIP con beneficios especiales", TipoZona.VIP);
+        Tarifa tarifaGeneral = new Tarifa(2, "General", 120000.0, "Acceso VIP con beneficios especiales", TipoZona.GENERAL);
+        Tarifa tarifaPreferencial = new Tarifa(3,"Preferencial", 220000.0, "Zona preferencial cercana al escenario", TipoZona.PREFERENCIAL);
+        Zona zonaVIP1 = new Zona(1, "VIP Estadio", 50, 350000, TipoZona.VIP, tarifaVIP);
+        Zona zonaGeneral1 = new Zona(2, "General Estadio", 200, 120000, TipoZona.GENERAL, tarifaGeneral);
+        Zona zonaPreferencial1 = new Zona(3, "Preferencial Estadio", 100, 220000, TipoZona.PREFERENCIAL, tarifaPreferencial);
         for (int i = 1; i <= 10; i++) zonaVIP1.agregarAsiento(new Asiento(i, "A", i, new Disponible()));
         for (int i = 1; i <= 20; i++) zonaGeneral1.agregarAsiento(new Asiento(i, "B", i, new Disponible()));
         for (int i = 1; i <= 15; i++) zonaPreferencial1.agregarAsiento(new Asiento(i, "C", i, new Disponible()));
@@ -53,8 +56,8 @@ public class DatosIniciales {
         // --- RECINTO 2: TEATRO ---
         // --- RECINTO 2: TEATRO ---
         Recinto teatroRecinto = new Recinto("Teatro Jorge Eliécer Gaitán", "Cra 7 #22-47", "Bogotá");
-        Zona zonaVIP2 = new Zona(4, "VIP Teatro", 30, 180000, TipoZona.VIP);
-        Zona zonaGeneral2 = new Zona(5, "General Teatro", 150, 80000, TipoZona.GENERAL);
+        Zona zonaVIP2 = new Zona(1, "VIP Teatro", 30, 180000, TipoZona.VIP, tarifaVIP);
+        Zona zonaGeneral2 = new Zona(2, "General Teatro", 150, 80000, TipoZona.GENERAL, tarifaGeneral);
         for (int i = 1; i <= 8; i++) zonaVIP2.agregarAsiento(new Asiento(i, "A", i, new Disponible()));
         for (int i = 1; i <= 15; i++) zonaGeneral2.agregarAsiento(new Asiento(i, "B", i, new Disponible()));
         teatroRecinto.agregarZona(zonaVIP2);
