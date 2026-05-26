@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox alignment="CENTER" spacing="0"
+      xmlns="http://javafx.com/javafx/21"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="viewController.LoginViewController"
+      style="-fx-background-color: #f0f4ff;">
+
+    <VBox alignment="CENTER" spacing="6" style="-fx-padding: 40 0 30 0;">
+        <Label text="🎫 TicketLand"
+               style="-fx-font-size: 36; -fx-font-weight: bold; -fx-text-fill: #0057ff;"/>
+        <Label text="Plataforma de gestión de eventos y venta de entradas"
+               style="-fx-font-size: 13; -fx-text-fill: #5570a0;"/>
+    </VBox>
+
+    <VBox alignment="CENTER" spacing="14"
+          style="-fx-background-color: #ffffff; -fx-padding: 35; -fx-background-radius: 12;
+                 -fx-effect: dropshadow(gaussian, rgba(0,80,255,0.12), 20, 0, 0, 4);
+                 -fx-max-width: 380;">
+        <Label text="Iniciar sesión"
+               style="-fx-font-size: 18; -fx-font-weight: bold; -fx-text-fill: #0a1628;"/>
+
+        <TextField fx:id="txtCorreo" promptText="Correo electrónico"
+                   prefWidth="310"
+                   style="-fx-background-color: #e8eeff; -fx-text-fill: #0a1628;
+                          -fx-prompt-text-fill: #8090b0; -fx-background-radius: 6;
+                          -fx-padding: 10; -fx-border-color: #0057ff; -fx-border-radius: 6;"/>
+
+        <PasswordField fx:id="txtPassword" promptText="Contraseña"
+                       prefWidth="310"
+                       style="-fx-background-color: #e8eeff; -fx-text-fill: #0a1628;
+                              -fx-prompt-text-fill: #8090b0; -fx-background-radius: 6;
+                              -fx-padding: 10; -fx-border-color: #0057ff; -fx-border-radius: 6;"/>
+
+        <Button text="Ingresar como Usuario" onAction="#loginUsuario"
+                prefWidth="310"
+                style="-fx-background-color: #0057ff; -fx-text-fill: white;
+                       -fx-font-size: 13; -fx-font-weight: bold; -fx-background-radius: 6;
+                       -fx-padding: 10; -fx-cursor: hand;"/>
+
+        <Button text="Ingresar como Administrador" onAction="#loginAdmin"
+                prefWidth="310"
+                style="-fx-background-color: #ffffff; -fx-text-fill: #0057ff;
+                       -fx-font-size: 13; -fx-font-weight: bold; -fx-background-radius: 6;
+                       -fx-padding: 10; -fx-cursor: hand;
+                       -fx-border-color: #0057ff; -fx-border-radius: 6;"/>
+
+        <Button text="¿No tienes cuenta? Regístrate" onAction="#irARegistro"
+                prefWidth="310"
+                style="-fx-background-color: transparent; -fx-text-fill: #5570a0;
+                       -fx-font-size: 12; -fx-cursor: hand; -fx-underline: true;"/>
+
+        <Label fx:id="lblMensaje"
+               style="-fx-text-fill: #e94560; -fx-font-size: 12;"/>
+
+        <Label text="Prueba: luna@gmail.com | carlos@gmail.com | maria@gmail.com"
+               style="-fx-text-fill: #8090b0; -fx-font-size: 11;"/>
+    </VBox>
+
+    <VBox style="-fx-padding: 20 0 0 0;">
+        <Label text="© 2026 TicketLand - Todos los derechos reservados"
+               style="-fx-text-fill: #8090b0; -fx-font-size: 11;"/>
+    </VBox>
+</VBox>
