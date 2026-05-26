@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.chart.*?>
+
+<VBox spacing="0" xmlns="http://javafx.com/javafx/21"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.example.ticketland.AdminController"
+      style="-fx-background-color: #1a1a2e;">
+
+    <!-- HEADER -->
+    <HBox spacing="15" alignment="CENTER_LEFT"
+          style="-fx-padding: 15 20; -fx-background-color: #16213e;
+                 -fx-border-color: #e94560; -fx-border-width: 0 0 2 0;">
+        <Label text="🎫 TicketLand"
+               style="-fx-font-size: 20; -fx-font-weight: bold; -fx-text-fill: #e94560;"/>
+        <Label text="Panel Administrador"
+               style="-fx-font-size: 14; -fx-text-fill: #a0a0b0;"/>
+        <HBox HBox.hgrow="ALWAYS"/>
+        <Button text="Cerrar sesión" onAction="#cerrarSesion"
+                style="-fx-background-color: #e94560; -fx-text-fill: white;
+                       -fx-background-radius: 6; -fx-padding: 6 14; -fx-cursor: hand;"/>
+    </HBox>
+
+    <!-- TABS -->
+    <TabPane VBox.vgrow="ALWAYS"
+             style="-fx-background-color: #1a1a2e; -fx-tab-min-width: 100;">
+
+        <!-- ===== TAB EVENTOS RF-013/024 ===== -->
+        <Tab text="📅 Eventos" closable="false">
+            <VBox spacing="12" style="-fx-padding: 15; -fx-background-color: #1a1a2e;">
+                <Label text="Gestión de eventos"
+                       style="-fx-font-size: 15; -fx-font-weight: bold; -fx-text-fill: white;"/>
+                <TableView fx:id="tablaEventos" VBox.vgrow="ALWAYS" prefHeight="220"
+                           style="-fx-background-color: #16213e; -fx-border-color: #0f3460;">
+                    <columns>
+                        <TableColumn fx:id="colNombre" text="Nombre"  prefWidth="180"/>
+                        <TableColumn fx:id="colCiudad" text="Ciudad"  prefWidth="110"/>
+                        <TableColumn fx:id="colFecha"  text="Fecha"   prefWidth="110"/>
+                        <TableColumn fx:id="colEstado" text="Estado"  prefWidth="110"/>
+                    </columns>
+                </TableView>
+                <HBox spacing="10">
+                    <Button text="✅ Activar"  onAction="#activarEvento"
+                            style="-fx-background-color: #2ecc71; -fx-text-fill: white;
+                                   -fx-background-radius: 6; -fx-padding: 7 14; -fx-cursor: hand;"/>
+                    <Button text="⏸ Pausar"   onAction="#pausarEvento"
+                            style="-fx-background-color: #f39c12; -fx-text-fill: white;
+                                   -fx-background-radius: 6; -fx-padding: 7 14; -fx-cursor: hand;"/>
+                    <Button text="❌ Cancelar" onAction="#cancelarEvento"
+                            style="-fx-background-color: #e74c3c; -fx-text-fill: white;
+                                   -fx-background-radius: 6; -fx-padding: 7 14; -fx-cursor: hand;"/>
+                </HBox>
+                <Label fx:id="lblMensajeEvento" style="-fx-text-fill: #2ecc71; -fx-font-size: 12;"/>
+            </VBox>
+        </Tab>
+
+        <!-- ===== TAB USUARIOS RF-012 ===== -->
+        <Tab text="👥 Usuarios" closable="false">
+            <VBox spacing="12" style="-fx-padding: 15; -fx-background-color: #1a1a2e;">
+                <Label text="Gestión de usuarios"
+                       style="-fx-font-size: 15; -fx-font-weight: bold; -fx-text-fill: white;"/>
+                <TableView fx:id="tablaUsuarios" prefHeight="220"
+                           style="-fx-background-color: #16213e; -fx-border-color: #0f3460;">
+                    <columns>
+                        <TableColumn fx:id="colUsuarioNombre"   text="Nombre"   prefWidth="160"/>
+                        <TableColumn fx:id="colUsuarioCorreo"   text="Correo"   prefWidth="200"/>
+                        <TableColumn fx:id="colUsuarioTelefono" text="Teléfono" prefWidth="120"/>
+                    </columns>
+                </TableView>
+                <Button text="🗑 Eliminar usuario" onAction="#eliminarUsuario"
+                        style="-fx-background-color: #e74c3c; -fx-text-fill: white;
+                               -fx-background-radius: 6; -fx-padding: 7 14; -fx-cursor: hand;"/>
+                <Label fx:id="lblMensajeUsuario" style="-fx-text-fill: #2ecc71; -fx-font-size: 12;"/>
+            </VBox>
+        </Tab>
+
+        <!-- ===== TAB COMPRAS RF-016 ===== -->
+        <Tab text="🛒 Compras" closable="false">
+            <VBox spacing="12" style="-fx-padding: 15; -fx-background-color: #1a1a2e;">
+                <Label text="Gestión de compras"
+                       style="-fx-font-size: 15; -fx-font-weight: bold; -fx-text-fill: white;"/>
+                <TableView fx:id="tablaCompras" prefHeight="220"
+                           style="-fx-background-color: #16213e; -fx-border-color: #0f3460;">
+                    <columns>
+                        <TableColumn fx:id="colCompraUsuario" text="Usuario" prefWidth="140"/>
+                        <TableColumn fx:id="colCompraEvento"  text="Evento"  prefWidth="160"/>
+                        <TableColumn fx:id="colCompraTotal"   text="Total"   prefWidth="90"/>
+                        <TableColumn fx:id="colCompraEstado"  text="Estado"  prefWidth="120"/>
+                    </columns>
+                </TableView>
+                <HBox spacing="8">
+                    <Button text="❌ Cancelar"   onAction="#cancelarCompra"
+                            style="-fx-background-color: #e74c3c; -fx-text-fill: white;
+                                   -fx-background-radius: 6; -fx-padding: 7 12; -fx-cursor: hand;"/>
+                    <Button text="✅ Confirmar"  onAction="#confirmarCompra"
+                            style="-fx-background-color: #2ecc71; -fx-text-fill: white;
+                                   -fx-background-radius: 6; -fx-padding: 7 12; -fx-cursor: hand;"/>
+                    <Button text="💰 Reembolsar" onAction="#reembolsarCompra"
+                            style="-fx-background-color: #3498db; -fx-text-fill: white;
+                                   -fx-background-radius: 6; -fx-padding: 7 12; -fx-cursor: hand;"/>
+                    <Button text="⚠ Incidencia" onAction="#marcarIncidenciaCompra"
+                            style="-fx-background-color: #e67e22; -fx-text-fill: white;
+                                   -fx-background-radius: 6; -fx-padding: 7 12; -fx-cursor: hand;"/>
+                    <Button text="📄 CSV"        onAction="#exportarCSV"
+                            style="-fx-background-color: #0f3460; -fx-text-fill: #a0a0b0;
+                                   -fx-background-radius: 6; -fx-padding: 7 12; -fx-cursor: hand;"/>
+                    <Button text="📑 PDF"        onAction="#exportarPDF"
+                            style="-fx-background-color: #8e44ad; -fx-text-fill: white;
+                                   -fx-background-radius: 6; -fx-padding: 7 12; -fx-cursor: hand;"/>
+                </HBox>
+                <Label fx:id="lblMensajeCompra" style="-fx-text-fill: #2ecc71; -fx-font-size: 12;"/>
+            </VBox>
+        </Tab>
+
+        <!-- ===== TAB MÉTRICAS RF-018/019 ===== -->
+        <Tab text="📊 Métricas" closable="false">
+            <VBox spacing="12" style="-fx-padding: 15; -fx-background-color: #1a1a2e;">
+                <Button text="🔄 Actualizar métricas" onAction="#actualizarMetricas"
+                        style="-fx-background-color: #0f3460; -fx-text-fill: #e94560;
+                               -fx-font-weight: bold; -fx-background-radius: 6;
+                               -fx-padding: 8 18; -fx-cursor: hand;
+                               -fx-border-color: #e94560; -fx-border-radius: 6;"/>
+                <HBox spacing="15">
+                    <VBox>
+                        <Label text="Ventas por evento"
+                               style="-fx-font-weight: bold; -fx-text-fill: #a0a0b0;"/>
+                        <BarChart fx:id="chartVentas" prefWidth="320" prefHeight="200">
+                            <xAxis><CategoryAxis/></xAxis>
+                            <yAxis><NumberAxis/></yAxis>
+                        </BarChart>
+                    </VBox>
+                    <VBox>
+                        <Label text="Estado de compras"
+                               style="-fx-font-weight: bold; -fx-text-fill: #a0a0b0;"/>
+                        <PieChart fx:id="chartEstados" prefWidth="280" prefHeight="200"/>
+                    </VBox>
+                </HBox>
+                <Label text="Ingresos por fecha"
+                       style="-fx-font-weight: bold; -fx-text-fill: #a0a0b0;"/>
+                <LineChart fx:id="chartLineas" prefHeight="180">
+                    <xAxis><CategoryAxis label="Fecha"/></xAxis>
+                    <yAxis><NumberAxis label="Ingresos ($)"/></yAxis>
+                </LineChart>
+            </VBox>
+        </Tab>
+
+        <!-- ===== TAB RECINTOS RF-014 ===== -->
+        <Tab text="🏟 Recintos" closable="false">
+            <VBox spacing="12" style="-fx-padding: 15; -fx-background-color: #1a1a2e;">
+                <Label text="Recintos registrados"
+                       style="-fx-font-size: 15; -fx-font-weight: bold; -fx-text-fill: white;"/>
+                <TableView fx:id="tablaRecintos" prefHeight="160"
+                           style="-fx-background-color: #16213e; -fx-border-color: #0f3460;">
+                    <columns>
+                        <TableColumn fx:id="colRecintoNombre"    text="Nombre"    prefWidth="160"/>
+                        <TableColumn fx:id="colRecintoCiudad"    text="Ciudad"    prefWidth="120"/>
+                        <TableColumn fx:id="colRecintoDireccion" text="Dirección" prefWidth="220"/>
+                    </columns>
+                </TableView>
+                <Label text="Crear nuevo recinto"
+                       style="-fx-font-weight: bold; -fx-text-fill: #a0a0b0;"/>
+                <HBox spacing="8">
+                    <TextField fx:id="txtRecintoNombre"    promptText="Nombre" prefWidth="160"
+                               style="-fx-background-color: #16213e; -fx-text-fill: white;
+                                      -fx-prompt-text-fill: #6c7a89; -fx-background-radius: 6;
+                                      -fx-padding: 8; -fx-border-color: #0f3460; -fx-border-radius: 6;"/>
+                    <TextField fx:id="txtRecintoCiudad"    promptText="Ciudad" prefWidth="120"
+                               style="-fx-background-color: #16213e; -fx-text-fill: white;
+                                      -fx-prompt-text-fill: #6c7a89; -fx-background-radius: 6;
+                                      -fx-padding: 8; -fx-border-color: #0f3460; -fx-border-radius: 6;"/>
+                    <TextField fx:id="txtRecintoDireccion" promptText="Dirección" prefWidth="180"
+                               style="-fx-background-color: #16213e; -fx-text-fill: white;
+                                      -fx-prompt-text-fill: #6c7a89; -fx-background-radius: 6;
+                                      -fx-padding: 8; -fx-border-color: #0f3460; -fx-border-radius: 6;"/>
+                    <Button text="➕ Crear" onAction="#crearRecinto"
+                            style="-fx-background-color: #2ecc71; -fx-text-fill: white;
+                                   -fx-background-radius: 6; -fx-padding: 8 14; -fx-cursor: hand;"/>
+                </HBox>
+                <Label fx:id="lblMensajeRecinto" style="-fx-text-fill: #2ecc71; -fx-font-size: 12;"/>
+            </VBox>
+        </Tab>
+
+        <!-- ===== TAB ASIENTOS RF-015 ===== -->
+        <Tab text="💺 Asientos" closable="false">
+            <VBox spacing="12" style="-fx-padding: 15; -fx-background-color: #1a1a2e;">
+                <Label text="Gestión de asientos"
+                       style="-fx-font-size: 15; -fx-font-weight: bold; -fx-text-fill: white;"/>
+                <HBox spacing="10" alignment="CENTER_LEFT">
+                    <Label text="Evento:" style="-fx-text-fill: #a0a0b0;"/>
+                    <ComboBox fx:id="cmbEventoAsientos" prefWidth="200"
+                              style="-fx-background-color: #0f3460; -fx-text-fill: white;"/>
+                    <Label text="Zona:" style="-fx-text-fill: #a0a0b0;"/>
+                    <ComboBox fx:id="cmbZonaAsientos" prefWidth="160"
+                              style="-fx-background-color: #0f3460; -fx-text-fill: white;"/>
+                </HBox>
+                <TableView fx:id="tablaAsientos" prefHeight="200"
+                           style="-fx-background-color: #16213e; -fx-border-color: #0f3460;">
+                    <columns>
+                        <TableColumn fx:id="colAsientoId"     text="#"      prefWidth="50"/>
+                        <TableColumn fx:id="colAsientoFila"   text="Fila"   prefWidth="70"/>
+                        <TableColumn fx:id="colAsientoNumero" text="Número" prefWidth="80"/>
+                        <TableColumn fx:id="colAsientoEstado" text="Estado" prefWidth="120"/>
+                    </columns>
+                </TableView>
+                <HBox spacing="10">
+                    <Button text="🔒 Bloquear" onAction="#bloquearAsiento"
+                            style="-fx-background-color: #e67e22; -fx-text-fill: white;
+                                   -fx-background-radius: 6; -fx-padding: 7 14; -fx-cursor: hand;"/>
+                    <Button text="🔓 Liberar"  onAction="#liberarAsiento"
+                            style="-fx-background-color: #2ecc71; -fx-text-fill: white;
+                                   -fx-background-radius: 6; -fx-padding: 7 14; -fx-cursor: hand;"/>
+                </HBox>
+                <Label fx:id="lblMensajeAsiento" style="-fx-text-fill: #2ecc71; -fx-font-size: 12;"/>
+            </VBox>
+        </Tab>
+
+        <!-- ===== TAB INCIDENCIAS RF-017/042 ===== -->
+        <Tab text="⚠ Incidencias" closable="false">
+            <VBox spacing="12" style="-fx-padding: 15; -fx-background-color: #1a1a2e;">
+                <Label text="Registrar incidencia"
+                       style="-fx-font-size: 15; -fx-font-weight: bold; -fx-text-fill: white;"/>
+                <HBox spacing="10" alignment="CENTER_LEFT">
+                    <Label text="Tipo:" minWidth="110" style="-fx-text-fill: #a0a0b0;"/>
+                    <ComboBox fx:id="cmbTipoIncidencia" prefWidth="200"
+                              style="-fx-background-color: #0f3460; -fx-text-fill: white;"/>
+                </HBox>
+                <HBox spacing="10" alignment="CENTER_LEFT">
+                    <Label text="Descripción:" minWidth="110" style="-fx-text-fill: #a0a0b0;"/>
+                    <TextField fx:id="txtDescripcionIncidencia" prefWidth="320"
+                               promptText="Describe la incidencia..."
+                               style="-fx-background-color: #16213e; -fx-text-fill: white;
+                                      -fx-prompt-text-fill: #6c7a89; -fx-background-radius: 6;
+                                      -fx-padding: 8; -fx-border-color: #0f3460; -fx-border-radius: 6;"/>
+                </HBox>
+                <HBox spacing="10" alignment="CENTER_LEFT">
+                    <Label text="Entidad afectada:" minWidth="110" style="-fx-text-fill: #a0a0b0;"/>
+                    <TextField fx:id="txtEntidadAfectada" prefWidth="320"
+                               promptText="Ej: Compra-001, Evento-Juanes..."
+                               style="-fx-background-color: #16213e; -fx-text-fill: white;
+                                      -fx-prompt-text-fill: #6c7a89; -fx-background-radius: 6;
+                                      -fx-padding: 8; -fx-border-color: #0f3460; -fx-border-radius: 6;"/>
+                </HBox>
+                <Button text="⚠ Registrar incidencia" onAction="#registrarIncidencia"
+                        style="-fx-background-color: #e67e22; -fx-text-fill: white;
+                               -fx-background-radius: 6; -fx-padding: 8 16; -fx-cursor: hand;"/>
+                <Label fx:id="lblMensajeIncidencia" style="-fx-text-fill: #2ecc71; -fx-font-size: 12;"/>
+
+                <Label text="Filtrar incidencias"
+                       style="-fx-font-size: 13; -fx-font-weight: bold; -fx-text-fill: #a0a0b0;"/>
+                <HBox spacing="10" alignment="CENTER_LEFT">
+                    <Label text="Tipo:" style="-fx-text-fill: #a0a0b0;"/>
+                    <ComboBox fx:id="cmbFiltroTipo" prefWidth="160"
+                              style="-fx-background-color: #0f3460; -fx-text-fill: white;"/>
+                    <Label text="Desde:" style="-fx-text-fill: #a0a0b0;"/>
+                    <DatePicker fx:id="dpFiltroDesde" prefWidth="140"/>
+                    <Label text="Hasta:" style="-fx-text-fill: #a0a0b0;"/>
+                    <DatePicker fx:id="dpFiltroHasta" prefWidth="140"/>
+                    <Button text="🔍 Filtrar" onAction="#filtrarIncidencias"
+                            style="-fx-background-color: #0f3460; -fx-text-fill: #e94560;
+                                   -fx-background-radius: 6; -fx-padding: 7 14; -fx-cursor: hand;
+                                   -fx-border-color: #e94560; -fx-border-radius: 6;"/>
+                </HBox>
+
+                <TableView fx:id="tablaIncidencias" prefHeight="150"
+                           style="-fx-background-color: #16213e; -fx-border-color: #0f3460;">
+                    <columns>
+                        <TableColumn fx:id="colIncidenciaId"      text="#"           prefWidth="40"/>
+                        <TableColumn fx:id="colIncidenciaTipo"    text="Tipo"        prefWidth="160"/>
+                        <TableColumn fx:id="colIncidenciaDesc"    text="Descripción" prefWidth="200"/>
+                        <TableColumn fx:id="colIncidenciaFecha"   text="Fecha"       prefWidth="100"/>
+                        <TableColumn fx:id="colIncidenciaEntidad" text="Afectado"    prefWidth="150"/>
+                    </columns>
+                </TableView>
+            </VBox>
+        </Tab>
+
+    </TabPane>
+</VBox>

@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox spacing="0" xmlns="http://javafx.com/javafx/21"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.example.ticketland.UsuarioController"
+      style="-fx-background-color: #1a1a2e;">
+
+    <!-- HEADER -->
+    <HBox spacing="15" alignment="CENTER_LEFT"
+          style="-fx-padding: 15 20; -fx-background-color: #16213e;
+                 -fx-border-color: #e94560; -fx-border-width: 0 0 2 0;">
+        <Label text="🎫 TicketLand"
+               style="-fx-font-size: 20; -fx-font-weight: bold; -fx-text-fill: #e94560;"/>
+        <Label fx:id="lblBienvenida"
+               style="-fx-font-size: 14; -fx-text-fill: #a0a0b0;"/>
+        <HBox HBox.hgrow="ALWAYS"/>
+        <Button text="Cerrar sesión" onAction="#cerrarSesion"
+                style="-fx-background-color: #e94560; -fx-text-fill: white;
+                       -fx-background-radius: 6; -fx-padding: 6 14; -fx-cursor: hand;"/>
+    </HBox>
+
+    <!-- CONTENIDO -->
+    <TabPane VBox.vgrow="ALWAYS"
+             style="-fx-background-color: #1a1a2e; -fx-tab-min-width: 120;">
+
+        <Tab text="🎟 Eventos" closable="false">
+            <VBox spacing="12" style="-fx-padding: 15; -fx-background-color: #1a1a2e;">
+                <HBox spacing="8" alignment="CENTER_LEFT">
+                    <TextField fx:id="txtFiltroCiudad" promptText="Ciudad" prefWidth="130"
+                               style="-fx-background-color: #16213e; -fx-text-fill: white;
+                                      -fx-prompt-text-fill: #6c7a89; -fx-background-radius: 6;
+                                      -fx-padding: 8; -fx-border-color: #0f3460; -fx-border-radius: 6;"/>
+                    <TextField fx:id="txtFiltroCategoria" promptText="Categoría" prefWidth="130"
+                               style="-fx-background-color: #16213e; -fx-text-fill: white;
+                                      -fx-prompt-text-fill: #6c7a89; -fx-background-radius: 6;
+                                      -fx-padding: 8; -fx-border-color: #0f3460; -fx-border-radius: 6;"/>
+                    <TextField fx:id="txtFiltroPrecio" promptText="Precio máximo" prefWidth="120"
+                               style="-fx-background-color: #16213e; -fx-text-fill: white;
+                                      -fx-prompt-text-fill: #6c7a89; -fx-background-radius: 6;
+                                      -fx-padding: 8; -fx-border-color: #0f3460; -fx-border-radius: 6;"/>
+                    <Button text="🔍 Buscar" onAction="#buscarEventos"
+                            style="-fx-background-color: #e94560; -fx-text-fill: white;
+                                   -fx-background-radius: 6; -fx-padding: 8 16; -fx-cursor: hand;"/>
+                </HBox>
+
+                <TableView fx:id="tablaEventos" prefHeight="180"
+                           style="-fx-background-color: #16213e; -fx-border-color: #0f3460;">
+                    <columns>
+                        <TableColumn fx:id="colNombre"    text="Evento"    prefWidth="160"/>
+                        <TableColumn fx:id="colCiudad"    text="Ciudad"    prefWidth="100"/>
+                        <TableColumn fx:id="colFecha"     text="Fecha"     prefWidth="100"/>
+                        <TableColumn fx:id="colCategoria" text="Categoría" prefWidth="100"/>
+                        <TableColumn fx:id="colEstado"    text="Estado"    prefWidth="90"/>
+                    </columns>
+                </TableView>
+
+                <HBox spacing="12" alignment="CENTER_LEFT"
+                      style="-fx-background-color: #16213e; -fx-padding: 10;
+                             -fx-background-radius: 8; -fx-border-color: #0f3460; -fx-border-radius: 8;">
+                    <Label text="Zona:" style="-fx-text-fill: #a0a0b0; -fx-font-weight: bold;"/>
+                    <ComboBox fx:id="cmbZona" prefWidth="180"
+                              style="-fx-background-color: #0f3460; -fx-text-fill: white;"/>
+                    <Label text="Asiento:" style="-fx-text-fill: #a0a0b0; -fx-font-weight: bold;"/>
+                    <ComboBox fx:id="cmbAsiento" prefWidth="160"
+                              style="-fx-background-color: #0f3460; -fx-text-fill: white;"/>
+                </HBox>
+                <Label fx:id="lblInfoZona"
+                       style="-fx-text-fill: #a0a0b0; -fx-font-style: italic; -fx-font-size: 12;"/>
+
+                <HBox spacing="10" alignment="CENTER_LEFT"
+                      style="-fx-background-color: #16213e; -fx-padding: 10;
+                             -fx-background-radius: 8; -fx-border-color: #0f3460; -fx-border-radius: 8;">
+                    <Label text="Servicios adicionales:"
+                           style="-fx-text-fill: #a0a0b0; -fx-font-weight: bold;"/>
+                    <CheckBox fx:id="chkVIP"           text="VIP (+$100.000)"
+                              style="-fx-text-fill: #e94560;"/>
+                    <CheckBox fx:id="chkSeguro"        text="Seguro (+$20.000)"
+                              style="-fx-text-fill: #a0a0b0;"/>
+                    <CheckBox fx:id="chkMerchandising" text="Merchandising (+$50.000)"
+                              style="-fx-text-fill: #a0a0b0;"/>
+                    <CheckBox fx:id="chkParqueadero"   text="Parqueadero (+$30.000)"
+                              style="-fx-text-fill: #a0a0b0;"/>
+                </HBox>
+
+                <Button text="🛒 Comprar entrada" onAction="#comprarEntrada"
+                        style="-fx-background-color: #2ecc71; -fx-text-fill: white;
+                               -fx-font-size: 14; -fx-font-weight: bold;
+                               -fx-background-radius: 8; -fx-padding: 10 24; -fx-cursor: hand;"/>
+                <Label fx:id="lblMensajeCompra" style="-fx-text-fill: #2ecc71; -fx-font-size: 12;"/>
+            </VBox>
+        </Tab>
+
+        <Tab text="🗺 Mapa" closable="false">
+            <VBox spacing="10" style="-fx-padding: 15; -fx-background-color: #1a1a2e;">
+                <Label text="Selecciona un evento en la pestaña anterior para ver el mapa."
+                       style="-fx-text-fill: #a0a0b0; -fx-font-style: italic;"/>
+                <Label fx:id="lblInfoMapa"
+                       style="-fx-text-fill: #e94560; -fx-font-size: 12;"/>
+                <TableView fx:id="tablaMapaAsientos" VBox.vgrow="ALWAYS"
+                           style="-fx-background-color: #16213e; -fx-border-color: #0f3460;">
+                    <columns>
+                        <TableColumn fx:id="colMapaAsientoId" text="#"      prefWidth="50"/>
+                        <TableColumn fx:id="colMapaFila"      text="Fila"   prefWidth="70"/>
+                        <TableColumn fx:id="colMapaNumero"    text="Número" prefWidth="80"/>
+                        <TableColumn fx:id="colMapaZona"      text="Zona"   prefWidth="150"/>
+                        <TableColumn fx:id="colMapaEstado"    text="Estado" prefWidth="120"/>
+                    </columns>
+                </TableView>
+            </VBox>
+        </Tab>
+
+        <Tab text="📋 Mis compras" closable="false">
+            <VBox spacing="10" style="-fx-padding: 15; -fx-background-color: #1a1a2e;">
+                <TableView fx:id="tablaCompras" VBox.vgrow="ALWAYS"
+                           style="-fx-background-color: #16213e; -fx-border-color: #0f3460;">
+                    <columns>
+                        <TableColumn fx:id="colCompraFecha"  text="Fecha"  prefWidth="100"/>
+                        <TableColumn fx:id="colCompraEvento" text="Evento" prefWidth="180"/>
+                        <TableColumn fx:id="colCompraTotal"  text="Total"  prefWidth="100"/>
+                        <TableColumn fx:id="colCompraEstado" text="Estado" prefWidth="120"/>
+                    </columns>
+                </TableView>
+                <HBox spacing="10">
+                    <Button text="❌ Cancelar compra" onAction="#cancelarCompra"
+                            style="-fx-background-color: #e74c3c; -fx-text-fill: white;
+                                   -fx-background-radius: 6; -fx-padding: 8 14; -fx-cursor: hand;"/>
+                    <Button text="📄 Exportar CSV" onAction="#exportarCSV"
+                            style="-fx-background-color: #0f3460; -fx-text-fill: #a0a0b0;
+                                   -fx-background-radius: 6; -fx-padding: 8 14; -fx-cursor: hand;"/>
+                    <Button text="📑 Exportar PDF" onAction="#exportarPDF"
+                            style="-fx-background-color: #8e44ad; -fx-text-fill: white;
+                                   -fx-background-radius: 6; -fx-padding: 8 14; -fx-cursor: hand;"/>
+                </HBox>
+            </VBox>
+        </Tab>
+
+        <Tab text="👤 Mi perfil" closable="false">
+            <VBox spacing="15" style="-fx-padding: 30; -fx-background-color: #1a1a2e;">
+                <Label text="Editar perfil"
+                       style="-fx-font-size: 18; -fx-font-weight: bold; -fx-text-fill: white;"/>
+                <HBox spacing="10" alignment="CENTER_LEFT">
+                    <Label text="Nombre:" minWidth="100" style="-fx-text-fill: #a0a0b0;"/>
+                    <TextField fx:id="txtNombre" prefWidth="280"
+                               style="-fx-background-color: #16213e; -fx-text-fill: white;
+                                      -fx-background-radius: 6; -fx-padding: 9;
+                                      -fx-border-color: #0f3460; -fx-border-radius: 6;"/>
+                </HBox>
+                <HBox spacing="10" alignment="CENTER_LEFT">
+                    <Label text="Correo:" minWidth="100" style="-fx-text-fill: #a0a0b0;"/>
+                    <TextField fx:id="txtCorreo" prefWidth="280"
+                               style="-fx-background-color: #16213e; -fx-text-fill: white;
+                                      -fx-background-radius: 6; -fx-padding: 9;
+                                      -fx-border-color: #0f3460; -fx-border-radius: 6;"/>
+                </HBox>
+                <HBox spacing="10" alignment="CENTER_LEFT">
+                    <Label text="Teléfono:" minWidth="100" style="-fx-text-fill: #a0a0b0;"/>
+                    <TextField fx:id="txtTelefono" prefWidth="280"
+                               style="-fx-background-color: #16213e; -fx-text-fill: white;
+                                      -fx-background-radius: 6; -fx-padding: 9;
+                                      -fx-border-color: #0f3460; -fx-border-radius: 6;"/>
+                </HBox>
+                <Button text="💾 Guardar cambios" onAction="#guardarPerfil"
+                        style="-fx-background-color: #e94560; -fx-text-fill: white;
+                               -fx-font-weight: bold; -fx-background-radius: 6;
+                               -fx-padding: 10 24; -fx-cursor: hand;"/>
+                <Label fx:id="lblMensajePerfil" style="-fx-text-fill: #2ecc71;"/>
+            </VBox>
+        </Tab>
+    </TabPane>
+</VBox>

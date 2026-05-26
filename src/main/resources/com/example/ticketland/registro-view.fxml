@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox alignment="CENTER" spacing="0"
+      xmlns="http://javafx.com/javafx/21"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.example.ticketland.RegistroController"
+      style="-fx-background-color: #1a1a2e;">
+
+    <!-- HEADER -->
+    <VBox alignment="CENTER" spacing="6" style="-fx-padding: 30 0 20 0;">
+        <Label text="🎫 TicketLand"
+               style="-fx-font-size: 28; -fx-font-weight: bold; -fx-text-fill: #e94560;"/>
+        <Label text="Crear cuenta nueva"
+               style="-fx-font-size: 13; -fx-text-fill: #a0a0b0;"/>
+    </VBox>
+
+    <!-- CARD REGISTRO -->
+    <VBox alignment="CENTER" spacing="14"
+          style="-fx-background-color: #16213e; -fx-padding: 35;
+                 -fx-background-radius: 12; -fx-max-width: 380;">
+
+        <Label text="Datos personales"
+               style="-fx-font-size: 16; -fx-font-weight: bold; -fx-text-fill: white;"/>
+
+        <TextField fx:id="txtNombre" promptText="Nombre completo" prefWidth="310"
+                   style="-fx-background-color: #0f3460; -fx-text-fill: white;
+                          -fx-prompt-text-fill: #6c7a89; -fx-background-radius: 6;
+                          -fx-padding: 10; -fx-border-color: #e94560; -fx-border-radius: 6;"/>
+
+        <TextField fx:id="txtCorreo" promptText="Correo electrónico" prefWidth="310"
+                   style="-fx-background-color: #0f3460; -fx-text-fill: white;
+                          -fx-prompt-text-fill: #6c7a89; -fx-background-radius: 6;
+                          -fx-padding: 10; -fx-border-color: #e94560; -fx-border-radius: 6;"/>
+
+        <TextField fx:id="txtTelefono" promptText="Número de teléfono" prefWidth="310"
+                   style="-fx-background-color: #0f3460; -fx-text-fill: white;
+                          -fx-prompt-text-fill: #6c7a89; -fx-background-radius: 6;
+                          -fx-padding: 10; -fx-border-color: #e94560; -fx-border-radius: 6;"/>
+
+        <PasswordField fx:id="txtPassword" promptText="Contraseña" prefWidth="310"
+                       style="-fx-background-color: #0f3460; -fx-text-fill: white;
+                              -fx-prompt-text-fill: #6c7a89; -fx-background-radius: 6;
+                              -fx-padding: 10; -fx-border-color: #e94560; -fx-border-radius: 6;"/>
+
+        <PasswordField fx:id="txtConfirmarPassword" promptText="Confirmar contraseña" prefWidth="310"
+                       style="-fx-background-color: #0f3460; -fx-text-fill: white;
+                              -fx-prompt-text-fill: #6c7a89; -fx-background-radius: 6;
+                              -fx-padding: 10; -fx-border-color: #e94560; -fx-border-radius: 6;"/>
+
+        <Button text="✅ Crear cuenta" onAction="#registrar"
+                prefWidth="310"
+                style="-fx-background-color: #e94560; -fx-text-fill: white;
+                       -fx-font-size: 13; -fx-font-weight: bold; -fx-background-radius: 6;
+                       -fx-padding: 10; -fx-cursor: hand;"/>
+
+        <Button text="← Volver al login" onAction="#volverLogin"
+                prefWidth="310"
+                style="-fx-background-color: transparent; -fx-text-fill: #a0a0b0;
+                       -fx-font-size: 12; -fx-cursor: hand; -fx-underline: true;"/>
+
+        <Label fx:id="lblMensaje" style="-fx-text-fill: #e94560; -fx-font-size: 12;"/>
+    </VBox>
+</VBox>
