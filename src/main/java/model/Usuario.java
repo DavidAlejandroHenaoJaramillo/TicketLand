@@ -1,6 +1,6 @@
 package model;
 
-import observer.Observador;
+import observer.Observer;
 import strategy.PagoStrategy;
 
 import java.util.ArrayList;
@@ -8,7 +8,7 @@ import java.util.List;
 import java.time.LocalDate;
 import state.EstadoCompra;
 
-public class Usuario extends Persona implements Observador {
+public class Usuario extends Persona implements Observer {
 
     private List<Compra> historialCompras;
     private List<String> notificaciones;

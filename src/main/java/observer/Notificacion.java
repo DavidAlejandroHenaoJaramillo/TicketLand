@@ -8,7 +8,7 @@ public class Notificacion {
     /**
      * Atributos de la clase
      */
-    private List<Observador> observadores;
+    private List<Observer> observadores;
 
     /**
      * Constructor de la clase
@@ -21,28 +21,28 @@ public class Notificacion {
      * Getters y Setters
      * @return
      */
-    public List<Observador> getObservadores() {
+    public List<Observer> getObservadores() {
         return observadores;
     }
 
-    public void setObservadores(List<Observador> observadores) {
+    public void setObservadores(List<Observer> observadores) {
         this.observadores = observadores;
     }
 
     /**
      * Metodo para agregar observadores
-     * @param observador
+     * @param observer
      */
-    public void suscribir(Observador observador) {
-        observadores.add(observador);
+    public void suscribir(Observer observer) {
+        observadores.add(observer);
     }
 
     /**
      * Metodo para eliminar observadores
-     * @param observador
+     * @param observer
      */
-    public void eliminar(Observador observador) {
-        observadores.remove(observador);
+    public void eliminar(Observer observer) {
+        observadores.remove(observer);
     }
 
     /**
@@ -50,8 +50,8 @@ public class Notificacion {
      * @param mensaje
      */
     public void notificar(String mensaje) {
-        for (Observador observador : observadores) {
-            observador.actualizar(mensaje);
+        for (Observer observer : observadores) {
+            observer.actualizar(mensaje);
         }
     }
 }

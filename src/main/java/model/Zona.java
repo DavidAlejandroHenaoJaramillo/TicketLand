@@ -13,14 +13,16 @@ public class Zona {
     private double precioBase;
     private TipoZona tipoZona;
     private List<Asiento> asientos;
+    private Tarifa tarifa;
 
-    public Zona(int idZona, String nombre, int capacidad, double precioBase, TipoZona tipoZona) {
+    public Zona(int idZona, String nombre, int capacidad, double precioBase, TipoZona tipoZona, Tarifa tarifa) {
         this.idZona = idZona;
         this.nombre = nombre;
         this.capacidad = capacidad;
         this.precioBase = precioBase;
         this.tipoZona = tipoZona;
         asientos = new ArrayList<>();
+        this.tarifa = tarifa;
     }
 
     public int getIdZona() {
@@ -74,6 +76,10 @@ public class Zona {
     public void agregarAsiento(Asiento asiento) {
         asientos.add(asiento);
     }
+
+    public Tarifa getTarifa() {return tarifa;}
+
+    public void setTarifa(Tarifa tarifa) {this.tarifa = tarifa;}
 
     // RF-030: consultar ocupación por zona
     public int calcularOcupacion() {
