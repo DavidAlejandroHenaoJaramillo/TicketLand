@@ -193,13 +193,14 @@ public class UsuarioController {
         tablaZonas.setRowFactory(tv -> new TableRow<>() {
             @Override protected void updateItem(Zona item, boolean empty) {
                 super.updateItem(item, empty);
-                if (item == null || empty) { setStyle(""); return; }
+                getStyleClass().removeAll("zona-llena", "zona-poca", "zona-disponible");
+                if (item == null || empty) return;
                 if (item.getAsientosDisponibles().isEmpty())
-                    setStyle("-fx-background-color: #3a1010;");
+                    getStyleClass().add("zona-llena");
                 else if (item.getAsientosDisponibles().size() < 3)
-                    setStyle("-fx-background-color: #3a2a00;");
+                    getStyleClass().add("zona-poca");
                 else
-                    setStyle("-fx-background-color: #0a2a1a;");
+                    getStyleClass().add("zona-disponible");
             }
         });
         tablaZonas.setItems(FXCollections.observableArrayList(evento.getRecinto().getZonas()));
@@ -266,13 +267,13 @@ public class UsuarioController {
         tablaMapaAsientos.setRowFactory(tv -> new TableRow<>() {
             @Override protected void updateItem(Asiento item, boolean empty) {
                 super.updateItem(item, empty);
+                getStyleClass().removeAll("disponible", "reservado", "vendido", "bloqueado");
                 if (item == null || empty) { setStyle(""); return; }
                 switch (item.getEstado().toString()) {
-                    case "DISPONIBLE" -> setStyle("-fx-background-color: #0a2a1a;");
-                    case "RESERVADO"  -> setStyle("-fx-background-color: #2a2000;");
-                    case "VENDIDO"    -> setStyle("-fx-background-color: #2a0a0a;");
-                    case "BLOQUEADO"  -> setStyle("-fx-background-color: #1a1a2a;");
-                    default           -> setStyle("");
+                    case "DISPONIBLE" -> getStyleClass().add("disponible");
+                    case "RESERVADO"  -> getStyleClass().add("reservado");
+                    case "VENDIDO"    -> getStyleClass().add("vendido");
+                    case "BLOQUEADO"  -> getStyleClass().add("bloqueado");
                 }
             }
         });
@@ -311,12 +312,12 @@ public class UsuarioController {
         tablaEventos.setRowFactory(tv -> new TableRow<>() {
             @Override protected void updateItem(Evento item, boolean empty) {
                 super.updateItem(item, empty);
-                if (item == null || empty) { setStyle(""); return; }
+                getStyleClass().removeAll("activo", "pausado", "cancelado");
+                if (item == null || empty) return;
                 switch (item.getEstado().toString()) {
-                    case "ACTIVO"    -> setStyle("-fx-background-color: #0a1f0a;");
-                    case "PAUSADO"   -> setStyle("-fx-background-color: #1f1500;");
-                    case "CANCELADO" -> setStyle("-fx-background-color: #1f0a0a;");
-                    default          -> setStyle("");
+                    case "ACTIVO"    -> getStyleClass().add("activo");
+                    case "PAUSADO"   -> getStyleClass().add("pausado");
+                    case "CANCELADO" -> getStyleClass().add("cancelado");
                 }
             }
         });
@@ -387,13 +388,13 @@ public class UsuarioController {
         tablaCompras.setRowFactory(tv -> new TableRow<>() {
             @Override protected void updateItem(Compra item, boolean empty) {
                 super.updateItem(item, empty);
-                if (item == null || empty) { setStyle(""); return; }
+                getStyleClass().removeAll("pagada", "confirmada", "compra-cancelada", "reembolsada");
+                if (item == null || empty) return;
                 switch (item.getEstadoCompra().toString()) {
-                    case "PAGADA"      -> setStyle("-fx-background-color: #0a1f10;");
-                    case "CONFIRMADA"  -> setStyle("-fx-background-color: #0a1520;");
-                    case "CANCELADA"   -> setStyle("-fx-background-color: #1f0a0a;");
-                    case "REEMBOLSADA" -> setStyle("-fx-background-color: #1a0a1a;");
-                    default            -> setStyle("");
+                    case "PAGADA"      -> getStyleClass().add("pagada");
+                    case "CONFIRMADA"  -> getStyleClass().add("confirmada");
+                    case "CANCELADA"   -> getStyleClass().add("compra-cancelada");
+                    case "REEMBOLSADA" -> getStyleClass().add("reembolsada");
                 }
             }
         });

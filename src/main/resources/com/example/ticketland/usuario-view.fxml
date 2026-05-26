@@ -5,7 +5,8 @@
 <VBox spacing="0" xmlns="http://javafx.com/javafx/21"
       xmlns:fx="http://javafx.com/fxml"
       fx:controller="com.example.ticketland.UsuarioController"
-      style="-fx-background-color: #f0f4ff;">
+      style="-fx-background-color: #f0f4ff;"
+      stylesheets="@style.css">
 
     <HBox spacing="16" alignment="CENTER_LEFT"
           style="-fx-padding: 14 24; -fx-background-color: #003bbf;
@@ -57,8 +58,8 @@
                     </HBox>
 
                     <TableView fx:id="tablaEventos" VBox.vgrow="ALWAYS"
-                               style="-fx-background-color: #ffffff; -fx-border-color: #b0c8ff;
-                                      -fx-border-radius: 8; -fx-background-radius: 8;">
+                               style="-fx-background-color: #e8eeff; -fx-border-color: #b0c8ff;
+                                      -fx-background-radius: 8;">
                         <columns>
                             <TableColumn fx:id="colNombre"    text="Evento"     prefWidth="170"/>
                             <TableColumn fx:id="colCiudad"    text="Ciudad"     prefWidth="90"/>
@@ -120,7 +121,8 @@
                             <Label text="🗺 Disponibilidad por zona"
                                    style="-fx-font-weight: bold; -fx-text-fill: #0a1628; -fx-font-size: 13;"/>
                             <TableView fx:id="tablaZonas" prefHeight="130"
-                                       style="-fx-background-color: #ffffff; -fx-border-color: #b0c8ff;">
+                                       style="-fx-background-color: #e8eeff; -fx-border-color: #b0c8ff;
+                                              -fx-background-radius: 8;">
                                 <columns>
                                     <TableColumn fx:id="colZonaNombre"      text="Zona"        prefWidth="130"/>
                                     <TableColumn fx:id="colZonaTipo"        text="Tipo"        prefWidth="80"/>
