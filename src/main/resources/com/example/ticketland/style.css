@@ -1,4 +1,65 @@
+/* Versiones más oscuras al seleccionar — una por cada clase */
+.table-view .table-row-cell.disponible:selected,
+.table-view .table-row-cell.disponible:selected:focused {
+    -fx-background-color: #067a3e !important;
+}
+.table-view .table-row-cell.reservado:selected,
+.table-view .table-row-cell.reservado:selected:focused {
+    -fx-background-color: #a88a00 !important;
+}
+.table-view .table-row-cell.vendido:selected,
+.table-view .table-row-cell.vendido:selected:focused {
+    -fx-background-color: #7a0000 !important;
+}
+.table-view .table-row-cell.bloqueado:selected,
+.table-view .table-row-cell.bloqueado:selected:focused {
+    -fx-background-color: #8090a0 !important;
+}
+.table-view .table-row-cell.activo:selected,
+.table-view .table-row-cell.activo:selected:focused {
+    -fx-background-color: #2a6e8a !important;
+}
+.table-view .table-row-cell.pausado:selected,
+.table-view .table-row-cell.pausado:selected:focused {
+    -fx-background-color: #a88a00 !important;
+}
+.table-view .table-row-cell.cancelado:selected,
+.table-view .table-row-cell.cancelado:selected:focused {
+    -fx-background-color: #7a0000 !important;
+}
+.table-view .table-row-cell.pagada:selected,
+.table-view .table-row-cell.pagada:selected:focused {
+    -fx-background-color: #1a8a14 !important;
+}
+.table-view .table-row-cell.confirmada:selected,
+.table-view .table-row-cell.confirmada:selected:focused {
+    -fx-background-color: #2a6e8a !important;
+}
+.table-view .table-row-cell.compra-cancelada:selected,
+.table-view .table-row-cell.compra-cancelada:selected:focused {
+    -fx-background-color: #7a0000 !important;
+}
+.table-view .table-row-cell.reembolsada:selected,
+.table-view .table-row-cell.reembolsada:selected:focused {
+    -fx-background-color: #9a70c0 !important;
+}
+.table-view .table-row-cell.zona-llena:selected,
+.table-view .table-row-cell.zona-llena:selected:focused {
+    -fx-background-color: #7a0000 !important;
+}
+.table-view .table-row-cell.zona-poca:selected,
+.table-view .table-row-cell.zona-poca:selected:focused {
+    -fx-background-color: #a88a00 !important;
+}
+.table-view .table-row-cell.zona-disponible:selected,
+.table-view .table-row-cell.zona-disponible:selected:focused {
+    -fx-background-color: #1a8a14 !important;
+}
 
+/* Texto blanco en todas las selecciones para mejor contraste */
+.table-view .table-row-cell:selected .table-cell {
+    -fx-text-fill: white !important;
+}
 
 
 
