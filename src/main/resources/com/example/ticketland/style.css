@@ -1,0 +1,76 @@
+
+
+
+
+
+/* Colores tabla de asientos según estado */
+.table-view .table-row-cell.disponible {
+    -fx-background-color: #09ad59 !important;
+}
+.table-view .table-row-cell.reservado {
+    -fx-background-color: #dcbb0c !important;
+}
+.table-view .table-row-cell.vendido {
+    -fx-background-color: #bc0606 !important;
+}
+.table-view .table-row-cell.bloqueado {
+    -fx-background-color: #d0d8e0 !important;
+}
+
+/* Texto oscuro para que se lea bien en todos */
+.table-view .table-row-cell.disponible .table-cell,
+.table-view .table-row-cell.reservado .table-cell,
+.table-view .table-row-cell.vendido .table-cell,
+.table-view .table-row-cell.bloqueado .table-cell {
+    -fx-text-fill: #0a1628 !important;
+}
+
+/* Tabla eventos según estado */
+.table-view .table-row-cell.activo {
+    -fx-background-color: #49a6c8 !important;
+}
+.table-view .table-row-cell.pausado {
+    -fx-background-color: #dcbb0c !important;
+}
+.table-view .table-row-cell.cancelado {
+    -fx-background-color: #bc0606 !important;
+}
+
+/* Tabla compras según estado */
+.table-view .table-row-cell.pagada {
+    -fx-background-color: #31cc29 !important;
+}
+.table-view .table-row-cell.confirmada {
+    -fx-background-color: #49a6c8 !important;
+}
+.table-view .table-row-cell.compra-cancelada {
+    -fx-background-color: #bc0606 !important;
+}
+.table-view .table-row-cell.reembolsada {
+    -fx-background-color: #e0c8f0 !important;
+}
+
+/* Tabla zonas según disponibilidad */
+.table-view .table-row-cell.zona-llena {
+    -fx-background-color: #bc0606 !important;
+}
+.table-view .table-row-cell.zona-poca {
+    -fx-background-color: #dcbb0c !important;
+}
+.table-view .table-row-cell.zona-disponible {
+    -fx-background-color: #31cc29 !important;
+}
+
+/* Texto oscuro para todas */
+.table-view .table-row-cell.activo .table-cell,
+.table-view .table-row-cell.pausado .table-cell,
+.table-view .table-row-cell.cancelado .table-cell,
+.table-view .table-row-cell.pagada .table-cell,
+.table-view .table-row-cell.confirmada .table-cell,
+.table-view .table-row-cell.compra-cancelada .table-cell,
+.table-view .table-row-cell.reembolsada .table-cell,
+.table-view .table-row-cell.zona-llena .table-cell,
+.table-view .table-row-cell.zona-poca .table-cell,
+.table-view .table-row-cell.zona-disponible .table-cell {
+    -fx-text-fill: #0a1628 !important;
+}
