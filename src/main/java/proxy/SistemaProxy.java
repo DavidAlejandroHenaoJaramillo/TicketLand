@@ -1,6 +1,6 @@
 package proxy;
 
-import builder.Compra;
+import model.Compra;
 import model.Entrada;
 import model.EstadoEntrada;
 import model.Evento;

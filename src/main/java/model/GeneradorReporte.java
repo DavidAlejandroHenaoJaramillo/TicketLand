@@ -1,7 +1,7 @@
 package model;
 
 import adapter.ReporteAdapter;
-import builder.Compra;
+import model.Compra;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;

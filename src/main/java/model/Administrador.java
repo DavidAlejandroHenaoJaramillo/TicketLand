@@ -1,6 +1,6 @@
 package model;
 
-import builder.Compra;
+import model.Compra;
 
 import java.time.LocalDate;
 import java.util.List;
