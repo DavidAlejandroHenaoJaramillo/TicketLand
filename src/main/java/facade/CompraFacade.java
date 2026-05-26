@@ -1,13 +1,10 @@
 package facade;
 
 import decorator.EntradaBase;
-import model.Compra;
+import builder.Compra;
 import model.Evento;
 import model.Usuario;
-import state.CompraCreada;
 import strategy.PagoStrategy;
-
-import java.time.LocalDate;
 
 public class CompraFacade {
 
@@ -15,8 +12,7 @@ public class CompraFacade {
     public Compra realizarCompra(Usuario usuario, Evento evento,
                                  EntradaBase entrada, PagoStrategy metodoPago) {
         // RF-034, RF-049: usa CompraBuilder para construir la compra correctamente
-        Compra compra = new builder.CompraBuilder(
-                (int)(Math.random() * 10000))
+        Compra compra = new builder.CompraConcretaBuilder()
                 .conUsuario(usuario)
                 .conEvento(evento)
                 .conMetodoPago(metodoPago)

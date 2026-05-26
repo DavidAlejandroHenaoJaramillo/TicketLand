@@ -1,9 +1,7 @@
-package viewController;
+package com.example.ticketland;
 
-import com.example.ticketland.HelloApplication;
-import controller.CompraController;
-import controller.EventoController;
-import controller.ReporteController;
+import builder.Compra;
+import decorator.*;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -12,20 +10,14 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import model.*;
-import decorator.EntradaBase;
 import strategy.*;
-import javafx.geometry.Pos;
-import javafx.scene.Node;
-import javafx.scene.control.ToggleButton;
-import javafx.scene.layout.GridPane;
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class UsuarioViewController {
+public class UsuarioController {
 
     @FXML private Label lblBienvenida;
     @FXML private Label lblNotificacion;
@@ -110,25 +102,16 @@ public class UsuarioViewController {
     @FXML private Label lblStatGastado;
     @FXML private Label lblStatEventos;
 
-    @FXML private GridPane gridAsientosCompra;
-    @FXML private GridPane gridMapaAsientos;
-
     private Usuario usuario;
-    private Evento eventoSeleccionado;
-
-    private final EventoController eventoController = new EventoController();
-    private final CompraController compraController = new CompraController();
-    private final controller.UsuarioController usuarioController = new controller.UsuarioController();
-    private final ReporteController reporteController = new ReporteController();
+    private TicketLand sistema = TicketLand.getInstance();
+    private Evento eventoSeleccionado = null;
 
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
-
         lblBienvenida.setText("Bienvenido, " + usuario.getNombre());
         txtNombre.setText(usuario.getNombre());
         txtCorreo.setText(usuario.getCorreo());
         txtTelefono.setText(usuario.getTelefono());
-
         inicializarFiltroEstado();
         inicializarMetodoPago();
         inicializarTipoPago();
@@ -139,34 +122,26 @@ public class UsuarioViewController {
         actualizarCheckboxTotales();
         cargarMetodosPago();
         actualizarStats();
-
-        if (lblNotificacion != null) {
+        if (lblNotificacion != null)
             lblNotificacion.setText("🔔 " + usuario.getHistorialCompras().size() + " compras");
-        }
     }
 
     private void inicializarFiltroEstado() {
         if (cmbFiltroEstado == null) return;
-
         cmbFiltroEstado.setItems(FXCollections.observableArrayList(
-                "Todas", "CREADA", "PAGADA", "CONFIRMADA", "CANCELADA", "REEMBOLSADA", "INCIDENCIA"
-        ));
+                "Todas", "CREADA", "PAGADA", "CONFIRMADA", "CANCELADA", "REEMBOLSADA", "INCIDENCIA"));
         cmbFiltroEstado.getSelectionModel().selectFirst();
     }
 
     private void inicializarMetodoPago() {
         if (cmbMetodoPago == null) return;
-
         cmbMetodoPago.setItems(FXCollections.observableArrayList(usuario.getMetodosDepago()));
-
-        if (!usuario.getMetodosDepago().isEmpty()) {
+        if (!usuario.getMetodosDepago().isEmpty())
             cmbMetodoPago.getSelectionModel().selectFirst();
-        }
     }
 
     private void inicializarTipoPago() {
         if (cmbTipoPago == null) return;
-
         cmbTipoPago.setItems(FXCollections.observableArrayList("Tarjeta", "PSE", "Efectivo"));
         cmbTipoPago.getSelectionModel().selectFirst();
     }
@@ -178,26 +153,22 @@ public class UsuarioViewController {
                 mostrarDetalleEvento(nuevo);
                 cargarZonasEvento(nuevo);
                 mostrarMapaAsientos(nuevo);
-                pintarAsientosPorEvento(nuevo);
             }
         });
-
         if (cmbZona != null) {
             cmbZona.setOnAction(e -> {
                 actualizarAsientosDeZona();
                 actualizarCheckboxTotales();
             });
         }
-
-        if (chkVIP != null) chkVIP.setOnAction(e -> actualizarCheckboxTotales());
-        if (chkSeguro != null) chkSeguro.setOnAction(e -> actualizarCheckboxTotales());
+        if (chkVIP != null)           chkVIP.setOnAction(e -> actualizarCheckboxTotales());
+        if (chkSeguro != null)        chkSeguro.setOnAction(e -> actualizarCheckboxTotales());
         if (chkMerchandising != null) chkMerchandising.setOnAction(e -> actualizarCheckboxTotales());
-        if (chkParqueadero != null) chkParqueadero.setOnAction(e -> actualizarCheckboxTotales());
+        if (chkParqueadero != null)   chkParqueadero.setOnAction(e -> actualizarCheckboxTotales());
     }
 
     private void mostrarDetalleEvento(Evento evento) {
         if (lblDetalleNombre == null) return;
-
         lblDetalleNombre.setText(evento.getNombre());
         lblDetalleLugar.setText(evento.getRecinto() != null
                 ? evento.getRecinto().getNombre() + " — " + evento.getRecinto().getCiudad()
@@ -205,16 +176,13 @@ public class UsuarioViewController {
         lblDetalleFecha.setText(evento.getFecha().toString());
         lblDetalleCategoria.setText(evento.getCategoria());
         lblDetalleDescripcion.setText(evento.getDescripcion() != null && !evento.getDescripcion().isEmpty()
-                ? evento.getDescripcion()
-                : "Sin descripción disponible.");
+                ? evento.getDescripcion() : "Sin descripción disponible.");
         lblDetallePoliticas.setText(evento.getPoliticas() != null && !evento.getPoliticas().isEmpty()
-                ? evento.getPoliticas()
-                : "Sin políticas definidas.");
+                ? evento.getPoliticas() : "Sin políticas definidas.");
     }
 
     private void cargarZonasEvento(Evento evento) {
         if (tablaZonas == null || evento.getRecinto() == null) return;
-
         colZonaNombre.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getNombre()));
         colZonaTipo.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getTipoZona().toString()));
         colZonaPrecio.setCellValueFactory(d -> new SimpleStringProperty("$" + (int) d.getValue().getPrecioBase()));
@@ -222,29 +190,22 @@ public class UsuarioViewController {
                 new SimpleStringProperty(String.valueOf(d.getValue().getAsientosDisponibles().size())));
         colZonaCapacidad.setCellValueFactory(d ->
                 new SimpleStringProperty(String.valueOf(d.getValue().getCapacidad())));
-
         tablaZonas.setRowFactory(tv -> new TableRow<>() {
-            @Override
-            protected void updateItem(Zona item, boolean empty) {
+            @Override protected void updateItem(Zona item, boolean empty) {
                 super.updateItem(item, empty);
                 getStyleClass().removeAll("zona-llena", "zona-poca", "zona-disponible");
-
                 if (item == null || empty) return;
-
-                if (item.getAsientosDisponibles().isEmpty()) {
+                if (item.getAsientosDisponibles().isEmpty())
                     getStyleClass().add("zona-llena");
-                } else if (item.getAsientosDisponibles().size() < 3) {
+                else if (item.getAsientosDisponibles().size() < 3)
                     getStyleClass().add("zona-poca");
-                } else {
+                else
                     getStyleClass().add("zona-disponible");
-                }
             }
         });
-
-        tablaZonas.setItems(FXCollections.observableArrayList(eventoController.obtenerZonas(evento)));
-
+        tablaZonas.setItems(FXCollections.observableArrayList(evento.getRecinto().getZonas()));
         if (cmbZona != null) {
-            cmbZona.setItems(FXCollections.observableArrayList(eventoController.obtenerZonas(evento)));
+            cmbZona.setItems(FXCollections.observableArrayList(evento.getRecinto().getZonas()));
             cmbZona.getSelectionModel().selectFirst();
             actualizarAsientosDeZona();
         }
@@ -253,294 +214,94 @@ public class UsuarioViewController {
     private void actualizarAsientosDeZona() {
         Zona zona = cmbZona != null ? cmbZona.getValue() : null;
         if (zona == null) return;
-
-        List<Asiento> disponibles = eventoController.obtenerAsientosDisponibles(zona);
-
+        List<Asiento> disponibles = zona.getAsientosDisponibles();
         if (cmbAsiento != null) {
             cmbAsiento.setItems(FXCollections.observableArrayList(disponibles));
-
-            if (!disponibles.isEmpty()) {
-                cmbAsiento.getSelectionModel().selectFirst();
-            }
+            if (!disponibles.isEmpty()) cmbAsiento.getSelectionModel().selectFirst();
         }
-
-        if (lblInfoZona != null) {
-            lblInfoZona.setText(zona.getNombre()
-                    + " | Precio base: $" + (int) zona.getPrecioBase()
-                    + " | Disponibles: " + disponibles.size()
-                    + " / " + zona.getCapacidad());
-        }
+        if (lblInfoZona != null)
+            lblInfoZona.setText(zona.getNombre() + " | Precio base: $" + (int) zona.getPrecioBase()
+                    + " | Disponibles: " + disponibles.size() + " / " + zona.getCapacidad());
         actualizarCheckboxTotales();
     }
 
     private void actualizarCheckboxTotales() {
         if (lblTotalEstimado == null) return;
-
         Zona zona = cmbZona != null ? cmbZona.getValue() : null;
-        double base = zona != null ? zona.getPrecioBase() : 0;
+        double base = (zona != null) ? zona.getPrecioBase() : 0;
         double extras = 0;
-
-        if (chkVIP != null && chkVIP.isSelected()) extras += 100000;
-        if (chkSeguro != null && chkSeguro.isSelected()) extras += 20000;
+        if (chkVIP != null && chkVIP.isSelected())                     extras += 100000;
+        if (chkSeguro != null && chkSeguro.isSelected())               extras += 20000;
         if (chkMerchandising != null && chkMerchandising.isSelected()) extras += 50000;
-        if (chkParqueadero != null && chkParqueadero.isSelected()) extras += 30000;
-
-        lblTotalEstimado.setText("$" + (int) (base + extras));
+        if (chkParqueadero != null && chkParqueadero.isSelected())     extras += 30000;
+        lblTotalEstimado.setText("$" + (int)(base + extras));
     }
 
     private void mostrarMapaAsientos(Evento evento) {
         if (tablaMapaAsientos == null || evento.getRecinto() == null) return;
-
         colMapaAsientoId.setCellValueFactory(d ->
                 new SimpleStringProperty(String.valueOf(d.getValue().getIdAsiento())));
         colMapaFila.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getFila()));
         colMapaNumero.setCellValueFactory(d ->
                 new SimpleStringProperty(String.valueOf(d.getValue().getNumero())));
-
         colMapaZona.setCellValueFactory(d -> {
-            for (Zona zona : evento.getRecinto().getZonas()) {
-                if (zona.getAsientos().contains(d.getValue())) {
-                    return new SimpleStringProperty(zona.getNombre());
-                }
-            }
+            for (Zona z : evento.getRecinto().getZonas())
+                if (z.getAsientos().contains(d.getValue()))
+                    return new SimpleStringProperty(z.getNombre());
             return new SimpleStringProperty("-");
         });
-
         colMapaTipo.setCellValueFactory(d -> {
-            for (Zona zona : evento.getRecinto().getZonas()) {
-                if (zona.getAsientos().contains(d.getValue())) {
-                    return new SimpleStringProperty(zona.getTipoZona().toString());
-                }
-            }
+            for (Zona z : evento.getRecinto().getZonas())
+                if (z.getAsientos().contains(d.getValue()))
+                    return new SimpleStringProperty(z.getTipoZona().toString());
             return new SimpleStringProperty("-");
         });
-
         colMapaPrecio.setCellValueFactory(d -> {
-            for (Zona zona : evento.getRecinto().getZonas()) {
-                if (zona.getAsientos().contains(d.getValue())) {
-                    return new SimpleStringProperty("$" + (int) zona.getPrecioBase());
-                }
-            }
+            for (Zona z : evento.getRecinto().getZonas())
+                if (z.getAsientos().contains(d.getValue()))
+                    return new SimpleStringProperty("$" + (int) z.getPrecioBase());
             return new SimpleStringProperty("-");
         });
-
         colMapaEstado.setCellValueFactory(d ->
                 new SimpleStringProperty(d.getValue().getEstado().toString()));
-
         tablaMapaAsientos.setRowFactory(tv -> new TableRow<>() {
-            @Override
-            protected void updateItem(Asiento item, boolean empty) {
+            @Override protected void updateItem(Asiento item, boolean empty) {
                 super.updateItem(item, empty);
                 getStyleClass().removeAll("disponible", "reservado", "vendido", "bloqueado");
-
-                if (item == null || empty) {
-                    setStyle("");
-                    return;
-                }
-
+                if (item == null || empty) { setStyle(""); return; }
                 switch (item.getEstado().toString()) {
                     case "DISPONIBLE" -> getStyleClass().add("disponible");
-                    case "RESERVADO" -> getStyleClass().add("reservado");
-                    case "VENDIDO" -> getStyleClass().add("vendido");
-                    case "BLOQUEADO" -> getStyleClass().add("bloqueado");
+                    case "RESERVADO"  -> getStyleClass().add("reservado");
+                    case "VENDIDO"    -> getStyleClass().add("vendido");
+                    case "BLOQUEADO"  -> getStyleClass().add("bloqueado");
                 }
             }
         });
-
-        List<Asiento> asientos = eventoController.obtenerAsientos(evento);
-        tablaMapaAsientos.setItems(FXCollections.observableArrayList(asientos));
-
-        if (lblInfoMapa != null) {
-            lblInfoMapa.setText(evento.getNombre()
-                    + " | " + evento.getRecinto().getNombre()
-                    + " — " + asientos.size()
-                    + " asientos totales");
-        }
-        pintarMapaAsientos(evento);
+        List<Asiento> todos = new ArrayList<>();
+        for (Zona z : evento.getRecinto().getZonas()) todos.addAll(z.getAsientos());
+        tablaMapaAsientos.setItems(FXCollections.observableArrayList(todos));
+        if (lblInfoMapa != null)
+            lblInfoMapa.setText(evento.getNombre() + " | " + evento.getRecinto().getNombre()
+                    + " — " + todos.size() + " asientos totales");
     }
 
-    private void pintarAsientosCompra(Evento evento, Zona zonaSeleccionada) {
-        if (gridAsientosCompra == null || evento == null || zonaSeleccionada == null) return;
-
-        gridAsientosCompra.getChildren().clear();
-
-        Map<String, Integer> filas = new LinkedHashMap<>();
-        for (Asiento asiento : zonaSeleccionada.getAsientos()) {
-            filas.putIfAbsent(asiento.getFila(), filas.size());
-        }
-
-        for (Asiento asiento : zonaSeleccionada.getAsientos()) {
-            ToggleButton btn = crearBotonAsiento(asiento);
-            boolean disponible = asiento.getEstado().toString().equals("DISPONIBLE");
-
-            btn.setDisable(!disponible);
-            btn.setOnAction(e -> {
-                if (cmbAsiento != null) {
-                    cmbAsiento.getSelectionModel().select(asiento);
-                }
-
-                limpiarSeleccionVisual(gridAsientosCompra);
-                btn.setStyle(estiloAsiento(asiento) + "-fx-border-color: #0057ff; -fx-border-width: 3;");
-            });
-
-            gridAsientosCompra.add(btn, asiento.getNumero(), filas.get(asiento.getFila()));
-        }
-    }
-
-    private void pintarAsientosPorEvento(Evento evento) {
-        if (gridAsientosCompra == null || evento == null || evento.getRecinto() == null) return;
-
-        gridAsientosCompra.getChildren().clear();
-
-        int filaBase = 0;
-
-        for (Zona zona : evento.getRecinto().getZonas()) {
-            Label lblZona = new Label(zona.getNombre() + " - $" + (int) zona.getPrecioBase());
-            lblZona.setStyle("-fx-font-weight: bold; -fx-text-fill: #0057ff; -fx-padding: 10 0 4 0;");
-
-            gridAsientosCompra.add(lblZona, 0, filaBase, 12, 1);
-            filaBase++;
-
-            Map<String, Integer> filas = new LinkedHashMap<>();
-
-            for (Asiento asiento : zona.getAsientos()) {
-                filas.putIfAbsent(asiento.getFila(), filas.size());
-            }
-
-            for (Asiento asiento : zona.getAsientos()) {
-                ToggleButton btn = crearBotonAsiento(asiento);
-
-                boolean disponible = asiento.getEstado().toString().equals("DISPONIBLE");
-                btn.setDisable(!disponible);
-
-                btn.setOnAction(e -> {
-                    if (cmbZona != null) {
-                        cmbZona.getSelectionModel().select(zona);
-                    }
-
-                    if (cmbAsiento != null) {
-                        cmbAsiento.setItems(FXCollections.observableArrayList(zona.getAsientosDisponibles()));
-                        cmbAsiento.getSelectionModel().select(asiento);
-                    }
-
-                    limpiarSeleccionVisual(gridAsientosCompra);
-                    btn.setStyle(estiloAsiento(asiento) + "-fx-border-color: #0057ff; -fx-border-width: 3;");
-
-                    actualizarCheckboxTotales();
-
-                    if (lblInfoZona != null) {
-                        lblInfoZona.setText(zona.getNombre()
-                                + " | Precio base: $" + (int) zona.getPrecioBase()
-                                + " | Disponibles: " + zona.getAsientosDisponibles().size()
-                                + " / " + zona.getCapacidad());
-                    }
-                });
-
-                int fila = filaBase + filas.get(asiento.getFila());
-                int columna = asiento.getNumero();
-
-                gridAsientosCompra.add(btn, columna, fila);
-            }
-
-            filaBase += filas.size() + 1;
-        }
-    }
-
-    private void pintarMapaAsientos(Evento evento) {
-        if (gridMapaAsientos == null || evento == null || evento.getRecinto() == null) return;
-
-        gridMapaAsientos.getChildren().clear();
-
-        int filaBase = 0;
-
-        for (Zona zona : evento.getRecinto().getZonas()) {
-            Label lblZona = new Label(zona.getNombre());
-            lblZona.setStyle("-fx-font-weight: bold; -fx-text-fill: #0057ff; -fx-padding: 8 0 4 0;");
-            gridMapaAsientos.add(lblZona, 0, filaBase, 10, 1);
-            filaBase++;
-
-            Map<String, Integer> filas = new LinkedHashMap<>();
-            for (Asiento asiento : zona.getAsientos()) {
-                filas.putIfAbsent(asiento.getFila(), filas.size());
-            }
-
-            for (Asiento asiento : zona.getAsientos()) {
-                ToggleButton btn = crearBotonAsiento(asiento);
-                btn.setDisable(true);
-
-                int fila = filaBase + filas.get(asiento.getFila());
-                int columna = asiento.getNumero();
-
-                gridMapaAsientos.add(btn, columna, fila);
-            }
-
-            filaBase += filas.size() + 1;
-        }
-    }
-
-    private ToggleButton crearBotonAsiento(Asiento asiento) {
-        ToggleButton btn = new ToggleButton(asiento.getFila() + asiento.getNumero());
-
-        btn.setUserData(asiento);
-        btn.setMinSize(42, 36);
-        btn.setPrefSize(42, 36);
-        btn.setMaxSize(42, 36);
-        btn.setAlignment(Pos.CENTER);
-        btn.setStyle(estiloAsiento(asiento));
-
-        return btn;
-    }
-
-    private String estiloAsiento(Asiento asiento) {
-        String color = switch (asiento.getEstado().toString()) {
-            case "DISPONIBLE" -> "#2ecc71";
-            case "RESERVADO" -> "#f39c12";
-            case "VENDIDO" -> "#e74c3c";
-            case "BLOQUEADO" -> "#7f8c8d";
-            default -> "#bdc3c7";
-        };
-
-        return "-fx-background-color: " + color + ";"
-                + "-fx-text-fill: white;"
-                + "-fx-font-size: 11;"
-                + "-fx-font-weight: bold;"
-                + "-fx-background-radius: 6;"
-                + "-fx-border-radius: 6;"
-                + "-fx-cursor: hand;";
-    }
-
-    private void limpiarSeleccionVisual(GridPane grid) {
-        if (grid == null) return;
-
-        for (Node node : grid.getChildren()) {
-            if (node instanceof ToggleButton btn && btn.getUserData() instanceof Asiento asiento) {
-                btn.setStyle(estiloAsiento(asiento));
-            }
-        }
-    }
-
-    @FXML
-    private void buscarEventos() {
-        String ciudad = txtFiltroCiudad.getText().trim();
+    @FXML private void buscarEventos() {
+        String ciudad    = txtFiltroCiudad.getText().trim();
         String categoria = txtFiltroCategoria.getText().trim();
         String precioStr = txtFiltroPrecio.getText().trim();
         Double precioMax = null;
-
         try {
-            if (!precioStr.isEmpty()) {
-                precioMax = Double.parseDouble(precioStr);
-            }
+            if (!precioStr.isEmpty()) precioMax = Double.parseDouble(precioStr);
         } catch (NumberFormatException ex) {
-            setMsg("Precio máximo inválido.", true);
-            return;
+            setMsg("Precio máximo inválido.", true); return;
         }
-
-        cargarTablaEventos(eventoController.buscarEventos(ciudad, categoria, precioMax));
+        cargarTablaEventos(sistema.buscarEventos(
+                ciudad.isEmpty() ? null : ciudad,
+                categoria.isEmpty() ? null : categoria,
+                null, precioMax));
     }
 
-    private void cargarEventos() {
-        cargarTablaEventos(eventoController.obtenerEventosActivos());
-    }
+    private void cargarEventos() { cargarTablaEventos(sistema.getEventosActivos()); }
 
     private void cargarTablaEventos(List<Evento> eventos) {
         colNombre.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getNombre()));
@@ -548,83 +309,72 @@ public class UsuarioViewController {
         colFecha.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getFecha().toString()));
         colCategoria.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getCategoria()));
         colEstado.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getEstado().toString()));
-
         tablaEventos.setRowFactory(tv -> new TableRow<>() {
-            @Override
-            protected void updateItem(Evento item, boolean empty) {
+            @Override protected void updateItem(Evento item, boolean empty) {
                 super.updateItem(item, empty);
                 getStyleClass().removeAll("activo", "pausado", "cancelado");
-
                 if (item == null || empty) return;
-
                 switch (item.getEstado().toString()) {
-                    case "ACTIVO" -> getStyleClass().add("activo");
-                    case "PAUSADO" -> getStyleClass().add("pausado");
+                    case "ACTIVO"    -> getStyleClass().add("activo");
+                    case "PAUSADO"   -> getStyleClass().add("pausado");
                     case "CANCELADO" -> getStyleClass().add("cancelado");
                 }
             }
         });
-
         tablaEventos.setItems(FXCollections.observableArrayList(eventos));
     }
 
-    @FXML
-    private void comprarEntrada() {
-        try {
-            Compra compra = compraController.comprarEntrada(
-                    usuario,
-                    eventoSeleccionado,
-                    cmbZona != null ? cmbZona.getValue() : null,
-                    cmbAsiento != null ? cmbAsiento.getValue() : null,
-                    cmbMetodoPago != null ? cmbMetodoPago.getValue() : null,
-                    chkVIP != null && chkVIP.isSelected(),
-                    chkSeguro != null && chkSeguro.isSelected(),
-                    chkMerchandising != null && chkMerchandising.isSelected(),
-                    chkParqueadero != null && chkParqueadero.isSelected()
-            );
-
-            cargarHistorial(null);
-            actualizarAsientosDeZona();
-            mostrarMapaAsientos(eventoSeleccionado);
-            cargarZonasEvento(eventoSeleccionado);
-            actualizarStats();
-
-            if (lblNotificacion != null) {
-                lblNotificacion.setText("🔔 " + usuario.getHistorialCompras().size() + " compras");
-            }
-
-            Alert alerta = new Alert(Alert.AlertType.INFORMATION);
-            alerta.setTitle("¡Compra exitosa!");
-            alerta.setHeaderText("Tu entrada ha sido comprada");
-            alerta.setContentText("Evento: " + eventoSeleccionado.getNombre()
-                    + "\nTotal pagado: $" + (int) compra.calcularTotal());
-            alerta.showAndWait();
-
-            setMsg("Compra realizada, Total: $" + (int) compra.calcularTotal(), false);
-        } catch (IllegalArgumentException e) {
-            setMsg(e.getMessage(), true);
+    @FXML private void comprarEntrada() {
+        if (eventoSeleccionado == null) { setMsg("Selecciona un evento.", true); return; }
+        Zona zona = cmbZona != null ? cmbZona.getValue() : null;
+        if (zona == null || !zona.hayDisponibilidad()) {
+            setMsg("No hay asientos disponibles en la zona seleccionada.", true); return;
         }
+        Asiento asiento = (cmbAsiento != null && cmbAsiento.getValue() != null)
+                ? cmbAsiento.getValue() : zona.getAsientosDisponibles().get(0);
+        PagoStrategy metodoPago = (cmbMetodoPago != null && cmbMetodoPago.getValue() != null)
+                ? cmbMetodoPago.getValue()
+                : new PagoTarjeta("0000-0000-0000-0000", usuario.getNombre());
+        asiento.reservar();
+        EntradaBase entradaFinal = new Entrada(
+                sistema.getCompras().size() + 1, zona.getPrecioBase(), EstadoEntrada.ACTIVA, zona, asiento);
+        if (chkVIP.isSelected())           entradaFinal = new EntradaVIP(entradaFinal);
+        if (chkSeguro.isSelected())        entradaFinal = new EntradaSeguro(entradaFinal, 20000);
+        if (chkMerchandising.isSelected()) entradaFinal = new EntradaMerchandising(entradaFinal, 50000);
+        if (chkParqueadero.isSelected())   entradaFinal = new EntradaParqueadero(entradaFinal);
+        Compra compra = sistema.crearCompra(usuario, eventoSeleccionado, metodoPago);
+        compra.agregarEntrada(entradaFinal);
+        compra.pagar();
+        cargarHistorial(null);
+        actualizarAsientosDeZona();
+        mostrarMapaAsientos(eventoSeleccionado);
+        cargarZonasEvento(eventoSeleccionado);
+        actualizarStats();
+        if (lblNotificacion != null)
+            lblNotificacion.setText("🔔 " + usuario.getHistorialCompras().size() + " compras");
+        Alert alerta = new Alert(Alert.AlertType.INFORMATION);
+        alerta.setTitle("¡Compra exitosa!");
+        alerta.setHeaderText("Tu entrada ha sido comprada");
+        alerta.setContentText("Evento: " + eventoSeleccionado.getNombre()
+                + "\nZona: " + zona.getNombre()
+                + "\nAsiento: " + asiento.getFila() + "-" + asiento.getNumero()
+                + "\nMétodo de pago: " + metodoPago.toString()
+                + "\nTotal pagado: $" + (int) compra.calcularTotal());
+        alerta.showAndWait();
+        setMsg("✅ ¡Compra realizada! Total: $" + (int) compra.calcularTotal(), false);
     }
 
-    @FXML
-    private void filtrarHistorial() {
+    @FXML private void filtrarHistorial() {
         String filtro = cmbFiltroEstado != null ? cmbFiltroEstado.getValue() : "Todas";
         cargarHistorial("Todas".equals(filtro) ? null : filtro);
     }
 
-    @FXML
-    private void mostrarTodasCompras() {
-        if (cmbFiltroEstado != null) {
-            cmbFiltroEstado.getSelectionModel().selectFirst();
-        }
-
+    @FXML private void mostrarTodasCompras() {
+        if (cmbFiltroEstado != null) cmbFiltroEstado.getSelectionModel().selectFirst();
         cargarHistorial(null);
     }
 
-    @FXML
-    private void refrescarHistorial() {
-        cargarHistorial(null);
-    }
+    @FXML private void refrescarHistorial() { cargarHistorial(null); }
 
     private void cargarHistorial(String filtroEstado) {
         colCompraFecha.setCellValueFactory(d ->
@@ -635,211 +385,156 @@ public class UsuarioViewController {
                 new SimpleStringProperty("$" + (int) d.getValue().calcularTotal()));
         colCompraEstado.setCellValueFactory(d ->
                 new SimpleStringProperty(d.getValue().getEstadoCompra().toString()));
-
         tablaCompras.setRowFactory(tv -> new TableRow<>() {
-            @Override
-            protected void updateItem(Compra item, boolean empty) {
+            @Override protected void updateItem(Compra item, boolean empty) {
                 super.updateItem(item, empty);
                 getStyleClass().removeAll("pagada", "confirmada", "compra-cancelada", "reembolsada");
-
                 if (item == null || empty) return;
-
                 switch (item.getEstadoCompra().toString()) {
-                    case "PAGADA" -> getStyleClass().add("pagada");
-                    case "CONFIRMADA" -> getStyleClass().add("confirmada");
-                    case "CANCELADA" -> getStyleClass().add("compra-cancelada");
+                    case "PAGADA"      -> getStyleClass().add("pagada");
+                    case "CONFIRMADA"  -> getStyleClass().add("confirmada");
+                    case "CANCELADA"   -> getStyleClass().add("compra-cancelada");
                     case "REEMBOLSADA" -> getStyleClass().add("reembolsada");
                 }
             }
         });
-
-        tablaCompras.setItems(FXCollections.observableArrayList(
-                compraController.filtrarHistorial(usuario, filtroEstado == null ? "Todas" : filtroEstado)
-        ));
+        List<Compra> compras = usuario.getHistorialCompras();
+        if (filtroEstado != null)
+            compras = compras.stream()
+                    .filter(c -> c.getEstadoCompra().toString().equals(filtroEstado))
+                    .collect(java.util.stream.Collectors.toList());
+        tablaCompras.setItems(FXCollections.observableArrayList(compras));
     }
 
     private void configurarSeleccionCompra() {
         if (tablaCompras == null) return;
-
         tablaCompras.getSelectionModel().selectedItemProperty().addListener((obs, viejo, nuevo) -> {
-            if (nuevo != null) {
-                mostrarComprobante(nuevo);
-            }
+            if (nuevo != null) mostrarComprobante(nuevo);
         });
     }
 
     private void mostrarComprobante(Compra compra) {
         if (lblComprobanteEvento == null) return;
-
         lblComprobanteEvento.setText(compra.getEvento().getNombre());
         lblComprobanteId.setText("#" + compra.getIdCompra());
         lblComprobanteFecha.setText(compra.getFechaCompra().toString());
         lblComprobanteEstado.setText(compra.getEstadoCompra().toString());
         lblComprobantePago.setText(compra.getMetodoPago() != null ? compra.getMetodoPago().toString() : "—");
         lblComprobanteRecinto.setText(compra.getEvento().getRecinto() != null
-                ? compra.getEvento().getRecinto().getNombre()
-                : "—");
+                ? compra.getEvento().getRecinto().getNombre() : "—");
         lblComprobanteTotal.setText("$" + (int) compra.calcularTotal());
-
         String color = switch (compra.getEstadoCompra().toString()) {
             case "PAGADA", "CONFIRMADA" -> "-fx-text-fill: #2ecc71;";
-            case "CANCELADA" -> "-fx-text-fill: #e74c3c;";
-            case "REEMBOLSADA" -> "-fx-text-fill: #9b59b6;";
-            default -> "-fx-text-fill: #f1c40f;";
+            case "CANCELADA"            -> "-fx-text-fill: #e74c3c;";
+            case "REEMBOLSADA"          -> "-fx-text-fill: #9b59b6;";
+            default                     -> "-fx-text-fill: #f1c40f;";
         };
-
         lblComprobanteEstado.setStyle("-fx-font-weight: bold; " + color);
-
         if (tablaEntradasCompra != null) {
             colEntradaId.setCellValueFactory(d ->
                     new SimpleStringProperty(String.valueOf(compra.getEntradas().indexOf(d.getValue()) + 1)));
             colEntradaZona.setCellValueFactory(d -> {
-                if (d.getValue() instanceof Entrada entrada && entrada.getZona() != null) {
-                    return new SimpleStringProperty(entrada.getZona().getNombre());
-                }
+                if (d.getValue() instanceof Entrada en && en.getZona() != null)
+                    return new SimpleStringProperty(en.getZona().getNombre());
                 return new SimpleStringProperty("Entrada con servicios");
             });
             colEntradaAsiento.setCellValueFactory(d -> {
-                if (d.getValue() instanceof Entrada entrada && entrada.getAsiento() != null) {
-                    return new SimpleStringProperty(
-                            entrada.getAsiento().getFila() + "-" + entrada.getAsiento().getNumero()
-                    );
-                }
+                if (d.getValue() instanceof Entrada en && en.getAsiento() != null)
+                    return new SimpleStringProperty(en.getAsiento().getFila() + "-" + en.getAsiento().getNumero());
                 return new SimpleStringProperty("—");
             });
             colEntradaCosto.setCellValueFactory(d ->
                     new SimpleStringProperty("$" + (int) d.getValue().getCosto()));
             colEntradaEstado.setCellValueFactory(d -> {
-                if (d.getValue() instanceof Entrada entrada) {
-                    return new SimpleStringProperty(entrada.getEstadoEntrada().toString());
-                }
+                if (d.getValue() instanceof Entrada en)
+                    return new SimpleStringProperty(en.getEstadoEntrada().toString());
                 return new SimpleStringProperty("—");
             });
-
             tablaEntradasCompra.setItems(FXCollections.observableArrayList(compra.getEntradas()));
         }
     }
 
-    @FXML
-    private void cancelarCompra() {
-        Compra compra = tablaCompras.getSelectionModel().getSelectedItem();
-
-        try {
-            Alert conf = new Alert(Alert.AlertType.CONFIRMATION);
-            conf.setTitle("Cancelar compra");
-            conf.setHeaderText("¿Cancelar la compra seleccionada?");
-            conf.setContentText("Esta acción no se puede deshacer.");
-
-            Optional<ButtonType> res = conf.showAndWait();
-
-            if (res.isEmpty() || res.get() != ButtonType.OK) {
-                return;
-            }
-
-            boolean ok = compraController.cancelarCompra(compra);
-
-            cargarHistorial(null);
-            actualizarStats();
-
-            if (ok && eventoSeleccionado != null) {
-                mostrarMapaAsientos(eventoSeleccionado);
-            }
-
-            setMsg(ok ? "Compra cancelada." : "No se puede cancelar esta compra.", !ok);
-        } catch (IllegalArgumentException e) {
-            setMsg(e.getMessage(), true);
-        }
+    @FXML private void cancelarCompra() {
+        Compra c = tablaCompras.getSelectionModel().getSelectedItem();
+        if (c == null) { setMsg("Selecciona una compra primero.", true); return; }
+        Alert conf = new Alert(Alert.AlertType.CONFIRMATION);
+        conf.setTitle("Cancelar compra");
+        conf.setHeaderText("¿Cancelar la compra del evento \"" + c.getEvento().getNombre() + "\"?");
+        conf.setContentText("Total: $" + (int) c.calcularTotal() + "\nEsta acción no se puede deshacer.");
+        Optional<ButtonType> res = conf.showAndWait();
+        if (res.isEmpty() || res.get() != ButtonType.OK) return;
+        boolean ok = c.cancelar();
+        cargarHistorial(null);
+        actualizarStats();
+        if (ok && eventoSeleccionado != null) mostrarMapaAsientos(eventoSeleccionado);
+        setMsg(ok ? "✅ Compra cancelada." : "❌ No se puede cancelar esta compra.", !ok);
     }
 
-    @FXML
-    private void exportarCSV() {
-        reporteController.exportarVentasCSV("reporte_usuario.csv");
+    @FXML private void exportarCSV() {
+        new GeneradorReporte(sistema).exportarVentasCSV("reporte_usuario.csv", null, null);
         setMsg("📄 CSV exportado como reporte_usuario.csv", false);
     }
 
-    @FXML
-    private void exportarPDF() {
-        reporteController.exportarVentasPDF("reporte_usuario.pdf");
+    @FXML private void exportarPDF() {
+        new GeneradorReporte(sistema).exportarVentasPDF("reporte_usuario.pdf", null, null);
         setMsg("📑 PDF exportado como reporte_usuario.pdf", false);
     }
 
-    @FXML
-    private void guardarPerfil() {
-        try {
-            usuarioController.actualizarPerfil(
-                    usuario,
-                    txtNombre.getText().trim(),
-                    txtCorreo.getText().trim(),
-                    txtTelefono.getText().trim()
-            );
-
-            lblBienvenida.setText("Bienvenido, " + usuario.getNombre());
-            lblMensajePerfil.setText("Perfil actualizado correctamente.");
-            lblMensajePerfil.setStyle("-fx-text-fill: #2ecc71;");
-        } catch (IllegalArgumentException e) {
-            lblMensajePerfil.setText(e.getMessage());
-            lblMensajePerfil.setStyle("-fx-text-fill: #e74c3c;");
+    @FXML private void guardarPerfil() {
+        String nombre   = txtNombre.getText().trim();
+        String correo   = txtCorreo.getText().trim();
+        String telefono = txtTelefono.getText().trim();
+        if (nombre.isEmpty() || correo.isEmpty() || telefono.isEmpty()) {
+            lblMensajePerfil.setText("Todos los campos son obligatorios.");
+            lblMensajePerfil.setStyle("-fx-text-fill: #e74c3c;"); return;
         }
+        usuario.actualizarPerfil(nombre, correo, telefono);
+        lblBienvenida.setText("Bienvenido, " + usuario.getNombre());
+        lblMensajePerfil.setText("✅ Perfil actualizado correctamente.");
+        lblMensajePerfil.setStyle("-fx-text-fill: #2ecc71;");
     }
 
     private void cargarMetodosPago() {
         if (tablaMetodosPago == null) return;
-
         colPagoTipo.setCellValueFactory(d -> {
-            PagoStrategy pago = d.getValue();
-            String tipo = pago instanceof PagoTarjeta
-                    ? "Tarjeta"
-                    : pago instanceof PagoPSE
-                    ? "PSE"
-                    : "Efectivo";
-
+            PagoStrategy p = d.getValue();
+            String tipo = p instanceof PagoTarjeta ? "Tarjeta" : p instanceof PagoPSE ? "PSE" : "Efectivo";
             return new SimpleStringProperty(tipo);
         });
-
         colPagoDetalle.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().toString()));
         tablaMetodosPago.setItems(FXCollections.observableArrayList(usuario.getMetodosDepago()));
     }
 
-    @FXML
-    private void agregarMetodoPago() {
+    @FXML private void agregarMetodoPago() {
         String tipo = cmbTipoPago != null ? cmbTipoPago.getValue() : "";
         String dato = txtDatoPago != null ? txtDatoPago.getText().trim() : "";
-
-        PagoStrategy nuevoMetodo = usuarioController.crearMetodoPago(tipo, dato, usuario.getNombre());
-        usuarioController.agregarMetodoPago(usuario, nuevoMetodo);
-
+        PagoStrategy nuevo = switch (tipo) {
+            case "Tarjeta"  -> new PagoTarjeta(dato.isEmpty() ? "0000-0000-0000-0000" : dato, usuario.getNombre());
+            case "PSE"      -> new PagoPSE(dato.isEmpty() ? "Bancolombia" : dato);
+            default         -> new PagoEfectivo();
+        };
+        usuario.agregarMetodoPago(nuevo);
         cargarMetodosPago();
         inicializarMetodoPago();
-
-        if (txtDatoPago != null) {
-            txtDatoPago.clear();
-        }
-
+        if (txtDatoPago != null) txtDatoPago.clear();
         if (lblMensajePago != null) {
-            lblMensajePago.setText("Método de pago agregado.");
+            lblMensajePago.setText("✅ Método de pago agregado.");
             lblMensajePago.setStyle("-fx-text-fill: #2ecc71;");
         }
     }
 
     private void actualizarStats() {
         if (lblStatCompras == null) return;
-
         List<Compra> historial = usuario.getHistorialCompras();
-
         lblStatCompras.setText(String.valueOf(historial.size()));
         lblStatGastado.setText("$" + (int) historial.stream().mapToDouble(Compra::calcularTotal).sum());
         lblStatEventos.setText(String.valueOf(
-                historial.stream().map(c -> c.getEvento().getNombre()).distinct().count()
-        ));
+                historial.stream().map(c -> c.getEvento().getNombre()).distinct().count()));
     }
 
-    @FXML
-    private void cerrarSesion() {
+    @FXML private void cerrarSesion() {
         try {
-            FXMLLoader loader = new FXMLLoader(
-                    HelloApplication.class.getResource("login-view.fxml")
-            );
-
+            FXMLLoader loader = new FXMLLoader(HelloApplication.class.getResource("login-view.fxml"));
             Stage stage = (Stage) lblBienvenida.getScene().getWindow();
             stage.setScene(new Scene(loader.load(), 580, 450));
             stage.setTitle("TicketLand");
@@ -850,10 +545,7 @@ public class UsuarioViewController {
 
     private void setMsg(String msg, boolean error) {
         if (lblMensajeCompra == null) return;
-
         lblMensajeCompra.setText(msg);
-        lblMensajeCompra.setStyle(error
-                ? "-fx-text-fill: #e74c3c;"
-                : "-fx-text-fill: #2ecc71;");
+        lblMensajeCompra.setStyle(error ? "-fx-text-fill: #e74c3c;" : "-fx-text-fill: #2ecc71;");
     }
 }

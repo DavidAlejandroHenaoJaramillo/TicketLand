@@ -3,7 +3,9 @@ package model;
 import java.util.ArrayList;
 import java.util.List;
 import java.time.LocalDate;
-import builder.CompraBuilder;
+
+import builder.Compra;
+import builder.CompraConcretaBuilder;
 import strategy.PagoStrategy;
 
 public class TicketLand {
@@ -167,7 +169,7 @@ public class TicketLand {
     // RF-034, RF-049: usa CompraBuilder (patrón Builder) para crear la compra
     public Compra crearCompra(Usuario usuario, Evento evento, PagoStrategy metodoPago) {
         int idCompra = compras.size() + 1;
-        Compra compra = new CompraBuilder(idCompra)
+        Compra compra = new CompraConcretaBuilder()
                 .conUsuario(usuario)
                 .conEvento(evento)
                 .conMetodoPago(metodoPago)

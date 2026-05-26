@@ -1,23 +1,15 @@
 package decorator;
 
-public abstract class EntradaDecorator implements EntradaBase {
+import model.EstadoEntrada;
 
-    /**
-     * Atributos de la clase
-     */
+public abstract class EntradaDecorator implements IEntrada {
+
     protected EntradaBase entrada;
 
-    /**
-     * Constructor de la clase
-     */
     public EntradaDecorator(EntradaBase entrada) {
         this.entrada = entrada;
     }
 
-    /**
-     * Metodos implementados de EntradaBase
-     * @return
-     */
     @Override
     public String getDescripcion() {
         return entrada.getDescripcion();
@@ -26,5 +18,11 @@ public abstract class EntradaDecorator implements EntradaBase {
     @Override
     public double getCosto() {
         return entrada.getCosto();
+    }
+
+    @Override
+    public EstadoEntrada getEstadoEntrada() {
+        if (entrada instanceof IEntrada ie) return ie.getEstadoEntrada();
+        return null;
     }
 }

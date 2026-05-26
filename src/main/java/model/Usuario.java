@@ -1,5 +1,6 @@
 package model;
 
+import builder.Compra;
 import observer.Observer;
 import strategy.PagoStrategy;
 
