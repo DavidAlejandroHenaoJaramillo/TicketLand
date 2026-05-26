@@ -415,9 +415,9 @@
             <VBox spacing="12" style="-fx-padding: 18; -fx-background-color: #f0f4ff;">
                 <Label text="Gestión de asientos"
                        style="-fx-font-size: 15; -fx-font-weight: bold; -fx-text-fill: #0a1628;"/>
+
                 <HBox spacing="12" alignment="CENTER_LEFT"
-                      style="-fx-background-color: #ffffff; -fx-padding: 12;
-                             -fx-background-radius: 8;">
+                      style="-fx-background-color: #ffffff; -fx-padding: 12; -fx-background-radius: 8;">
                     <Label text="Evento:" style="-fx-text-fill: #5570a0;"/>
                     <ComboBox fx:id="cmbEventoAsientos" prefWidth="210"
                               style="-fx-background-color: #e8eeff; -fx-text-fill: #0a1628;"/>
@@ -425,24 +425,49 @@
                     <ComboBox fx:id="cmbZonaAsientos" prefWidth="180"
                               style="-fx-background-color: #e8eeff; -fx-text-fill: #0a1628;"/>
                 </HBox>
+
+                <HBox spacing="20" style="-fx-background-color: #ffffff; -fx-padding: 10 14; -fx-background-radius: 8;">
+                    <Label text="Leyenda:" style="-fx-text-fill: #5570a0; -fx-font-size: 12;"/>
+                    <Label text="● Disponible" style="-fx-text-fill: #2ecc71; -fx-font-size: 12;"/>
+                    <Label text="● Reservado" style="-fx-text-fill: #f39c12; -fx-font-size: 12;"/>
+                    <Label text="● Vendido" style="-fx-text-fill: #e74c3c; -fx-font-size: 12;"/>
+                    <Label text="● Bloqueado" style="-fx-text-fill: #7f8c8d; -fx-font-size: 12;"/>
+                </HBox>
+
+                <Label text="ESCENARIO"
+                       alignment="CENTER"
+                       maxWidth="Infinity"
+                       style="-fx-background-color: #003bbf; -fx-text-fill: white;
+                      -fx-padding: 8; -fx-background-radius: 6;"/>
+
+                <ScrollPane fitToWidth="true" prefHeight="260"
+                            style="-fx-background: #ffffff; -fx-background-color: #ffffff;">
+                    <GridPane fx:id="gridAsientosAdmin"
+                              hgap="7"
+                              vgap="7"
+                              alignment="CENTER"
+                              style="-fx-padding: 20;"/>
+                </ScrollPane>
+
                 <TableView fx:id="tablaAsientos" VBox.vgrow="ALWAYS"
-                           style="-fx-background-color: #ffffff; -fx-border-color: #b0c8ff;
-                                  -fx-background-radius: 8;">
+                           style="-fx-background-color: #ffffff; -fx-border-color: #b0c8ff; -fx-background-radius: 8;">
                     <columns>
-                        <TableColumn fx:id="colAsientoId"     text="#"      prefWidth="50"/>
-                        <TableColumn fx:id="colAsientoFila"   text="Fila"   prefWidth="70"/>
+                        <TableColumn fx:id="colAsientoId" text="#" prefWidth="50"/>
+                        <TableColumn fx:id="colAsientoFila" text="Fila" prefWidth="70"/>
                         <TableColumn fx:id="colAsientoNumero" text="Número" prefWidth="80"/>
                         <TableColumn fx:id="colAsientoEstado" text="Estado" prefWidth="130"/>
                     </columns>
                 </TableView>
+
                 <HBox spacing="10">
                     <Button text="🔒 Bloquear" onAction="#bloquearAsiento"
                             style="-fx-background-color: #d35400; -fx-text-fill: white;
-                                   -fx-background-radius: 6; -fx-padding: 7 14; -fx-cursor: hand;"/>
-                    <Button text="🔓 Liberar"  onAction="#liberarAsiento"
+                           -fx-background-radius: 6; -fx-padding: 7 14; -fx-cursor: hand;"/>
+                    <Button text="🔓 Liberar" onAction="#liberarAsiento"
                             style="-fx-background-color: #27ae60; -fx-text-fill: white;
-                                   -fx-background-radius: 6; -fx-padding: 7 14; -fx-cursor: hand;"/>
+                           -fx-background-radius: 6; -fx-padding: 7 14; -fx-cursor: hand;"/>
                 </HBox>
+
                 <Label fx:id="lblMensajeAsiento" wrapText="true" style="-fx-font-size: 12;"/>
             </VBox>
         </Tab>

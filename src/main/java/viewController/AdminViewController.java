@@ -13,6 +13,12 @@ import javafx.scene.control.*;
 import javafx.stage.Stage;
 import model.*;
 import state.*;
+import javafx.geometry.Pos;
+import javafx.scene.Node;
+import javafx.scene.control.ToggleButton;
+import javafx.scene.layout.GridPane;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 import java.io.IOException;
 import java.net.URL;
@@ -120,6 +126,7 @@ public class AdminViewController implements Initializable {
     @FXML private ComboBox<Incidencia.Tipo> cmbFiltroTipo;
     @FXML private DatePicker dpFiltroDesde;
     @FXML private DatePicker dpFiltroHasta;
+    @FXML private GridPane gridAsientosAdmin;
 
     private final TicketLand sistema = TicketLand.getInstance();
     private final controller.AdminController adminController = new controller.AdminController();
@@ -711,6 +718,7 @@ public class AdminViewController implements Initializable {
 
             if (evento != null && evento.getRecinto() != null) {
                 cmbZonaAsientos.setItems(FXCollections.observableArrayList(evento.getRecinto().getZonas()));
+                pintarAsientosAdminPorEvento(evento);
             }
         });
 
@@ -753,6 +761,118 @@ public class AdminViewController implements Initializable {
         });
 
         tablaAsientos.setItems(FXCollections.observableArrayList(zona.getAsientos()));
+        pintarAsientosAdmin(zona);
+    }
+
+    private void pintarAsientosAdmin(Zona zona) {
+        if (gridAsientosAdmin == null || zona == null) return;
+
+        gridAsientosAdmin.getChildren().clear();
+
+        Map<String, Integer> filas = new LinkedHashMap<>();
+        for (Asiento asiento : zona.getAsientos()) {
+            filas.putIfAbsent(asiento.getFila(), filas.size());
+        }
+
+        for (Asiento asiento : zona.getAsientos()) {
+            ToggleButton btn = crearBotonAsientoAdmin(asiento);
+
+            btn.setOnAction(e -> {
+                if (tablaAsientos != null) {
+                    tablaAsientos.getSelectionModel().select(asiento);
+                    tablaAsientos.scrollTo(asiento);
+                }
+
+                limpiarSeleccionAdmin();
+                btn.setStyle(estiloAsientoAdmin(asiento) + "-fx-border-color: #0057ff; -fx-border-width: 3;");
+            });
+
+            gridAsientosAdmin.add(btn, asiento.getNumero(), filas.get(asiento.getFila()));
+        }
+    }
+
+    private void pintarAsientosAdminPorEvento(Evento evento) {
+        if (gridAsientosAdmin == null || evento == null || evento.getRecinto() == null) return;
+
+        gridAsientosAdmin.getChildren().clear();
+
+        int filaBase = 0;
+
+        for (Zona zona : evento.getRecinto().getZonas()) {
+            Label lblZona = new Label(zona.getNombre() + " - " + zona.getTipoZona());
+            lblZona.setStyle("-fx-font-weight: bold; -fx-text-fill: #0057ff; -fx-padding: 10 0 4 0;");
+
+            gridAsientosAdmin.add(lblZona, 0, filaBase, 12, 1);
+            filaBase++;
+
+            Map<String, Integer> filas = new LinkedHashMap<>();
+
+            for (Asiento asiento : zona.getAsientos()) {
+                filas.putIfAbsent(asiento.getFila(), filas.size());
+            }
+
+            for (Asiento asiento : zona.getAsientos()) {
+                ToggleButton btn = crearBotonAsientoAdmin(asiento);
+                btn.setOnAction(e -> {
+                    if (cmbZonaAsientos != null) {
+                        cmbZonaAsientos.getSelectionModel().select(zona);
+                    }
+                    if (tablaAsientos != null) {
+                        tablaAsientos.setItems(FXCollections.observableArrayList(zona.getAsientos()));
+                        tablaAsientos.getSelectionModel().select(asiento);
+                        tablaAsientos.scrollTo(asiento);
+                    }
+                    limpiarSeleccionAdmin();
+                    btn.setStyle(estiloAsientoAdmin(asiento) + "-fx-border-color: #0057ff; -fx-border-width: 3;");
+                });
+                int fila = filaBase + filas.get(asiento.getFila());
+                int columna = asiento.getNumero();
+                gridAsientosAdmin.add(btn, columna, fila);
+            }
+
+            filaBase += filas.size() + 1;
+        }
+    }
+
+    private ToggleButton crearBotonAsientoAdmin(Asiento asiento) {
+        ToggleButton btn = new ToggleButton(asiento.getFila() + asiento.getNumero());
+
+        btn.setUserData(asiento);
+        btn.setMinSize(42, 36);
+        btn.setPrefSize(42, 36);
+        btn.setMaxSize(42, 36);
+        btn.setAlignment(Pos.CENTER);
+        btn.setStyle(estiloAsientoAdmin(asiento));
+
+        return btn;
+    }
+
+    private String estiloAsientoAdmin(Asiento asiento) {
+        String color = switch (asiento.getEstado().toString()) {
+            case "DISPONIBLE" -> "#2ecc71";
+            case "RESERVADO" -> "#f39c12";
+            case "VENDIDO" -> "#e74c3c";
+            case "BLOQUEADO" -> "#7f8c8d";
+            default -> "#bdc3c7";
+        };
+
+        return "-fx-background-color: " + color + ";"
+                + "-fx-text-fill: white;"
+                + "-fx-font-size: 11;"
+                + "-fx-font-weight: bold;"
+                + "-fx-background-radius: 6;"
+                + "-fx-border-radius: 6;"
+                + "-fx-cursor: hand;";
+    }
+
+    private void limpiarSeleccionAdmin() {
+        if (gridAsientosAdmin == null) return;
+
+        for (Node node : gridAsientosAdmin.getChildren()) {
+            if (node instanceof ToggleButton btn && btn.getUserData() instanceof Asiento asiento) {
+                btn.setStyle(estiloAsientoAdmin(asiento));
+            }
+        }
     }
 
     @FXML
