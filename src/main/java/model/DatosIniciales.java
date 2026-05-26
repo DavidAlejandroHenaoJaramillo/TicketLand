@@ -19,14 +19,14 @@ public class DatosIniciales {
     private void inicializar() {
 
         // --- USUARIOS ---
-        Usuario usuario1 = new Usuario(1, "Luna Rios", "luna@gmail.com", "3001234567");
+        Usuario usuario1 = new Usuario(1, "Luna Rios", "luna@gmail.com", "3001234567", "1234");
         usuario1.agregarMetodoPago(new PagoTarjeta("1234-5678-9012-3456", "Luna Rios"));
         usuario1.agregarMetodoPago(new PagoPSE("Bancolombia"));
 
-        Usuario usuario2 = new Usuario(2, "Carlos Pérez", "carlos@gmail.com", "3107654321");
+        Usuario usuario2 = new Usuario(2, "Carlos Pérez", "carlos@gmail.com", "3107654321", "1234");
         usuario2.agregarMetodoPago(new PagoEfectivo());
 
-        Usuario usuario3 = new Usuario(3, "María González", "maria@gmail.com", "3209876543");
+        Usuario usuario3 = new Usuario(3, "María González", "maria@gmail.com", "3209876543", "1234");
         usuario3.agregarMetodoPago(new PagoTarjeta("9876-5432-1098-7654", "María González"));
 
         sistema.agregarUsuario(usuario1);
@@ -34,7 +34,7 @@ public class DatosIniciales {
         sistema.agregarUsuario(usuario3);
 
         // --- ADMINISTRADOR ---
-        Administrador admin = new Administrador(1, "Admin Principal", "admin@ticketland.com", "3001111111", "FULL");
+        Administrador admin = new Administrador(1, "Admin Principal", "admin@ticketland.com", "3001111111", "FULL", "admin123");
         sistema.agregarAdministrador(admin);
 
 

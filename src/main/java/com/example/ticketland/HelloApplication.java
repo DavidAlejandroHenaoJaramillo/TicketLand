@@ -13,15 +13,17 @@ public class HelloApplication extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        // inicializar datos de prueba
-        DatosIniciales datos = new DatosIniciales(TicketLand.getInstance());
+        new DatosIniciales(TicketLand.getInstance());
 
         FXMLLoader fxmlLoader = new FXMLLoader(
                 HelloApplication.class.getResource("login-view.fxml")
         );
-        Scene scene = new Scene(fxmlLoader.load(), 500, 400);
+
+        Scene scene = new Scene(fxmlLoader.load(), 900, 650);
+
         stage.setTitle("TicketLand");
         stage.setScene(scene);
+        stage.setMaximized(true);
         stage.show();
     }
 

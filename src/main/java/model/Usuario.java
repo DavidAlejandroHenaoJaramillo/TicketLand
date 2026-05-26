@@ -16,7 +16,11 @@ public class Usuario extends Persona implements Observer {
     private List<PagoStrategy> metodosDepago;
 
     public Usuario(int id, String nombre, String correo, String telefono) {
-        super(id, nombre, correo, telefono);
+        this(id, nombre, correo, telefono, "1234");
+    }
+
+    public Usuario(int id, String nombre, String correo, String telefono, String password) {
+        super(id, nombre, correo, telefono, password);
         historialCompras = new ArrayList<>();
         notificaciones = new ArrayList<>();
         metodosDepago = new ArrayList<>();

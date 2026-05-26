@@ -14,21 +14,27 @@ public class UsuarioController {
 
     private final TicketLand sistema = TicketLand.getInstance();
 
-    public Usuario registrarUsuario(String nombre, String correo, String telefono) {
+    public Usuario registrarUsuario(String nombre, String correo, String telefono, String password) {
         validarTexto(nombre, "El nombre es obligatorio.");
         validarTexto(correo, "El correo es obligatorio.");
         validarTexto(telefono, "El teléfono es obligatorio.");
+        validarTexto(password, "La contraseña es obligatoria.");
+
+        if (password.length() < 4) {
+            throw new IllegalArgumentException("La contraseña debe tener al menos 4 caracteres.");
+        }
 
         if (sistema.buscarUsuarioPorCorreo(correo) != null) {
             throw new IllegalArgumentException("Ya existe una cuenta con ese correo.");
         }
 
         int nuevoId = sistema.getUsuarios().size() + 1;
-        Usuario usuario = new Usuario(nuevoId, nombre, correo, telefono);
+        Usuario usuario = new Usuario(nuevoId, nombre, correo, telefono, password);
         sistema.agregarUsuario(usuario);
 
         return usuario;
     }
+
 
     public void actualizarPerfil(Usuario usuario, String nombre, String correo, String telefono) {
         if (usuario == null) {

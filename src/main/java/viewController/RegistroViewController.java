@@ -41,9 +41,13 @@ public class RegistroViewController {
             mostrarError("Las contraseñas no coinciden.");
             return;
         }
+        if (password.length() < 4) {
+            mostrarError("La contraseña debe tener al menos 4 caracteres.");
+            return;
+        }
 
         try {
-            usuarioController.registrarUsuario(nombre, correo, telefono);
+            usuarioController.registrarUsuario(nombre, correo, telefono, password);
             mostrarExito(correo);
             volverLogin();
         } catch (IllegalArgumentException e) {

@@ -23,19 +23,26 @@ public class LoginViewController {
     @FXML
     private void loginUsuario() {
         String correo = txtCorreo.getText().trim();
-        Usuario usuario = authController.loginUsuario(correo);
+        String password = txtPassword.getText();
+
+        Usuario usuario = authController.loginUsuario(correo, password);
 
         if (usuario != null) {
             abrirVistaUsuario(usuario);
         } else {
-            lblMensaje.setText("Usuario no encontrado. Intenta con: luna@gmail.com");
+            lblMensaje.setText("Correo o contraseña incorrectos.");
         }
     }
 
     @FXML
     private void loginAdmin() {
-        if (authController.loginAdmin()) {
+        String correo = txtCorreo.getText().trim();
+        String password = txtPassword.getText();
+
+        if (authController.loginAdmin(correo, password) != null) {
             abrirVistaAdmin();
+        } else {
+            lblMensaje.setText("Credenciales de administrador incorrectas.");
         }
     }
 
@@ -62,6 +69,7 @@ public class LoginViewController {
 
             Stage stage = (Stage) txtCorreo.getScene().getWindow();
             stage.setScene(new Scene(loader.load(), 700, 500));
+            stage.setMaximized(true);
 
             UsuarioViewController controller = loader.getController();
             controller.setUsuario(usuario);
@@ -79,7 +87,8 @@ public class LoginViewController {
             );
 
             Stage stage = (Stage) txtCorreo.getScene().getWindow();
-            stage.setScene(new Scene(loader.load(), 800, 600));
+            stage.setScene(new Scene(loader.load()));
+            stage.setMaximized(true);
             stage.setTitle("TicketLand - Administrador");
         } catch (Exception e) {
             e.printStackTrace();
