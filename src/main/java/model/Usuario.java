@@ -12,7 +12,6 @@ public class Usuario extends Persona implements Observer {
 
     private List<Compra> historialCompras;
     private List<String> notificaciones;
-    // RF-021: métodos de pago simulados asociados al usuario
     private List<PagoStrategy> metodosDepago;
 
     public Usuario(int id, String nombre, String correo, String telefono) {
@@ -42,7 +41,6 @@ public class Usuario extends Persona implements Observer {
         this.notificaciones = notificaciones;
     }
 
-    // RF-021: gestionar métodos de pago del usuario
     public List<PagoStrategy> getMetodosDepago() {
         return metodosDepago;
     }
@@ -71,7 +69,6 @@ public class Usuario extends Persona implements Observer {
         historialCompras.add(compra);
     }
 
-    // RF-010: consultar historial con filtros por fecha, evento y estado
     public List<Compra> consultarHistorial(LocalDate desde, LocalDate hasta,
                                            Evento evento, EstadoCompra estado) {
         List<Compra> resultado = new ArrayList<>();
@@ -86,14 +83,12 @@ public class Usuario extends Persona implements Observer {
         return resultado;
     }
 
-    // RF-002: actualizar datos del perfil
     public void actualizarPerfil(String nombre, String correo, String telefono) {
         if (nombre != null) this.nombre = nombre;
         if (correo != null) this.correo = correo;
         if (telefono != null) this.telefono = telefono;
     }
 
-    // RF-022: consultar detalle de una compra específica
     public Compra buscarCompra(int indice) {
         if (indice >= 0 && indice < historialCompras.size()) {
             return historialCompras.get(indice);

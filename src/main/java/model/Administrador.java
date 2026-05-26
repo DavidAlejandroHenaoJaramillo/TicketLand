@@ -25,7 +25,6 @@ public class Administrador extends Usuario {
         this.permisosAdministrador = permisosAdministrador;
     }
 
-    // RF-013: gestionar eventos
     public void crearEvento(Evento evento, TicketLand sistema) {
         sistema.agregarEvento(evento);
     }
@@ -46,7 +45,6 @@ public class Administrador extends Usuario {
         evento.cancelar();
     }
 
-    // RF-012: gestionar usuarios
     public void crearUsuario(Usuario usuario, TicketLand sistema) {
         sistema.agregarUsuario(usuario);
     }
@@ -61,7 +59,6 @@ public class Administrador extends Usuario {
         if (telefono != null) usuario.setTelefono(telefono);
     }
 
-    // RF-014: gestionar recintos y zonas
     public void agregarRecintoAEvento(Recinto recinto, Evento evento) {
         evento.setRecinto(recinto);
     }
@@ -70,7 +67,6 @@ public class Administrador extends Usuario {
         recinto.agregarZona(zona);
     }
 
-    // RF-015: gestionar asientos
     public boolean bloquearAsiento(Asiento asiento) {
         return asiento.bloquear();
     }
@@ -79,7 +75,6 @@ public class Administrador extends Usuario {
         return asiento.liberar();
     }
 
-    // RF-016: gestionar compras
     public boolean cancelarCompra(Compra compra) {
         return compra.cancelar();
     }
@@ -88,7 +83,6 @@ public class Administrador extends Usuario {
         return compra.confirmar();
     }
 
-    // RF-017: registrar incidencia
     public void registrarIncidencia(Incidencia.Tipo tipo, String descripcion,
                                     String entidadAfectada, TicketLand sistema) {
         int idIncidencia = sistema.getIncidencias().size() + 1;
@@ -97,7 +91,6 @@ public class Administrador extends Usuario {
         sistema.agregarIncidencia(incidencia);
     }
 
-    // RF-010: consultar historial de compras del sistema
     public List<Compra> consultarTodasLasCompras(TicketLand sistema) {
         return sistema.getCompras();
     }

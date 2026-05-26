@@ -20,12 +20,12 @@ public class GeneradorReporte {
         this.sistema = sistema;
     }
 
-    // RF-046, RF-050: genera reporte usando el adapter recibido (patrón Adapter)
+    //genera reporte usando el adapter recibido (patrón Adapter)
     public String generarConAdapter(ReporteAdapter adapter) {
         return adapter.generarReporte(sistema.getCompras());
     }
 
-    // RF-046: exportar reporte de ventas en CSV
+    //exportar reporte de ventas en CSV
     public void exportarVentasCSV(String rutaArchivo, LocalDate desde, LocalDate hasta) {
         try (FileWriter writer = new FileWriter(rutaArchivo)) {
             writer.write("Fecha,Usuario,Evento,Total,Estado\n");
@@ -46,7 +46,7 @@ public class GeneradorReporte {
         }
     }
 
-    // RF-046: exportar reporte de ocupación por zona en CSV
+    //exportar reporte de ocupación por zona en CSV
     public void exportarOcupacionCSV(String rutaArchivo) {
         try (FileWriter writer = new FileWriter(rutaArchivo)) {
             writer.write("Evento,Recinto,Zona,Capacidad,Ocupados,Disponibles\n");
@@ -69,7 +69,7 @@ public class GeneradorReporte {
         }
     }
 
-    // RF-046: exportar reporte de ventas en PDF
+    //exportar reporte de ventas en PDF
     public void exportarVentasPDF(String rutaArchivo, LocalDate desde, LocalDate hasta) {
         try (PDDocument documento = new PDDocument()) {
             PDPage pagina = new PDPage();

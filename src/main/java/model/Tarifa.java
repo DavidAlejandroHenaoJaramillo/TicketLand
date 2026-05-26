@@ -12,10 +12,10 @@ package model;
 public class Tarifa {
 
     private int idTarifa;
-    private String nombre;       // ej: "VIP Especial", "General Estudiante"
-    private double monto;        // precio en pesos
+    private String nombre;
+    private double monto;
     private String descripcion;
-    private TipoZona tipoZona;   // zona a la que aplica
+    private TipoZona tipoZona;
 
     public Tarifa(int idTarifa, String nombre, double monto,
                   String descripcion, TipoZona tipoZona) {

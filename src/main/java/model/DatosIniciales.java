@@ -18,7 +18,6 @@ public class DatosIniciales {
 
     private void inicializar() {
 
-        // --- USUARIOS ---
         Usuario usuario1 = new Usuario(1, "Luna Rios", "luna@gmail.com", "3001234567", "1234");
         usuario1.agregarMetodoPago(new PagoTarjeta("1234-5678-9012-3456", "Luna Rios"));
         usuario1.agregarMetodoPago(new PagoPSE("Bancolombia"));
@@ -33,12 +32,9 @@ public class DatosIniciales {
         sistema.agregarUsuario(usuario2);
         sistema.agregarUsuario(usuario3);
 
-        // --- ADMINISTRADOR ---
         Administrador admin = new Administrador(1, "Admin Principal", "admin@ticketland.com", "3001111111", "FULL", "admin123");
         sistema.agregarAdministrador(admin);
 
-
-        // --- RECINTO 1: ESTADIO ---
         Recinto estadio = new Recinto("Estadio El Campin", "Cra 30 #57-60", "Bogotá");
         Tarifa tarifaVIP = new Tarifa(1, "VIP", 3500000.0, "Acceso VIP con beneficios especiales", TipoZona.VIP);
         Tarifa tarifaGeneral = new Tarifa(2, "General", 120000.0, "Acceso VIP con beneficios especiales", TipoZona.GENERAL);
@@ -53,8 +49,6 @@ public class DatosIniciales {
         estadio.agregarZona(zonaGeneral1);
         estadio.agregarZona(zonaPreferencial1);
 
-        // --- RECINTO 2: TEATRO ---
-        // --- RECINTO 2: TEATRO ---
         Recinto teatroRecinto = new Recinto("Teatro Jorge Eliécer Gaitán", "Cra 7 #22-47", "Bogotá");
         Zona zonaVIP2 = new Zona(1, "VIP Teatro", 30, 180000, TipoZona.VIP, tarifaVIP);
         Zona zonaGeneral2 = new Zona(2, "General Teatro", 150, 80000, TipoZona.GENERAL, tarifaGeneral);
@@ -63,7 +57,6 @@ public class DatosIniciales {
         teatroRecinto.agregarZona(zonaVIP2);
         teatroRecinto.agregarZona(zonaGeneral2);
 
-        // --- EVENTOS ---
         Concierto concierto = new Concierto(
                 "Concierto Juanes",
                 "Concierto",
@@ -100,8 +93,6 @@ public class DatosIniciales {
         conferencia.activar();
         sistema.agregarEvento(conferencia);
 
-        // --- COMPRAS DE PRUEBA ---
-        // Compra 1: usuario1 compra entrada VIP al concierto y paga
         Asiento asiento1 = zonaVIP1.getAsientos().get(0);
         asiento1.reservar();
         Entrada entrada1 = new Entrada(1,zonaVIP1.getPrecioBase(), EstadoEntrada.ACTIVA, zonaVIP1, asiento1);
@@ -109,14 +100,12 @@ public class DatosIniciales {
         compra1.agregarEntrada(entrada1);
         compra1.pagar();
 
-        // Compra 2: usuario2 compra entrada General al concierto (pendiente de pago)
         Asiento asiento2 = zonaGeneral1.getAsientos().get(0);
         asiento2.reservar();
         Entrada entrada2 = new Entrada(2,zonaGeneral1.getPrecioBase(), EstadoEntrada.ACTIVA, zonaGeneral1, asiento2);
         Compra compra2 = sistema.crearCompra(usuario2, concierto, new PagoEfectivo());
         compra2.agregarEntrada(entrada2);
 
-        // Compra 3: usuario3 compra entrada al teatro y cancela
         Asiento asiento3 = zonaVIP2.getAsientos().get(0);
         asiento3.reservar();
         Entrada entrada3 = new Entrada(3, zonaVIP2.getPrecioBase(), EstadoEntrada.ACTIVA, zonaVIP2, asiento3);
@@ -124,7 +113,6 @@ public class DatosIniciales {
         compra3.agregarEntrada(entrada3);
         compra3.cancelar();
 
-        // --- INCIDENCIA DE PRUEBA ---
         admin.registrarIncidencia(
                 Incidencia.Tipo.ERROR_PAGO,
                 "Fallo en pago de compra de usuario2",

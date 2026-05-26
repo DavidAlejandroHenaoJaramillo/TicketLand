@@ -124,7 +124,7 @@ public class TicketLand {
         return usuarios;
     }
 
-    // RF-003: buscar eventos con filtros de ciudad, categoría, fecha y precio máximo
+    //buscar eventos con filtros de ciudad, categoría, fecha y precio máximo
     public List<Evento> buscarEventos(String ciudad, String categoria,
                                       LocalDate fecha, Double precioMax) {
         List<Evento> resultado = new ArrayList<>();
@@ -143,7 +143,7 @@ public class TicketLand {
         return resultado;
     }
 
-    // RF-003: buscar eventos solo activos
+    //buscar eventos solo activos
     public List<Evento> getEventosActivos() {
         List<Evento> activos = new ArrayList<>();
         for (Evento e : eventos) {
@@ -154,7 +154,7 @@ public class TicketLand {
         return activos;
     }
 
-    // RF-022: buscar usuario por id
+    //buscar usuario por id
     public Usuario buscarUsuarioPorId(int id) {
         for (Usuario u : usuarios) {
             if (u.getId() == id) {
@@ -164,7 +164,7 @@ public class TicketLand {
         return null;
     }
 
-    // RF-034, RF-049: usa CompraBuilder (patrón Builder) para crear la compra
+    //usa CompraBuilder para crear la compra
     public Compra crearCompra(Usuario usuario, Evento evento, PagoStrategy metodoPago) {
         int idCompra = compras.size() + 1;
         Compra compra = new CompraBuilder(idCompra)
@@ -178,7 +178,7 @@ public class TicketLand {
     }
 
 
-    // RF-012: buscar usuario por correo
+    //buscar usuario por correo
     public Usuario buscarUsuarioPorCorreo(String correo) {
         for (Usuario u : usuarios) {
             if (u.getCorreo().equalsIgnoreCase(correo)) {
@@ -188,16 +188,16 @@ public class TicketLand {
         return null;
     }
 
-    // RF-013: eliminar evento
+    //eliminar evento
     public boolean eliminarEvento(Evento evento) {
         return eventos.remove(evento);
     }
 
-    // RF-012: eliminar usuario
+    //eliminar usuario
     public boolean eliminarUsuario(Usuario usuario) {
         return usuarios.remove(usuario);
     }
-    // RF-042: consultar incidencias por rango de fechas y tipo
+    //consultar incidencias por rango de fechas y tipo
     public List<Incidencia> buscarIncidencias(Incidencia.Tipo tipo, LocalDate desde, LocalDate hasta) {
         List<Incidencia> resultado = new ArrayList<>();
         for (Incidencia i : incidencias) {

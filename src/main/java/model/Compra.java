@@ -66,9 +66,6 @@ public class Compra {
         return estadoCompra.manejarEstado();
     }
 
-
-    // ── Servicios adicionales ─────────────────────────────────────────────────
-
     public void agregarServicio(ServicioAdicional servicio) {
         serviciosAdicionales.add(servicio);
     }
@@ -85,7 +82,7 @@ public class Compra {
         return total;
     }
 
-    // RF-035: modificar compra antes de pagar — elimina entrada y libera asiento
+    //odificar compra antes de pagar — elimina entrada y libera asiento
     public boolean eliminarEntrada(EntradaBase entradaAEliminar) {
         if (!(estadoCompra instanceof CompraCreada)) return false;
         if (entradaAEliminar instanceof Entrada e && e.getAsiento() != null) {
@@ -94,7 +91,7 @@ public class Compra {
         return entradas.remove(entradaAEliminar);
     }
 
-    // RF-007: pagar la compra usando la estrategia de pago configurada
+    //pagar la compra usando la estrategia de pago configurada
     public boolean pagar() {
         if (!(estadoCompra instanceof CompraCreada)) return false;
         if (entradas.isEmpty()) return false;
@@ -110,14 +107,14 @@ public class Compra {
         return exitoso;
     }
 
-    // RF-008: confirmar una compra ya pagada
+    //confirmar una compra ya pagada
     public boolean confirmar() {
         if (!(estadoCompra instanceof CompraPagada)) return false;
         estadoCompra = new CompraConfirmada();
         return true;
     }
 
-    // RF-036, RF-040: cancelar compra y anular todas las entradas asociadas
+    //cancelar compra y anular todas las entradas asociadas
     public boolean cancelar() {
         if (estadoCompra instanceof CompraCancelada
                 || estadoCompra instanceof CompraReembolsada) return false;
@@ -130,8 +127,7 @@ public class Compra {
         return true;
     }
 
-    // RF-016: reembolsar compra (solo si está pagada o confirmada)
-    // Simula la devolución del dinero al cliente y anula las entradas
+    //reembolsar compra (solo si está pagada o confirmada)
     public boolean reembolsar() {
         if (!(estadoCompra instanceof CompraPagada)
                 && !(estadoCompra instanceof CompraConfirmada)) {
@@ -148,7 +144,7 @@ public class Compra {
         return true;
     }
 
-    // RF-008: marcar compra con incidencia operativa
+    // marcar compra con incidencia operativa
     public boolean marcarComoIncidencia() {
         if (estadoCompra instanceof CompraCancelada
                 || estadoCompra instanceof CompraReembolsada) {

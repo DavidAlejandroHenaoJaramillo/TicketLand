@@ -107,7 +107,7 @@ public abstract class Evento {
         );
     }
 
-    // RF-004: obtener recinto asociado al evento
+    //obtener recinto asociado al evento
     public Recinto getRecinto() {
         return recinto;
     }
@@ -116,7 +116,7 @@ public abstract class Evento {
         this.recinto = recinto;
     }
 
-    // RF-025: consultar disponibilidad del evento por zonas
+    //consultar disponibilidad del evento por zonas
     public boolean consultarDisponibilidad() {
         if (recinto == null) return false;
         for (Zona zona : recinto.getZonas()) {
@@ -127,7 +127,7 @@ public abstract class Evento {
         return false;
     }
 
-    // RF-024: publicar, pausar y cancelar evento
+    //publicar, pausar y cancelar evento
     public void activar() {
         if (estado == EstadoEvento.EN_ESPERA || estado == EstadoEvento.PAUSADO) {
             cambiarEstado(EstadoEvento.ACTIVO);

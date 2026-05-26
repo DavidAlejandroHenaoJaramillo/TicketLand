@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Recinto {
-    private static int contadorId = 1;  // generador automático
-    private int idRecinto;              // RF-026
+    private static int contadorId = 1;
+    private int idRecinto;
     private String nombre;
     private String direccion;
-    private String ciudad;              // RF-026 — faltaba
+    private String ciudad;
     private List<Zona> zonas;
 
     public Recinto(String nombre, String direccion, String ciudad) {

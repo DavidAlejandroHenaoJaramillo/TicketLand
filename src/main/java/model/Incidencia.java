@@ -12,7 +12,7 @@ public class Incidencia {
         OTRO
     }
 
-    // RF-041: identificador único de incidencia
+    //identificador único de incidencia
     private int idIncidencia;
     private Tipo tipo;
     private String descripcion;

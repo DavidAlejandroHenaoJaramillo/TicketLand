@@ -4,7 +4,6 @@ import decorator.EntradaBase;
 
 public class Entrada implements EntradaBase {
 
-    // RF-038: identificador único de entrada
     private int idEntrada;
     private double precioFinal;
     private EstadoEntrada estadoEntrada;
@@ -70,7 +69,7 @@ public class Entrada implements EntradaBase {
         return precioFinal;
     }
 
-    // RF-040: anular entrada por cancelación o reembolso
+    //anular entrada por cancelación o reembolso
     public boolean anular() {
         if (estadoEntrada == EstadoEntrada.ACTIVA) {
             estadoEntrada = EstadoEntrada.ANULADA;

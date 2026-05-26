@@ -6,7 +6,6 @@ import state.Disponible;
 
 public class Zona {
 
-    // RF-028: identificador único de zona
     private int idZona;
     private String nombre;
     private int capacidad;
@@ -81,7 +80,6 @@ public class Zona {
 
     public void setTarifa(Tarifa tarifa) {this.tarifa = tarifa;}
 
-    // RF-030: consultar ocupación por zona
     public int calcularOcupacion() {
         int ocupados = 0;
         for (Asiento a : asientos) {
@@ -92,7 +90,6 @@ public class Zona {
         return ocupados;
     }
 
-    // RF-025: consultar asientos disponibles para selección de entradas
     public List<Asiento> getAsientosDisponibles() {
         List<Asiento> disponibles = new ArrayList<>();
         for (Asiento a : asientos) {
@@ -103,7 +100,6 @@ public class Zona {
         return disponibles;
     }
 
-    // RF-029: verificar si la zona tiene capacidad para más entradas
     public boolean hayDisponibilidad() {
         return !getAsientosDisponibles().isEmpty();
     }
