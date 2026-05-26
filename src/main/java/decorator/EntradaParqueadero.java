@@ -1,11 +1,11 @@
 package decorator;
 
-public class SeguroDecorator extends EntradaDecorator {
+public class EntradaParqueadero extends EntradaDecorator {
 
     /**
      * Constructor de la clase
      */
-    public SeguroDecorator(EntradaBase entrada) {
+    public EntradaParqueadero(EntradaBase entrada) {
         super(entrada);
     }
 
@@ -15,11 +15,11 @@ public class SeguroDecorator extends EntradaDecorator {
      */
     @Override
     public String getDescripcion() {
-        return entrada.getDescripcion() + " + Seguro";
+        return entrada.getDescripcion() + " + Parqueadero";
     }
 
     @Override
     public double getCosto() {
-        return entrada.getCosto() + 20000;
+        return entrada.getCosto() + 30000;
     }
 }

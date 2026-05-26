@@ -1,5 +1,6 @@
 package com.example.ticketland;
 
+import builder.Compra;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;

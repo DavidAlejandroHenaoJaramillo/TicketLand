@@ -2,17 +2,23 @@ package state;
 
 public class Reservado implements EstadoAsiento {
 
-    /**
-     * Metodo para ajustar el estado a "RESERVADO"
-     * @return
-     */
     @Override
-    public String manejarEstado() {
-        return "Asiento reservado";
+    public void reservar() {
+        throw new IllegalStateException("El asiento ya está reservado.");
     }
 
     @Override
-    public String toString() {
-        return "RESERVADO";
-    }
+    public void bloquear() { /* transición válida */ }
+
+    @Override
+    public void vender() { /* transición válida */ }
+
+    @Override
+    public void liberar() { /* transición válida — vuelve a Disponible */ }
+
+    @Override
+    public String manejarEstado() { return "Asiento reservado"; }
+
+    @Override
+    public String toString() { return "RESERVADO"; }
 }

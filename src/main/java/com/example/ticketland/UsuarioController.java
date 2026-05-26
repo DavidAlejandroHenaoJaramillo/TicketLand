@@ -1,5 +1,6 @@
 package com.example.ticketland;
 
+import builder.Compra;
 import decorator.*;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -9,7 +10,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import model.*;
-import state.*;
 import strategy.*;
 
 import java.io.IOException;
@@ -338,10 +338,10 @@ public class UsuarioController {
         asiento.reservar();
         EntradaBase entradaFinal = new Entrada(
                 sistema.getCompras().size() + 1, zona.getPrecioBase(), EstadoEntrada.ACTIVA, zona, asiento);
-        if (chkVIP.isSelected())          entradaFinal = new EntradaVIP(entradaFinal);
-        if (chkSeguro.isSelected())        entradaFinal = new SeguroDecorator(entradaFinal);
-        if (chkMerchandising.isSelected()) entradaFinal = new MerchandisingDecorator(entradaFinal);
-        if (chkParqueadero.isSelected())   entradaFinal = new ParqueaderoDecorator(entradaFinal);
+        if (chkVIP.isSelected())           entradaFinal = new EntradaVIP(entradaFinal);
+        if (chkSeguro.isSelected())        entradaFinal = new EntradaSeguro(entradaFinal, 20000);
+        if (chkMerchandising.isSelected()) entradaFinal = new EntradaMerchandising(entradaFinal, 50000);
+        if (chkParqueadero.isSelected())   entradaFinal = new EntradaParqueadero(entradaFinal);
         Compra compra = sistema.crearCompra(usuario, eventoSeleccionado, metodoPago);
         compra.agregarEntrada(entradaFinal);
         compra.pagar();

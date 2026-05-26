@@ -1,23 +1,17 @@
 package adapter;
 
-import model.Compra;
-
 import java.util.List;
 
 public class TXTAdapter implements ReporteAdapter {
 
-    /**
-     * Metodo implementado para generar reportes en formato TXT
-     * @param compras totales
-     * @return reporte
-     */
     @Override
-    public String generarReporte(List<Compra> compras) {
+    public byte[] exportar(List<String> datos, String titulo) {
         StringBuilder txt = new StringBuilder();
         txt.append("HISTORIAL DE COMPRAS\n");
-        for (Compra compra : compras) {
-            txt.append(compra).append("\n");
+        txt.append(titulo).append("\n\n");
+        for (String linea : datos) {
+            txt.append(linea).append("\n");
         }
-        return txt.toString();
+        return txt.toString().getBytes();
     }
 }
