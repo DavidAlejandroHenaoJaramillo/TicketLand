@@ -4,7 +4,12 @@ module com.example.ticketland {
     requires org.apache.pdfbox;
 
     opens com.example.ticketland to javafx.fxml;
+    opens viewController to javafx.fxml;
+
     exports com.example.ticketland;
+    exports viewController;
+    exports controller;
+
     opens facade;
     opens adapter;
     opens model;
