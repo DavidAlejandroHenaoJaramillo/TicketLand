@@ -1,23 +1,18 @@
 package adapter;
 
-import model.Compra;
 
 import java.util.List;
 
 public class CSVAdapter implements ReporteAdapter {
 
-    /**
-     * Metodo implementado para generar reportes en formato CSV
-     * @param compras totales
-     * @return reporte
-     */
     @Override
-    public String generarReporte(List<Compra> compras) {
+    public byte[] exportar(List<String> datos, String titulo) {
         StringBuilder csv = new StringBuilder();
-        csv.append("fecha,total\n");
-        for (Compra compra : compras) {
-            csv.append(compra.getFechaCompra()).append(",").append(compra.calcularTotal()).append("\n");
+        csv.append(titulo).append("\n");
+        csv.append("linea,detalle\n");
+        for (int i = 0; i < datos.size(); i++) {
+            csv.append(i + 1).append(",").append(datos.get(i)).append("\n");
         }
-        return csv.toString();
+        return csv.toString().getBytes();
     }
 }

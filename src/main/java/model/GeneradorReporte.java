@@ -1,6 +1,7 @@
 package model;
 
 import adapter.ReporteAdapter;
+import builder.Compra;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
@@ -21,10 +22,12 @@ public class GeneradorReporte {
     }
 
     // RF-046, RF-050: genera reporte usando el adapter recibido (patrón Adapter)
-    public String generarConAdapter(ReporteAdapter adapter) {
-        return adapter.generarReporte(sistema.getCompras());
+    public byte[] generarConAdapter(ReporteAdapter adapter, String titulo) {
+        List<String> datos = sistema.getCompras().stream()
+                .map(Compra::toString)
+                .toList();
+        return adapter.exportar(datos, titulo);
     }
-
     // RF-046: exportar reporte de ventas en CSV
     public void exportarVentasCSV(String rutaArchivo, LocalDate desde, LocalDate hasta) {
         try (FileWriter writer = new FileWriter(rutaArchivo)) {
