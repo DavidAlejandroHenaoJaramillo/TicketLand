@@ -3,6 +3,8 @@ package model;
 import decorator.EntradaBase;
 import state.*;
 import strategy.PagoStrategy;
+import observer.Observer;
+
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -18,6 +20,8 @@ public class Compra {
     private Evento evento;
     private PagoStrategy metodoPago;
     private List<EntradaBase> entradas;
+    private List<ServicioAdicional> serviciosAdicionales;
+    private List<Observer> observers;
 
     public Compra(int idCompra, LocalDate fechaCompra, EstadoCompra estadoCompra,
                   Usuario usuario, Evento evento, PagoStrategy metodoPago) {
@@ -28,6 +32,8 @@ public class Compra {
         this.evento = evento;
         this.metodoPago = metodoPago;
         entradas = new ArrayList<>();
+        observers = new ArrayList<>();
+        serviciosAdicionales = new ArrayList<>();
     }
 
     public int getIdCompra() { return idCompra; }
@@ -58,6 +64,29 @@ public class Compra {
 
     public String mostrarEstadoCompra() {
         return estadoCompra.manejarEstado();
+    }
+
+    // ── Observer ─────────────────────────────────────────────────────────────
+
+    @Override
+    public void addObserver(Observer observer) { observers.add(observer); }
+
+    @Override
+    public void removeObserver(Observer observer) { observers.remove(observer); }
+
+    @Override
+    public void notificarObservers() {
+        for (Observer o : observers) o.actualizar(this);
+    }
+
+    // ── Servicios adicionales ─────────────────────────────────────────────────
+
+    public void agregarServicio(ServicioAdicional servicio) {
+        serviciosAdicionales.add(servicio);
+    }
+
+    public List<ServicioAdicional> getServiciosAdicionales() {
+        return serviciosAdicionales;
     }
 
     public double calcularTotal() {

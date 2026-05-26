@@ -1,4 +1,11 @@
 package model;
 
 public enum TipoNotificacion {
+    COMPRA_CREADA,
+    COMPRA_PAGADA,
+    COMPRA_CONFIRMADA,
+    COMPRA_CANCELADA,
+    COMPRA_REEMBOLSADA,
+    EVENTO_MODIFICADO,
+    EVENTO_CANCELADO
 }
