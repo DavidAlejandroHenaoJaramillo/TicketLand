@@ -2,7 +2,7 @@ package service;
 
 import adapter.CSVAdapter;
 import adapter.PDFAdapter;
-import builder.Compra;
+import model.Compra;
 import model.FormatoReporte;
 import model.TipoReporte;
 import java.time.LocalDate;

@@ -1,6 +1,6 @@
 package singleton;
 
-import builder.Compra;
+import model.Compra;
 import model.*;
 import service.*;
 import facade.CompraFacade;

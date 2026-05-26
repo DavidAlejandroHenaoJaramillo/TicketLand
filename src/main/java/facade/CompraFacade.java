@@ -1,7 +1,7 @@
 package facade;
 
 import decorator.EntradaBase;
-import builder.Compra;
+import model.Compra;
 import model.Evento;
 import model.Usuario;
 import strategy.PagoStrategy;

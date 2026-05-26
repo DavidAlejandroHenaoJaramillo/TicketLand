@@ -1,6 +1,6 @@
 package service;
 
-import builder.Compra;
+import model.Compra;
 import model.Usuario;
 import java.util.List;
 
