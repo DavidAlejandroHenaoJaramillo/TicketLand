@@ -3,7 +3,7 @@ package model;
 import java.time.LocalDate;
 import java.util.List;
 
-public class Administrador extends Persona {
+public class Administrador extends Usuario {
 
     private String permisosAdministrador;
 

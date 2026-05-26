@@ -1,6 +1,7 @@
 package prototype;
 
 import model.Asiento;
+import model.Tarifa;
 import model.Zona;
 import model.TipoZona;
 import state.Disponible;
@@ -29,15 +30,17 @@ public class ZonaPrototype implements Cloneable {
     private double precioBase;
     private TipoZona tipoZona;
     private int cantidadAsientos;
+    private Tarifa tarifa;
 
     public ZonaPrototype(int idZona, String nombre, int capacidad,
-                         double precioBase, TipoZona tipoZona, int cantidadAsientos) {
+                         double precioBase, TipoZona tipoZona, int cantidadAsientos, Tarifa tarifa) {
         this.idZona = idZona;
         this.nombre = nombre;
         this.capacidad = capacidad;
         this.precioBase = precioBase;
         this.tipoZona = tipoZona;
         this.cantidadAsientos = cantidadAsientos;
+        this.tarifa = tarifa;
     }
 
     /**
@@ -48,7 +51,7 @@ public class ZonaPrototype implements Cloneable {
      * @param filaBase  letra de fila inicial (ej: "A")
      */
     public Zona clonarComoZona(int nuevoId, String filaBase) {
-        Zona zona = new Zona(nuevoId, nombre, capacidad, precioBase, tipoZona);
+        Zona zona = new Zona(nuevoId, nombre, capacidad, precioBase, tipoZona, tarifa);
         for (int i = 1; i <= cantidadAsientos; i++) {
             zona.agregarAsiento(new Asiento(i, filaBase, i, new Disponible()));
         }
