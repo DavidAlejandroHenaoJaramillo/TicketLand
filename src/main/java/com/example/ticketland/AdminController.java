@@ -58,6 +58,7 @@ public class AdminController implements Initializable {
     @FXML private TextArea txtNuevoEvDescripcion;
     @FXML private TextArea txtNuevoEvPoliticas;
     @FXML private Label lblMensajeCrearEvento;
+    @FXML private Button btnCrearEvento;
 
     @FXML private TableView<Usuario> tablaUsuarios;
     @FXML private TableColumn<Usuario, String> colUsuarioId;
@@ -122,6 +123,7 @@ public class AdminController implements Initializable {
     @FXML private DatePicker dpFiltroHasta;
 
     private TicketLand sistema = TicketLand.getInstance();
+    private Evento eventoEnEdicion = null;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -141,6 +143,8 @@ public class AdminController implements Initializable {
                     + sistema.getCompras().size() + " compras");
     }
 
+    // ===================== DASHBOARD =====================
+
     @FXML public void actualizarMetricas() {
         actualizarKPIs();
         actualizarBarChart();
@@ -151,9 +155,9 @@ public class AdminController implements Initializable {
 
     private void actualizarKPIs() {
         double totalVentas = sistema.getCompras().stream().mapToDouble(Compra::calcularTotal).sum();
-        long activos   = sistema.getEventos().stream().filter(e -> e.getEstado() == EstadoEvento.ACTIVO).count();
-        long canceladas= sistema.getCompras().stream().filter(c -> c.getEstadoCompra() instanceof CompraCancelada).count();
-        double tasaCanc= sistema.getCompras().isEmpty() ? 0 : (100.0 * canceladas / sistema.getCompras().size());
+        long activos    = sistema.getEventos().stream().filter(e -> e.getEstado() == EstadoEvento.ACTIVO).count();
+        long canceladas = sistema.getCompras().stream().filter(c -> c.getEstadoCompra() instanceof CompraCancelada).count();
+        double tasaCanc = sistema.getCompras().isEmpty() ? 0 : (100.0 * canceladas / sistema.getCompras().size());
         if (kpiTotalVentas != null) kpiTotalVentas.setText("$" + (int) totalVentas);
         if (kpiCompras != null)     kpiCompras.setText(String.valueOf(sistema.getCompras().size()));
         if (kpiEventos != null)     kpiEventos.setText(String.valueOf(activos));
@@ -170,7 +174,8 @@ public class AdminController implements Initializable {
         XYChart.Series<String, Number> serie = new XYChart.Series<>();
         serie.setName("Ventas ($)");
         Map<String, Double> mapa = new LinkedHashMap<>();
-        for (Compra c : sistema.getCompras()) mapa.merge(c.getEvento().getNombre(), c.calcularTotal(), Double::sum);
+        for (Compra c : sistema.getCompras())
+            mapa.merge(c.getEvento().getNombre(), c.calcularTotal(), Double::sum);
         mapa.forEach((ev, total) -> serie.getData().add(new XYChart.Data<>(ev, total)));
         chartVentas.getData().clear();
         chartVentas.getData().add(serie);
@@ -178,12 +183,12 @@ public class AdminController implements Initializable {
 
     private void actualizarPieChart() {
         if (chartEstados == null) return;
-        long pagadas    = sistema.getCompras().stream().filter(c -> c.getEstadoCompra() instanceof CompraPagada).count();
-        long confirmadas= sistema.getCompras().stream().filter(c -> c.getEstadoCompra() instanceof CompraConfirmada).count();
-        long canceladas = sistema.getCompras().stream().filter(c -> c.getEstadoCompra() instanceof CompraCancelada).count();
-        long reembolsadas=sistema.getCompras().stream().filter(c -> c.getEstadoCompra() instanceof CompraReembolsada).count();
-        long incidencias= sistema.getCompras().stream().filter(c -> c.getEstadoCompra() instanceof CompraIncidencia).count();
-        long creadas    = sistema.getCompras().stream().filter(c -> c.getEstadoCompra() instanceof CompraCreada).count();
+        long pagadas     = sistema.getCompras().stream().filter(c -> c.getEstadoCompra() instanceof CompraPagada).count();
+        long confirmadas = sistema.getCompras().stream().filter(c -> c.getEstadoCompra() instanceof CompraConfirmada).count();
+        long canceladas  = sistema.getCompras().stream().filter(c -> c.getEstadoCompra() instanceof CompraCancelada).count();
+        long reembolsadas= sistema.getCompras().stream().filter(c -> c.getEstadoCompra() instanceof CompraReembolsada).count();
+        long incidencias = sistema.getCompras().stream().filter(c -> c.getEstadoCompra() instanceof CompraIncidencia).count();
+        long creadas     = sistema.getCompras().stream().filter(c -> c.getEstadoCompra() instanceof CompraCreada).count();
         chartEstados.getData().clear();
         if (pagadas > 0)      chartEstados.getData().add(new PieChart.Data("Pagadas", pagadas));
         if (confirmadas > 0)  chartEstados.getData().add(new PieChart.Data("Confirmadas", confirmadas));
@@ -220,12 +225,16 @@ public class AdminController implements Initializable {
             for (Zona z : ev.getRecinto().getZonas()) {
                 int vendidos = z.calcularOcupacion(), cap = z.getCapacidad();
                 double pct = cap > 0 ? (100.0 * vendidos / cap) : 0;
-                filas.add(new String[]{ev.getNombre(), z.getNombre(), z.getTipoZona().toString(),
-                        String.valueOf(vendidos), String.valueOf(cap), String.format("%.1f%%", pct)});
+                filas.add(new String[]{
+                        ev.getNombre(), z.getNombre(), z.getTipoZona().toString(),
+                        String.valueOf(vendidos), String.valueOf(cap), String.format("%.1f%%", pct)
+                });
             }
         }
         tablaOcupacion.setItems(FXCollections.observableArrayList(filas));
     }
+
+    // ===================== EVENTOS =====================
 
     private void inicializarCombosCrearEvento() {
         if (cmbNuevoEvCategoria != null)
@@ -247,19 +256,50 @@ public class AdminController implements Initializable {
         if (colCategoria != null)
             colCategoria.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getCategoria()));
         colEstado.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getEstado().toString()));
+
         tablaEventos.setRowFactory(tv -> new TableRow<>() {
             @Override protected void updateItem(Evento item, boolean empty) {
                 super.updateItem(item, empty);
                 if (item == null || empty) { setStyle(""); return; }
                 switch (item.getEstado().toString()) {
-                    case "ACTIVO"    -> setStyle("-fx-background-color: #061406;");
-                    case "PAUSADO"   -> setStyle("-fx-background-color: #141000;");
-                    case "CANCELADO" -> setStyle("-fx-background-color: #140606;");
+                    case "ACTIVO"    -> setStyle("-fx-background-color: #d5f5e3;");
+                    case "PAUSADO"   -> setStyle("-fx-background-color: #fef9e7;");
+                    case "CANCELADO" -> setStyle("-fx-background-color: #fadbd8;");
                     default          -> setStyle("");
                 }
             }
         });
+
+        tablaEventos.getSelectionModel().selectedItemProperty().addListener((obs, viejo, nuevo) -> {
+            if (nuevo != null) rellenarFormularioEvento(nuevo);
+        });
+
         tablaEventos.setItems(FXCollections.observableArrayList(sistema.getEventos()));
+    }
+
+    private void rellenarFormularioEvento(Evento evento) {
+        eventoEnEdicion = evento;
+        if (txtNuevoEvNombre != null)      txtNuevoEvNombre.setText(evento.getNombre());
+        if (txtNuevoEvCiudad != null)      txtNuevoEvCiudad.setText(evento.getCiudad());
+        if (dpNuevoEvFecha != null)        dpNuevoEvFecha.setValue(evento.getFecha());
+        if (txtNuevoEvDescripcion != null) txtNuevoEvDescripcion.setText(
+                evento.getDescripcion() != null ? evento.getDescripcion() : "");
+        if (txtNuevoEvPoliticas != null)   txtNuevoEvPoliticas.setText(
+                evento.getPoliticas() != null ? evento.getPoliticas() : "");
+        if (cmbNuevoEvCategoria != null)   cmbNuevoEvCategoria.setValue(evento.getCategoria());
+        if (cmbNuevoEvRecinto != null)     cmbNuevoEvRecinto.setValue(evento.getRecinto());
+        if (btnCrearEvento != null)        btnCrearEvento.setText("💾 Guardar cambios");
+        setMsgCrearEvento("✏ Editando: \"" + evento.getNombre() + "\" — modifica y pulsa Guardar.");
+    }
+
+    private void limpiarFormularioEvento() {
+        if (txtNuevoEvNombre != null)      txtNuevoEvNombre.clear();
+        if (txtNuevoEvCiudad != null)      txtNuevoEvCiudad.clear();
+        if (dpNuevoEvFecha != null)        dpNuevoEvFecha.setValue(null);
+        if (txtNuevoEvDescripcion != null) txtNuevoEvDescripcion.clear();
+        if (txtNuevoEvPoliticas != null)   txtNuevoEvPoliticas.clear();
+        if (btnCrearEvento != null)        btnCrearEvento.setText("➕ Crear evento");
+        eventoEnEdicion = null;
     }
 
     @FXML private void activarEvento() {
@@ -299,38 +339,55 @@ public class AdminController implements Initializable {
         Recinto recinto  = cmbNuevoEvRecinto != null ? cmbNuevoEvRecinto.getValue() : null;
         String desc      = txtNuevoEvDescripcion != null ? txtNuevoEvDescripcion.getText().trim() : "";
         String politicas = txtNuevoEvPoliticas != null ? txtNuevoEvPoliticas.getText().trim() : "";
+
         if (nombre.isEmpty() || categoria == null || ciudad.isEmpty() || fecha == null) {
             setMsgCrearEvento("❌ Completa nombre, categoría, ciudad y fecha."); return;
         }
+
+        // Si hay evento seleccionado → guardar cambios
+        if (eventoEnEdicion != null) {
+            eventoEnEdicion.setNombre(nombre);
+            eventoEnEdicion.setCiudad(ciudad);
+            eventoEnEdicion.setFecha(fecha);
+            eventoEnEdicion.setCategoria(categoria);
+            if (!desc.isEmpty())      eventoEnEdicion.setDescripcion(desc);
+            if (!politicas.isEmpty()) eventoEnEdicion.setPoliticas(politicas);
+            if (recinto != null)      eventoEnEdicion.setRecinto(recinto);
+            cargarEventos(); actualizarKPIs();
+            limpiarFormularioEvento();
+            setMsgCrearEvento("✅ Evento actualizado correctamente.");
+            return;
+        }
+
+        // Crear nuevo evento usando Factory Method (RF-013, RF-049)
         EventoFactory factory = switch (categoria) {
             case "Concierto" -> new ConciertoFactory(nombre, ciudad, fecha, nombre, "General", recinto);
             case "Teatro"    -> new TeatroFactory(nombre, ciudad, fecha, nombre, "Por definir", recinto);
             default          -> new ConferenciaFactory(nombre, ciudad, fecha, "Por definir", nombre, recinto);
         };
         Evento nuevo = factory.crearEvento();
-        if (!desc.isEmpty()) nuevo.setDescripcion(desc);
+        if (!desc.isEmpty())      nuevo.setDescripcion(desc);
         if (!politicas.isEmpty()) nuevo.setPoliticas(politicas);
         sistema.agregarEvento(nuevo);
         cargarEventos(); actualizarKPIs(); inicializarCombosCrearEvento();
-        txtNuevoEvNombre.clear();
-        if (txtNuevoEvCiudad != null) txtNuevoEvCiudad.clear();
-        if (dpNuevoEvFecha != null) dpNuevoEvFecha.setValue(null);
-        if (txtNuevoEvDescripcion != null) txtNuevoEvDescripcion.clear();
-        if (txtNuevoEvPoliticas != null) txtNuevoEvPoliticas.clear();
+        limpiarFormularioEvento();
         setMsgCrearEvento("✅ Evento \"" + nombre + "\" creado exitosamente.");
     }
 
     private void setMsgEvento(String msg, boolean ok) {
         if (lblMensajeEvento == null) return;
         lblMensajeEvento.setText(msg);
-        lblMensajeEvento.setStyle(ok ? "-fx-text-fill: #2ecc71;" : "-fx-text-fill: #e74c3c;");
+        lblMensajeEvento.setStyle(ok ? "-fx-text-fill: #27ae60;" : "-fx-text-fill: #e74c3c;");
     }
 
     private void setMsgCrearEvento(String msg) {
         if (lblMensajeCrearEvento == null) return;
         lblMensajeCrearEvento.setText(msg);
-        lblMensajeCrearEvento.setStyle(msg.startsWith("✅") ? "-fx-text-fill: #2ecc71;" : "-fx-text-fill: #e74c3c;");
+        boolean ok = msg.startsWith("✅") || msg.startsWith("✏");
+        lblMensajeCrearEvento.setStyle(ok ? "-fx-text-fill: #27ae60;" : "-fx-text-fill: #e74c3c;");
     }
+
+    // ===================== USUARIOS =====================
 
     private void cargarUsuarios() {
         if (tablaUsuarios == null) return;
@@ -361,7 +418,7 @@ public class AdminController implements Initializable {
         sistema.agregarUsuario(new Usuario(sistema.getUsuarios().size() + 1, nombre, correo, telefono));
         cargarUsuarios(); actualizarKPIs();
         txtNuevoUsNombre.clear();
-        if (txtNuevoUsCorreo != null) txtNuevoUsCorreo.clear();
+        if (txtNuevoUsCorreo != null)   txtNuevoUsCorreo.clear();
         if (txtNuevoUsTelefono != null) txtNuevoUsTelefono.clear();
         setMsg(lblMensajeUsuario, "✅ Usuario \"" + nombre + "\" creado.", true);
     }
@@ -374,6 +431,8 @@ public class AdminController implements Initializable {
         cargarUsuarios(); actualizarKPIs();
         setMsg(lblMensajeUsuario, "🗑 Usuario \"" + u.getNombre() + "\" eliminado.", true);
     }
+
+    // ===================== COMPRAS =====================
 
     private void cargarCompras() {
         if (tablaCompras == null) return;
@@ -393,10 +452,10 @@ public class AdminController implements Initializable {
                 super.updateItem(item, empty);
                 if (item == null || empty) { setStyle(""); return; }
                 switch (item.getEstadoCompra().toString()) {
-                    case "PAGADA"      -> setStyle("-fx-background-color: #061406;");
-                    case "CONFIRMADA"  -> setStyle("-fx-background-color: #060a14;");
-                    case "CANCELADA"   -> setStyle("-fx-background-color: #140606;");
-                    case "REEMBOLSADA" -> setStyle("-fx-background-color: #100614;");
+                    case "PAGADA"      -> setStyle("-fx-background-color: #d5f5e3;");
+                    case "CONFIRMADA"  -> setStyle("-fx-background-color: #d6eaf8;");
+                    case "CANCELADA"   -> setStyle("-fx-background-color: #fadbd8;");
+                    case "REEMBOLSADA" -> setStyle("-fx-background-color: #e8daef;");
                     default            -> setStyle("");
                 }
             }
@@ -442,6 +501,8 @@ public class AdminController implements Initializable {
         setMsg(lblMensajeCompra, "📑 PDF exportado como reporte_admin.pdf", true);
     }
 
+    // ===================== RECINTOS =====================
+
     private void cargarRecintos() {
         if (tablaRecintos == null) return;
         colRecintoNombre.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getNombre()));
@@ -465,6 +526,8 @@ public class AdminController implements Initializable {
         setMsg(lblMensajeRecinto, "✅ Recinto \"" + nombre + "\" registrado.", true);
     }
 
+    // ===================== ZONAS =====================
+
     private void cargarZonasAdmin() {
         if (cmbEventoZonas == null) return;
         cmbEventoZonas.setItems(FXCollections.observableArrayList(sistema.getEventos()));
@@ -480,10 +543,13 @@ public class AdminController implements Initializable {
             colZonaAdminPrecio.setCellValueFactory(d -> new SimpleStringProperty("$" + (int) d.getValue().getPrecioBase()));
             colZonaAdminOcupacion.setCellValueFactory(d -> {
                 int oc = d.getValue().calcularOcupacion(), cap = d.getValue().getCapacidad();
-                return new SimpleStringProperty(oc + "/" + cap + " (" + (cap > 0 ? String.format("%.0f", 100.0*oc/cap) : 0) + "%)");
+                return new SimpleStringProperty(oc + "/" + cap + " ("
+                        + (cap > 0 ? String.format("%.0f", 100.0 * oc / cap) : 0) + "%)");
             });
         }
     }
+
+    // ===================== ASIENTOS =====================
 
     private void cargarCombosAsientos() {
         if (cmbEventoAsientos == null) return;
@@ -509,10 +575,10 @@ public class AdminController implements Initializable {
                 super.updateItem(item, empty);
                 if (item == null || empty) { setStyle(""); return; }
                 switch (item.getEstado().toString()) {
-                    case "DISPONIBLE" -> setStyle("-fx-background-color: #061406;");
-                    case "RESERVADO"  -> setStyle("-fx-background-color: #141000;");
-                    case "VENDIDO"    -> setStyle("-fx-background-color: #140606;");
-                    case "BLOQUEADO"  -> setStyle("-fx-background-color: #0a0a14;");
+                    case "DISPONIBLE" -> setStyle("-fx-background-color: #d5f5e3;");
+                    case "RESERVADO"  -> setStyle("-fx-background-color: #fef9e7;");
+                    case "VENDIDO"    -> setStyle("-fx-background-color: #fadbd8;");
+                    case "BLOQUEADO"  -> setStyle("-fx-background-color: #d5d8dc;");
                     default           -> setStyle("");
                 }
             }
@@ -535,6 +601,8 @@ public class AdminController implements Initializable {
         boolean ok = a.liberar(); cargarAsientosDeZona();
         setMsg(lblMensajeAsiento, ok ? "🔓 Asiento liberado." : "❌ No se puede liberar.", ok);
     }
+
+    // ===================== INCIDENCIAS =====================
 
     private void cargarTiposIncidencia() {
         if (cmbTipoIncidencia != null) {
@@ -568,7 +636,7 @@ public class AdminController implements Initializable {
         sistema.getAdministradores().get(0)
                 .registrarIncidencia(cmbTipoIncidencia.getValue(), descripcion, entidad, sistema);
         if (txtDescripcionIncidencia != null) txtDescripcionIncidencia.clear();
-        if (txtEntidadAfectada != null) txtEntidadAfectada.clear();
+        if (txtEntidadAfectada != null)       txtEntidadAfectada.clear();
         cargarIncidencias();
         setMsg(lblMensajeIncidencia, "⚠ Incidencia registrada correctamente.", true);
     }
@@ -582,6 +650,8 @@ public class AdminController implements Initializable {
         setMsg(lblMensajeIncidencia, "🔍 Filtro aplicado: " + resultado.size() + " resultado(s).", true);
     }
 
+    // ===================== CERRAR SESIÓN =====================
+
     @FXML private void cerrarSesion() {
         try {
             FXMLLoader loader = new FXMLLoader(HelloApplication.class.getResource("login-view.fxml"));
@@ -593,9 +663,11 @@ public class AdminController implements Initializable {
         }
     }
 
+    // ===================== UTIL =====================
+
     private void setMsg(Label lbl, String msg, boolean ok) {
         if (lbl == null) return;
         lbl.setText(msg);
-        lbl.setStyle(ok ? "-fx-text-fill: #2ecc71;" : "-fx-text-fill: #e74c3c;");
+        lbl.setStyle(ok ? "-fx-text-fill: #27ae60;" : "-fx-text-fill: #e74c3c;");
     }
 }
