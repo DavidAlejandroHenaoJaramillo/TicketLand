@@ -1,27 +1,30 @@
-package com.example.ticketland;
+package viewController;
 
+import com.example.ticketland.HelloApplication;
+import controller.AuthController;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import model.TicketLand;
 import model.Usuario;
 
 import java.io.IOException;
 
-public class LoginController {
+public class LoginViewController {
 
     @FXML private TextField txtCorreo;
     @FXML private TextField txtPassword;
     @FXML private Label lblMensaje;
 
-    // RF-001: ingresar como usuario
+    private final AuthController authController = new AuthController();
+
     @FXML
     private void loginUsuario() {
         String correo = txtCorreo.getText().trim();
-        Usuario usuario = TicketLand.getInstance().buscarUsuarioPorCorreo(correo);
+        Usuario usuario = authController.loginUsuario(correo);
+
         if (usuario != null) {
             abrirVistaUsuario(usuario);
         } else {
@@ -29,10 +32,26 @@ public class LoginController {
         }
     }
 
-    // RF-001: ingresar como administrador
     @FXML
     private void loginAdmin() {
-        abrirVistaAdmin();
+        if (authController.loginAdmin()) {
+            abrirVistaAdmin();
+        }
+    }
+
+    @FXML
+    private void irARegistro() {
+        try {
+            FXMLLoader loader = new FXMLLoader(
+                    HelloApplication.class.getResource("registro-view.fxml")
+            );
+
+            Stage stage = (Stage) txtCorreo.getScene().getWindow();
+            stage.setScene(new Scene(loader.load(), 500, 600));
+            stage.setTitle("TicketLand - Registro");
+        } catch (IOException e) {
+            lblMensaje.setText("Error al cargar registro.");
+        }
     }
 
     private void abrirVistaUsuario(Usuario usuario) {
@@ -40,41 +59,31 @@ public class LoginController {
             FXMLLoader loader = new FXMLLoader(
                     HelloApplication.class.getResource("usuario-view.fxml")
             );
+
             Stage stage = (Stage) txtCorreo.getScene().getWindow();
             stage.setScene(new Scene(loader.load(), 700, 500));
-            UsuarioController controller = loader.getController();
+
+            UsuarioViewController controller = loader.getController();
             controller.setUsuario(usuario);
+
             stage.setTitle("TicketLand - " + usuario.getNombre());
         } catch (IOException e) {
             lblMensaje.setText("Error al cargar la vista.");
         }
     }
 
-
     private void abrirVistaAdmin() {
         try {
             FXMLLoader loader = new FXMLLoader(
                     HelloApplication.class.getResource("admin-view.fxml")
             );
+
             Stage stage = (Stage) txtCorreo.getScene().getWindow();
             stage.setScene(new Scene(loader.load(), 800, 600));
             stage.setTitle("TicketLand - Administrador");
-        } catch (IOException e) {
-            lblMensaje.setText("Error al cargar la vista.");
-        }
-    }
-
-    // RF-001: ir a pantalla de registro
-    @FXML
-    private void irARegistro() {
-        try {
-            FXMLLoader loader = new FXMLLoader(
-                    HelloApplication.class.getResource("registro-view.fxml"));
-            Stage stage = (Stage) txtCorreo.getScene().getWindow();
-            stage.setScene(new Scene(loader.load(), 500, 600));
-            stage.setTitle("TicketLand - Registro");
-        } catch (IOException e) {
-            lblMensaje.setText("Error al cargar registro.");
+        } catch (Exception e) {
+            e.printStackTrace();
+            lblMensaje.setText("Error al cargar admin: " + e.getMessage());
         }
     }
 }

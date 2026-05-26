@@ -7,7 +7,7 @@
 <VBox alignment="CENTER" spacing="0"
       xmlns="http://javafx.com/javafx/21"
       xmlns:fx="http://javafx.com/fxml"
-      fx:controller="com.example.ticketland.LoginController"
+      fx:controller="viewController.LoginViewController"
       style="-fx-background-color: #f0f4ff;">
 
     <VBox alignment="CENTER" spacing="6" style="-fx-padding: 40 0 30 0;">
