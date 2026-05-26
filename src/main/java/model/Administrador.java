@@ -1,7 +1,5 @@
 package model;
 
-import model.Compra;
-
 import java.time.LocalDate;
 import java.util.List;
 

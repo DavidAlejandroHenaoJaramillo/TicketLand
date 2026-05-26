@@ -2,25 +2,17 @@ package state;
 
 public class Bloqueado implements EstadoAsiento {
 
+    /**
+     * Metodo para ajustar el estado a "BLOQUEADO"
+     * @return
+     */
     @Override
-    public void reservar() {
-        throw new IllegalStateException("El asiento está bloqueado.");
+    public String manejarEstado() {
+        return "Asiento bloqueado";
     }
 
     @Override
-    public void bloquear() { /* ya bloqueado, no hace nada */ }
-
-    @Override
-    public void vender() {
-        throw new IllegalStateException("El asiento está bloqueado.");
+    public String toString() {
+        return "BLOQUEADO";
     }
-
-    @Override
-    public void liberar() { /* transición válida — admin desbloquea */ }
-
-    @Override
-    public String manejarEstado() { return "Asiento bloqueado"; }
-
-    @Override
-    public String toString() { return "BLOQUEADO"; }
 }

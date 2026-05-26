@@ -1,7 +1,9 @@
 package adapter;
 
+import model.Compra;
+
 import java.util.List;
 
 public interface ReporteAdapter {
-    byte[] exportar(List<String> datos, String titulo);
+    String generarReporte(List<Compra> compras);
 }

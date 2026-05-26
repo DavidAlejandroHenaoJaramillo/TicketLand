@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="431946db-e47d-4df6-865c-9359ae5074ac" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.mvn/wrapper/maven-wrapper.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.mvn/wrapper/maven-wrapper.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/reporte_admin.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/reporte_admin.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/reporte_usuario.csv" beforeDir="false" afterPath="$PROJECT_DIR$/reporte_usuario.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/reporte_usuario.pdf" beforeDir="false" afterPath="$PROJECT_DIR$/reporte_usuario.pdf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/adapter/CSVAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/adapter/CSVAdapter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/adapter/CSVBoxGenerator.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/adapter/PDFAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/adapter/PDFAdapter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/adapter/PDFBoxGenerator.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/adapter/ReporteAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/adapter/ReporteAdapter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/adapter/TXTAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/adapter/TXTAdapter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/builder/Compra.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/builder/CompraConcretaBuilder.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/builder/DirectorCompra.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/builder/ICompraBuilder.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketland/AdminController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/decorator/EntradaDecorator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/decorator/EntradaDecorator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/decorator/EntradaMerchandising.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/decorator/EntradaParqueadero.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/decorator/EntradaPreferencial.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/decorator/EntradaSeguro.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/decorator/IEntrada.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/facade/CompraFacade.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/facade/CompraFacade.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/factory/MetodoPagoFactory.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/model/Administrador.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/model/Administrador.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/model/DatosIniciales.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/model/DatosIniciales.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/model/GeneradorReporte.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/model/GeneradorReporte.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/model/Reporte.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/model/Rol.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/model/TicketLand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/model/TicketLand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/model/TipoMetodoPago.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/model/TipoMetodoPago.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/model/Usuario.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/model/Usuario.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/observer/Subject.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/service/AuthService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/service/CompraService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/service/EntradaService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/service/EventoService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/service/IncidenciaService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/service/PagoService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/service/ReporteService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/service/UsuarioService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/singleton/SistemaEventos.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/state/AsientoBloqueado.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/state/AsientoDisponible.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/state/AsientoReservado.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/state/AsientoVendido.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/state/Bloqueado.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/state/Bloqueado.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/state/Disponible.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/state/Disponible.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/state/EstadoAsiento.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/state/EstadoAsiento.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/state/Reservado.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/state/Reservado.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/state/Vendido.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/state/Vendido.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/viewController/UsuarioViewController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/viewController/UsuarioViewController.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Enum" />
+        <option value="Interface" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;emmanuelmurillo310108&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/DavidAlejandroHenaoJaramillo/TicketLand.git&quot;,
+    &quot;accountId&quot;: &quot;a5bc0145-4db7-48fa-b237-73fe64ad8394&quot;
+  }
+}</component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="mavenHomeTypeForPersistence" value="WRAPPER" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 2
+}</component>
+  <component name="ProjectId" id="3E3yu7CDlZdZuqZWiPOHP9OoEyR" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.HelloApplication.executor": "Run",
+    "Application.Unnamed.executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "git-widget-placeholder": "main",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "D:/Usuario/Documents/GitHub/TicketLand",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RunManager">
+    <configuration name="Unnamed" type="Application" factoryName="Application" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.example.ticketland.HelloApplication" />
+      <module name="TicketLand" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9823dce3aa75-bf35d07a577b-intellij.indexing.shared.core-IU-252.23892.409" />
+        <option value="bundled-js-predefined-d6986cc7102b-e03c56caf84a-JavaScript-IU-252.23892.409" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="431946db-e47d-4df6-865c-9359ae5074ac" name="Changes" comment="" />
+      <created>1779421766356</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1779421766356</updated>
+      <workItem from="1779421767581" duration="1104000" />
+      <workItem from="1779423873060" duration="746000" />
+      <workItem from="1779504710246" duration="5939000" />
+      <workItem from="1779583398538" duration="5186000" />
+      <workItem from="1779598760209" duration="321000" />
+      <workItem from="1779766539515" duration="919000" />
+      <workItem from="1779772378378" duration="11854000" />
+      <workItem from="1779803624808" duration="5333000" />
+      <workItem from="1779810225727" duration="5873000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>

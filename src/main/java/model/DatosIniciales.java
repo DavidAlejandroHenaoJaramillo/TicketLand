@@ -1,6 +1,5 @@
 package model;
 
-import model.Compra;
 import state.Disponible;
 import strategy.PagoEfectivo;
 import strategy.PagoPSE;

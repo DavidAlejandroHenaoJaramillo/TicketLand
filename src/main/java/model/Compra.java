@@ -1,10 +1,6 @@
-package builder;
+package model;
 
 import decorator.EntradaBase;
-import model.Entrada;
-import model.Evento;
-import model.ServicioAdicional;
-import model.Usuario;
 import state.*;
 import strategy.PagoStrategy;
 import observer.Observer;
