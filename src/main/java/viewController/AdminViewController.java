@@ -351,7 +351,7 @@ public class AdminViewController implements Initializable {
             adminController.activarEvento(evento);
             cargarEventos();
             actualizarKPIs();
-            setMsgEvento("Evento \"" + evento.getNombre() + "\" activado.", true);
+            setMsgEvento("✅ Evento \"" + evento.getNombre() + "\" activado.", true);
         } catch (IllegalArgumentException e) {
             setMsgEvento(e.getMessage(), false);
         }
@@ -379,7 +379,7 @@ public class AdminViewController implements Initializable {
             adminController.cancelarEvento(evento);
             cargarEventos();
             actualizarKPIs();
-            setMsgEvento("Evento \"" + evento.getNombre() + "\" cancelado.", true);
+            setMsgEvento("❌ Evento \"" + evento.getNombre() + "\" cancelado.", true);
         } catch (IllegalArgumentException e) {
             setMsgEvento(e.getMessage(), false);
         }
@@ -393,7 +393,7 @@ public class AdminViewController implements Initializable {
             adminController.finalizarEvento(evento);
             cargarEventos();
             actualizarKPIs();
-            setMsgEvento("Evento \"" + evento.getNombre() + "\" finalizado.", true);
+            setMsgEvento("✔ Evento \"" + evento.getNombre() + "\" finalizado.", true);
         } catch (IllegalArgumentException e) {
             setMsgEvento(e.getMessage(), false);
         }
@@ -422,9 +422,9 @@ public class AdminViewController implements Initializable {
             if (txtNuevoEvDescripcion != null) txtNuevoEvDescripcion.clear();
             if (txtNuevoEvPoliticas != null) txtNuevoEvPoliticas.clear();
 
-            setMsgCrearEvento("Evento \"" + nuevo.getNombre() + "\" creado exitosamente.");
+            setMsgCrearEvento("✅ Evento \"" + nuevo.getNombre() + "\" creado exitosamente.");
         } catch (IllegalArgumentException e) {
-            setMsgCrearEvento("Error: " + e.getMessage());
+            setMsgCrearEvento("❌ " + e.getMessage());
         }
     }
 
@@ -490,9 +490,9 @@ public class AdminViewController implements Initializable {
             if (txtNuevoUsCorreo != null) txtNuevoUsCorreo.clear();
             if (txtNuevoUsTelefono != null) txtNuevoUsTelefono.clear();
 
-            setMsg(lblMensajeUsuario, "Usuario \"" + usuario.getNombre() + "\" creado.", true);
+            setMsg(lblMensajeUsuario, "✅ Usuario \"" + usuario.getNombre() + "\" creado.", true);
         } catch (IllegalArgumentException e) {
-            setMsg(lblMensajeUsuario, "Error: " + e.getMessage(), false);
+            setMsg(lblMensajeUsuario, "❌ " + e.getMessage(), false);
         }
     }
 
@@ -574,7 +574,7 @@ public class AdminViewController implements Initializable {
             boolean ok = adminController.confirmarCompra(compra);
             cargarCompras();
             actualizarMetricas();
-            setMsg(lblMensajeCompra, ok ? "Compra confirmada." : "Solo se puede confirmar compras PAGADAS.", ok);
+            setMsg(lblMensajeCompra, ok ? "✅ Compra confirmada." : "❌ Solo se puede confirmar compras PAGADAS.", ok);
         } catch (IllegalArgumentException e) {
             setMsg(lblMensajeCompra, e.getMessage(), false);
         }
@@ -588,7 +588,7 @@ public class AdminViewController implements Initializable {
             boolean ok = adminController.cancelarCompra(compra);
             cargarCompras();
             actualizarMetricas();
-            setMsg(lblMensajeCompra, ok ? "Compra cancelada." : "No se puede cancelar.", ok);
+            setMsg(lblMensajeCompra, ok ? "❌ Compra cancelada." : "❌ No se puede cancelar.", ok);
         } catch (IllegalArgumentException e) {
             setMsg(lblMensajeCompra, e.getMessage(), false);
         }
@@ -602,7 +602,7 @@ public class AdminViewController implements Initializable {
             boolean ok = adminController.reembolsarCompra(compra);
             cargarCompras();
             actualizarMetricas();
-            setMsg(lblMensajeCompra, ok ? "Reembolso procesado." : "Solo PAGADAS o CONFIRMADAS.", ok);
+            setMsg(lblMensajeCompra, ok ? "💰 Reembolso procesado." : "❌ Solo PAGADAS o CONFIRMADAS.", ok);
         } catch (IllegalArgumentException e) {
             setMsg(lblMensajeCompra, e.getMessage(), false);
         }
@@ -616,7 +616,7 @@ public class AdminViewController implements Initializable {
             boolean ok = adminController.marcarIncidenciaCompra(compra);
             cargarCompras();
             actualizarMetricas();
-            setMsg(lblMensajeCompra, ok ? "Compra marcada como incidencia." : "No aplicable.", ok);
+            setMsg(lblMensajeCompra, ok ? "⚠ Compra marcada como incidencia." : "❌ No aplicable.", ok);
         } catch (IllegalArgumentException e) {
             setMsg(lblMensajeCompra, e.getMessage(), false);
         }
@@ -625,13 +625,13 @@ public class AdminViewController implements Initializable {
     @FXML
     private void exportarCSV() {
         reporteController.exportarVentasCSV("reporte_admin.csv");
-        setMsg(lblMensajeCompra, "CSV exportado como reporte_admin.csv", true);
+        setMsg(lblMensajeCompra, "📄 CSV exportado como reporte_admin.csv", true);
     }
 
     @FXML
     private void exportarPDF() {
         reporteController.exportarVentasPDF("reporte_admin.pdf");
-        setMsg(lblMensajeCompra, "PDF exportado como reporte_admin.pdf", true);
+        setMsg(lblMensajeCompra, "📑 PDF exportado como reporte_admin.pdf", true);
     }
 
     private void cargarRecintos() {
@@ -659,7 +659,7 @@ public class AdminViewController implements Initializable {
         String ciudad = txtRecintoCiudad.getText().trim();
 
         if (nombre.isEmpty() || direccion.isEmpty() || ciudad.isEmpty()) {
-            setMsg(lblMensajeRecinto, "Completa todos los campos.", false);
+            setMsg(lblMensajeRecinto, "❌ Completa todos los campos.", false);
             return;
         }
 
@@ -667,7 +667,7 @@ public class AdminViewController implements Initializable {
         txtRecintoDireccion.clear();
         txtRecintoCiudad.clear();
 
-        setMsg(lblMensajeRecinto, "Recinto \"" + nombre + "\" registrado.", true);
+        setMsg(lblMensajeRecinto, "✅ Recinto \"" + nombre + "\" registrado.", true);
     }
 
     private void cargarZonasAdmin() {
@@ -764,7 +764,7 @@ public class AdminViewController implements Initializable {
         try {
             boolean ok = adminController.bloquearAsiento(asiento);
             cargarAsientosDeZona();
-            setMsg(lblMensajeAsiento, ok ? "Asiento bloqueado." : "Solo disponibles se pueden bloquear.", ok);
+            setMsg(lblMensajeAsiento, ok ? "🔒 Asiento bloqueado." : "❌ Solo disponibles se pueden bloquear.", ok);
         } catch (IllegalArgumentException e) {
             setMsg(lblMensajeAsiento, e.getMessage(), false);
         }
@@ -779,7 +779,7 @@ public class AdminViewController implements Initializable {
         try {
             boolean ok = adminController.liberarAsiento(asiento);
             cargarAsientosDeZona();
-            setMsg(lblMensajeAsiento, ok ? "Asiento liberado." : "No se puede liberar.", ok);
+            setMsg(lblMensajeAsiento, ok ? "🔓 Asiento liberado." : "❌ No se puede liberar.", ok);
         } catch (IllegalArgumentException e) {
             setMsg(lblMensajeAsiento, e.getMessage(), false);
         }
@@ -829,9 +829,9 @@ public class AdminViewController implements Initializable {
             if (txtEntidadAfectada != null) txtEntidadAfectada.clear();
 
             cargarIncidencias();
-            setMsg(lblMensajeIncidencia, "Incidencia registrada correctamente.", true);
+            setMsg(lblMensajeIncidencia, "⚠ Incidencia registrada correctamente.", true);
         } catch (IllegalArgumentException e) {
-            setMsg(lblMensajeIncidencia, "Error: " + e.getMessage(), false);
+            setMsg(lblMensajeIncidencia, "❌ " + e.getMessage(), false);
         }
     }
 
@@ -844,7 +844,7 @@ public class AdminViewController implements Initializable {
         List<Incidencia> resultado = adminController.buscarIncidencias(tipo, desde, hasta);
 
         tablaIncidencias.setItems(FXCollections.observableArrayList(resultado));
-        setMsg(lblMensajeIncidencia, "Filtro aplicado: " + resultado.size() + " resultado(s).", true);
+        setMsg(lblMensajeIncidencia, "🔍 Filtro aplicado: " + resultado.size() + " resultado(s).", true);
     }
 
     @FXML

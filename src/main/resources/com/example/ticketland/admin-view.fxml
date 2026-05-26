@@ -3,14 +3,9 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.chart.*?>
 
-<?xml version="1.0" encoding="UTF-8"?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.chart.*?>
-
 <VBox spacing="0" xmlns="http://javafx.com/javafx/21"
       xmlns:fx="http://javafx.com/fxml"
-      fx:controller="com.example.ticketland.AdminController"
+      fx:controller="viewController.AdminViewController"
       style="-fx-background-color: #f0f4ff;">
 
     <HBox spacing="16" alignment="CENTER_LEFT"

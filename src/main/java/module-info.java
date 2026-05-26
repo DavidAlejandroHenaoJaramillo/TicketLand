@@ -9,7 +9,6 @@ module com.example.ticketland {
     exports com.example.ticketland;
     exports viewController;
     exports controller;
-
     opens facade;
     opens adapter;
     opens model;

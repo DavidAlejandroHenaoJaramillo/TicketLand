@@ -81,8 +81,9 @@ public class LoginViewController {
             Stage stage = (Stage) txtCorreo.getScene().getWindow();
             stage.setScene(new Scene(loader.load(), 800, 600));
             stage.setTitle("TicketLand - Administrador");
-        } catch (IOException e) {
-            lblMensaje.setText("Error al cargar la vista.");
+        } catch (Exception e) {
+            e.printStackTrace();
+            lblMensaje.setText("Error al cargar admin: " + e.getMessage());
         }
     }
 }
