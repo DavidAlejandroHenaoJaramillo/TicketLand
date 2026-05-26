@@ -1,5 +1,5 @@
 package observer;
 
-public interface Observador {
+public interface Observer {
     void actualizar(String mensaje);
 }
